@@ -1,9 +1,9 @@
 import Layout from '@widgets/layout';
-import type { Offer } from '@entities/offer';
+import type { MainOfferInfo } from '@entities/offer';
 import NoPlacesSection from '../no-places-section';
 
 type FavoritesPageProps = {
-  offers: Offer[];
+  offers: MainOfferInfo[];
 }
 
 export function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
