@@ -1,17 +1,16 @@
 import { Navigate } from 'react-router-dom';
-import { useAuthorization } from '@entities/user/lib/useAuthorization';
 import type { PropsWithChildren } from 'react';
 
-type RequireAuthProps = PropsWithChildren<{
+type PrivateRouteProps = PropsWithChildren<{
   redirectPath: string;
+  isPrivate: boolean;
 }>
 
-export function RequireAuth({ redirectPath, children }: RequireAuthProps): JSX.Element {
-  const { isAuthorized } = useAuthorization();
+export function PrivateRoute({ redirectPath, children, isPrivate }: PrivateRouteProps): JSX.Element {
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {isAuthorized
+      {isPrivate
         ? children
         : <Navigate to={redirectPath} replace />}
     </>

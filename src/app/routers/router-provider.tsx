@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { OFFERS_INFO_MOCK } from '@app/mock/offers-mock';
-import { RequireAuth } from './require-auth';
-import { NoAuthRoute } from './no-auth-route';
+import { PrivateRoute } from './private-route';
 import { NotExistsRouteNavigate } from './not-exists-route-navigate';
 import { RoutesEnum } from '@shared/types';
 
@@ -9,8 +8,10 @@ import MainPage from '@pages/main-page';
 import LoginPage from '@pages/login-page';
 import FavoritesPage from '@pages/favorites-page';
 import OfferPage from '@pages/offer-page';
+import { useAuthorization } from '@entities/user';
 
 export function RouterProvider(): JSX.Element {
+  const { isAuthorized } = useAuthorization();
   return (
     <BrowserRouter>
       <Routes>
@@ -21,17 +22,17 @@ export function RouterProvider(): JSX.Element {
         <Route
           path={RoutesEnum.Login}
           element={
-            <NoAuthRoute redirectPath={RoutesEnum.Main}>
+            <PrivateRoute isPrivate={!isAuthorized} redirectPath={RoutesEnum.Main}>
               <Route path={RoutesEnum.Login} element={<LoginPage />}/>
-            </NoAuthRoute>
+            </PrivateRoute>
           }
         />
         <Route
           path={RoutesEnum.Favorites}
           element={
-            <RequireAuth redirectPath={RoutesEnum.Login}>
+            <PrivateRoute isPrivate={isAuthorized} redirectPath={RoutesEnum.Login}>
               <FavoritesPage offers={OFFERS_INFO_MOCK} />
-            </RequireAuth>
+            </PrivateRoute>
           }
         />
         <Route
@@ -39,7 +40,7 @@ export function RouterProvider(): JSX.Element {
           element={<OfferPage />}
         />
         <Route
-          path='*'
+          path={RoutesEnum.NotFound}
           element={<NotExistsRouteNavigate authRedirect={RoutesEnum.Main} noAuthRedirect={RoutesEnum.Login}/>}
         />
       </Routes>
