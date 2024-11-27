@@ -1,3 +1,3 @@
-import { MainPage } from './main-page';
+import { MainPageWithBrowserTitle as MainPage } from './main-page';
 
 export default MainPage;
