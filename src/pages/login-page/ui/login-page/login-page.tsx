@@ -1,6 +1,9 @@
 import Layout from '@widgets/layout';
+import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
 
-export function LoginPage(): JSX.Element {
+const PAGE_TITLE = '6 cities: authorization';
+
+function LoginPage(): JSX.Element {
   return (
     <Layout className='page--gray page--login'>
       <Layout.Header />
@@ -32,3 +35,5 @@ export function LoginPage(): JSX.Element {
     </Layout>
   );
 }
+
+export const LoginPageWithBrowserTitle = componentWithBrowserTitle(LoginPage, PAGE_TITLE);

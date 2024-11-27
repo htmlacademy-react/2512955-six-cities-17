@@ -1,3 +1,3 @@
-import { FakeRouterProvider as RouterProvider } from './fake-router';
+import { RouterProvider } from './router-provider';
 
 export default RouterProvider;

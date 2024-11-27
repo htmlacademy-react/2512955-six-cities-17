@@ -1,12 +1,15 @@
 import Layout from '@widgets/layout';
 import OfferCard from '@entities/offer';
 import type { MainOfferInfo } from '@entities/offer';
+import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
 
 type MainPageProps = {
   offers: MainOfferInfo[];
 }
 
-export function MainPage({ offers }: MainPageProps): JSX.Element {
+const PAGE_TITLE = '6 cities';
+
+function MainPage({ offers }: MainPageProps): JSX.Element {
   return (
     <Layout className='page--gray page--main'>
       <Layout.Header>
@@ -99,3 +102,5 @@ export function MainPage({ offers }: MainPageProps): JSX.Element {
     </Layout>
   );
 }
+
+export const MainPageWithBrowserTitle = componentWithBrowserTitle(MainPage, PAGE_TITLE);

@@ -10,7 +10,7 @@ type OfferCardProps = Classed<{
 
 export function OfferCard({ offer, className }: OfferCardProps): JSX.Element {
   return (
-    <article className={className ?? ''}>
+    <article className={className}>
       {offer.isPremium && <PremiumMark />}
       <div className='cities__image-wrapper place-card__image-wrapper'>
         <a href='#'>
