@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { OFFERS_INFO_MOCK } from '@app/mock/offers-mock';
 import { PrivateRoute } from './private-route';
-import { NotExistsRouteNavigate } from './not-exists-route-navigate';
 import { RoutesEnum } from '@shared/types';
 
 import MainPage from '@pages/main-page';
 import LoginPage from '@pages/login-page';
 import FavoritesPage from '@pages/favorites-page';
 import OfferPage from '@pages/offer-page';
+import NotFoundPage from '@pages/not-found-page';
 import { useAuthorization } from '@entities/user';
 
 export function RouterProvider(): JSX.Element {
@@ -23,7 +23,7 @@ export function RouterProvider(): JSX.Element {
           path={RoutesEnum.Login}
           element={
             <PrivateRoute isPrivate={!isAuthorized} redirectPath={RoutesEnum.Main}>
-              <Route path={RoutesEnum.Login} element={<LoginPage />}/>
+              <LoginPage />
             </PrivateRoute>
           }
         />
@@ -41,7 +41,7 @@ export function RouterProvider(): JSX.Element {
         />
         <Route
           path={RoutesEnum.NotFound}
-          element={<NotExistsRouteNavigate authRedirect={RoutesEnum.Main} noAuthRedirect={RoutesEnum.Login}/>}
+          element={<NotFoundPage />}
         />
       </Routes>
     </BrowserRouter>
