@@ -3,4 +3,5 @@ export enum RoutesEnum {
   Login = '/login',
   Favorites = '/favorites',
   Offer = '/offer/:id',
+  NotFound = '*'
 }

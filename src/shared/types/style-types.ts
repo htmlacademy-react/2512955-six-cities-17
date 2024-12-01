@@ -8,6 +8,11 @@ type StylePropType = {
   style?: CSSProperties;
 }
 
+export type ElementSize = {
+  width: number;
+  height: number;
+}
+
 export type Classed<TExtendedType> = ClassNamePropType & Omit<TExtendedType, keyof ClassNamePropType>;
 
 export type Styled<TExtendedType> = StylePropType & Omit<TExtendedType, keyof StylePropType>;
