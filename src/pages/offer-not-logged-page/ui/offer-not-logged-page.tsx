@@ -1,20 +1,11 @@
 import Layout from '@widgets/layout';
+import { UserInfo } from '@entities/user';
 
 export function NotLoggedOfferPage(): JSX.Element {
   return (
     <Layout>
       <Layout.Header>
-        <nav className='header__nav'>
-          <ul className='header__nav-list'>
-            <li className='header__nav-item user'>
-              <a className='header__nav-link header__nav-link--profile' href='#'>
-                <div className='header__avatar-wrapper user__avatar-wrapper'>
-                </div>
-                <span className='header__login'>Sign in</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <UserInfo />
       </Layout.Header>
       <Layout.Content className='page__main--offer'>
         <section className='offer'>

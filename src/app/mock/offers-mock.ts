@@ -116,4 +116,50 @@ export const OFFERS_INFO_MOCK: MainOfferInfo[] = [
     isPremium: false,
     rating: 2.6
   },
+  {
+    id: '09c74efc-cacd-47e6-921e-a7a7a832620a',
+    title: 'The Joshua Tree House',
+    type: 'apartment',
+    price: 458,
+    previewImage: 'https://16.design.htmlacademy.pro/static/hotel/8.jpg',
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 13
+      }
+    },
+    location: {
+      latitude: 48.868610000000004,
+      longitude: 2.342499,
+      zoom: 16
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 3.7
+  },
+  {
+    id: '0a600ef6-3768-4ccc-b53f-4f0997643b69',
+    title: 'Loft Studio in the Central Area',
+    type: 'apartment',
+    price: 335,
+    previewImage: 'https://16.design.htmlacademy.pro/static/hotel/4.jpg',
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 13
+      }
+    },
+    location: {
+      latitude: 48.858610000000006,
+      longitude: 2.330499,
+      zoom: 16
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 1.6
+  }
 ];

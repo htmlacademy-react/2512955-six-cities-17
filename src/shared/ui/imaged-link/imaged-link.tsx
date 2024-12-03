@@ -1,15 +1,18 @@
 import { Link, LinkProps} from 'react-router-dom';
 import { ComponentPropsWithoutRef, ElementType } from 'react';
 
-type LinkOwnProps = Pick<LinkProps, 'to'>;
+type LinkOwnProps = {
+  linkConfig: LinkProps;
+};
+
 
 const imageElement = 'img';
 
 type ElementProps<TElementType extends ElementType = typeof imageElement> = Omit<ComponentPropsWithoutRef<TElementType>, keyof LinkOwnProps> & LinkOwnProps;
 
-export function ImagedLink({to, ...props}: ElementProps): JSX.Element {
+export function ImagedLink({linkConfig, ...props}: ElementProps): JSX.Element {
   return (
-    <Link to={to}>
+    <Link {...linkConfig}>
       <img {...props}/>
     </Link>
   );

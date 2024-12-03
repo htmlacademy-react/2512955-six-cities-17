@@ -1,29 +1,59 @@
 import type { Classed } from '@shared/types';
 import PremiumMark from '@shared/ui/premium-mark';
 import RatingInStars from '@shared/ui/rating-in-stars';
-
+import classNames from 'classnames';
 import type { MainOfferInfo } from '../../model/types';
+import { getOfferCardStyles } from './get-styles';
+import type { ViewType } from './types';
+import ImagedLink from '@shared/ui/imaged-link';
+import { DEFAULT_IMAGE_SIZE_FAVORITES, DEFAULT_IMAGE_SIZE_MAIN } from './consts';
+import { RoutesEnum } from '@shared/types';
+import { Link } from 'react-router-dom';
 
 type OfferCardProps = Classed<{
   offer: MainOfferInfo;
-}>
+  viewType?: ViewType;
+  activateOffer?: (offerId: string) => void;
+}>;
 
-export function OfferCard({ offer, className }: OfferCardProps): JSX.Element {
+export function OfferCard({ offer, className, activateOffer, viewType = 'main' }: OfferCardProps): JSX.Element {
+  const {
+    bookmarkButtonClassName,
+    cardInfoContainerClassName,
+    containerClassName,
+    imageWrapperClassName
+  } = getOfferCardStyles(viewType, offer.isFavorite);
+
+  const articleClassName = classNames(containerClassName, className);
+  const linkSize = viewType === 'main' ? DEFAULT_IMAGE_SIZE_MAIN : DEFAULT_IMAGE_SIZE_FAVORITES;
+  const offerRoute = RoutesEnum.Offer.replace(':id', offer.id);
+  const mouseOverArticleHandle = () => {
+    if (activateOffer) {
+      activateOffer(offer.id);
+    }
+  };
+
   return (
-    <article className={className}>
+    <article className={articleClassName} onMouseOver={mouseOverArticleHandle}>
       {offer.isPremium && <PremiumMark />}
-      <div className='cities__image-wrapper place-card__image-wrapper'>
-        <a href='#'>
-          <img className='place-card__image' src={offer.previewImage} width='260' height='200' alt='Place image' />
-        </a>
+      <div className={imageWrapperClassName}>
+        <ImagedLink
+          linkConfig={{
+            to: offerRoute
+          }}
+          className='place-card__image'
+          src={offer.previewImage}
+          alt={offer.title}
+          {...linkSize}
+        />
       </div>
-      <div className='place-card__info'>
+      <div className={cardInfoContainerClassName}>
         <div className='place-card__price-wrapper'>
           <div className='place-card__price'>
             <b className='place-card__price-value'>&euro;{offer.price}</b>
             <span className='place-card__price-text'>&#47;&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button ${offer.isFavorite ? 'place-card__bookmark-button--active' : ''} button`} type='button'>
+          <button className={bookmarkButtonClassName} type='button'>
             <svg className='place-card__bookmark-icon' width='18' height='19'>
               <use xlinkHref='#icon-bookmark'></use>
             </svg>
@@ -34,7 +64,9 @@ export function OfferCard({ offer, className }: OfferCardProps): JSX.Element {
           <RatingInStars rating={offer.rating} className='place-card__stars rating__stars' />
         </div>
         <h2 className='place-card__name'>
-          <a href='#'>{offer.title}</a>
+          <Link to={offerRoute}>
+            {offer.title}
+          </Link>
         </h2>
         <p className='place-card__type'>{offer.type}</p>
       </div>
