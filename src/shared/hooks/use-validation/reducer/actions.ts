@@ -1,7 +1,8 @@
-import { FieldValidationInfo, ValidationResults } from '../types';
+import { FieldValidationInfo, ValidationConfig, ValidationResults } from '../types';
 
-type ValidateCheckAction = {
+type ValidateCheckAction<TObjectType> = {
   type: 'VALIDATE_CHECK';
+  payload: ValidationConfig<TObjectType>;
 };
 
 type ValidateFieldAction<TObjectType> = {
@@ -17,4 +18,13 @@ type ValidateObjectAction<TObjectType> = {
   payload: ValidationResults<TObjectType>;
 }
 
-export type Action<TObjectType> = ValidateCheckAction | ValidateFieldAction<TObjectType> | ValidateObjectAction<TObjectType>;
+type SetIsValidAction = {
+  type: 'SET_IS_VALID';
+  payload: boolean;
+}
+
+type ResetAction = {
+  type: 'RESET_VALIDATION';
+}
+
+export type Action<TObjectType> = ResetAction | SetIsValidAction | ValidateCheckAction<TObjectType> | ValidateFieldAction<TObjectType> | ValidateObjectAction<TObjectType>;

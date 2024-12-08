@@ -1,9 +1,10 @@
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useEffect } from 'react';
 import { RatingInput, RatingValue } from '../rating-input';
 import { RATING_INPUTS_CONFIG, INITIAL_STATE } from './consts';
 import { State } from './types';
 import { useValidate, ValidationConfig } from '@shared/hooks/use-validation';
 import classNames from 'classnames';
+import { useForm } from '@shared/hooks/use-form';
 
 const REVIEW_LENGTH = {
   MIN: 10,
@@ -14,17 +15,17 @@ const validationScheme: ValidationConfig<State> = {
   rating: [
     {
       rule: (value) => value <= RatingValue.Perfect && value >= RatingValue.Terribly,
-      errorMessage: 'Рейтинг может быть от 1 до 5 звёзд'
+      errorMessage: 'Rate from 1 to 5 stars'
     }
   ],
   review: [
     {
       rule: (value) => value.length >= REVIEW_LENGTH.MIN,
-      errorMessage: `Минимальная длина отзыва - ${REVIEW_LENGTH.MIN} символов`
+      errorMessage: `Minimal review length - ${REVIEW_LENGTH.MIN} symbols`
     },
     {
       rule: (value) => value.length <= REVIEW_LENGTH.MAX,
-      errorMessage: `Максимальная длина отзыва - ${REVIEW_LENGTH.MAX} символов`
+      errorMessage: `Maximal review length - ${REVIEW_LENGTH.MAX} symbols`
     }
   ]
 };
@@ -33,8 +34,40 @@ const validationScheme: ValidationConfig<State> = {
  * @todo СДЕЛАТЬ ВАЛИДАЦИИ И САБМИТ!!
  */
 export function NewReviewForm(): JSX.Element {
-  const [reviewData, setReviewData] = useState(INITIAL_STATE);
-  const { validationResult: { validations }, validateField } = useValidate<State>(validationScheme);
+  const {
+    getFieldValue,
+    handleSubmit,
+    setFieldValue,
+    reset,
+    isSubmitting
+  } = useForm(INITIAL_STATE);
+
+  const {
+    validationResult: { validations, isValid },
+    validateField,
+    resetValidation
+  } = useValidate<State>(validationScheme);
+
+  const onSubmit = (data: State) => {
+    // eslint-disable-next-line no-console
+    console.log({data});
+    reset();
+    resetValidation();
+  };
+
+  useEffect(
+    () => {
+      let componentIsMounted = true;
+
+      if (componentIsMounted) {
+        validateField(getFieldValue('rating'), 'rating');
+      }
+      return () => {
+        componentIsMounted = false;
+      };
+    },
+    [validateField, getFieldValue]
+  );
 
   const ratingContainerClassName = classNames(
     'reviews__rating-form',
@@ -48,11 +81,8 @@ export function NewReviewForm(): JSX.Element {
     { ['error']: validations?.review?.isNotValid }
   );
 
-  const reviewDataChangeHandler = (controllerName: keyof State, value: State[typeof controllerName]): void => {
-    setReviewData((prevState) => ({
-      ...prevState,
-      [controllerName]: value
-    }));
+  const reviewDataChangeHandler = <TKey extends keyof State>(controllerName: TKey, value: State[TKey]): void => {
+    setFieldValue(controllerName, value);
     validateField(value, controllerName);
   };
 
@@ -60,24 +90,25 @@ export function NewReviewForm(): JSX.Element {
   const onRatingChange = (rating: RatingValue) => reviewDataChangeHandler('rating', rating);
 
   return (
-    <form className='reviews__form form' action='#' method='post'>
+    <form className='reviews__form form' action='#' method='post' onSubmit={handleSubmit(onSubmit)}>
       <label className='reviews__label form__label' htmlFor='review'>Your review</label>
       <div className={ratingContainerClassName}>
         {RATING_INPUTS_CONFIG.map((current) => (
           <RatingInput
             key={`rating-input-${current.value}`}
             onChangeRating={onRatingChange}
+            checked={current.value <= getFieldValue('rating')}
             {...current}
           />
         ))}
-        {validations?.rating?.isNotValid && <small className='error-message'>{validations.rating?.message}</small>}
       </div>
+      {validations?.rating?.isNotValid && <small className='error-message'>{validations.rating?.message}</small>}
       <textarea
         className={reviewInputClassName}
         id='review'
         name='review'
         placeholder='Tell how was your stay, what you like and what can be improved'
-        value={reviewData.review}
+        value={getFieldValue('review')}
         onChange={onReviewChange}
       />
       {validations?.review?.isNotValid && <small className='error-message'>{validations.review?.message}</small>}
@@ -85,7 +116,7 @@ export function NewReviewForm(): JSX.Element {
         <p className='reviews__help'>
           To submit review please make sure to set <span className='reviews__star'>rating</span> and describe your stay with at least <b className='reviews__text-amount'>50 characters</b>.
         </p>
-        <button className='reviews__submit form__submit button' type='submit' disabled>Submit</button>
+        <button className='reviews__submit form__submit button' type='submit' disabled={!(isValid || isSubmitting)}>Submit</button>
       </div>
     </form>
   );

@@ -1,51 +1,25 @@
-import { useReducer } from 'react';
-import type { ValidationConfig, FieldValidationInfo, ValidationState, ValidationResults } from './types';
+import { useCallback, useReducer } from 'react';
+import type { ValidationConfig, ValidationState, ValidationResults } from './types';
 import { reducer } from './reducer';
+import { validateField, validateAll, isValidValidationState } from './utils';
+import { INITIAL_STATE } from './consts';
 
 type UseValidateReturn<TValueType, TKeys extends keyof TValueType = keyof TValueType> = {
   validateField: (fieldValue: TValueType[typeof field], field: TKeys) => void;
   validationResult: ValidationState<TValueType>;
   validateAll: (validateObject: TValueType) => void;
+  resetValidation: () => void;
 }
 
-const INITAL_STATE: ValidationState<object> = {
-  validations: {},
-  isValid: false
-};
-
 export function useValidate<TValueType extends Record<string, unknown>, TKeys extends keyof TValueType = keyof TValueType>(validationScheme: ValidationConfig<TValueType>): UseValidateReturn<TValueType, TKeys> {
-  const [validationStore, dispatch] = useReducer(reducer<TValueType>, INITAL_STATE);
+  const [validationStore, dispatch] = useReducer(reducer<TValueType>, INITIAL_STATE);
 
-  const validateField = (fieldValue: TValueType[typeof field], field: TKeys): FieldValidationInfo => {
-    const validationRules = validationScheme[field] ?? [];
-    const validationResults: FieldValidationInfo[] = validationRules.map((current) => {
-      const isValid = current.rule(fieldValue);
-      return {
-        isNotValid: !isValid,
-        message: isValid ? '' : current.errorMessage
-      };
-    }).filter((current) => current.isNotValid);
-
-    return validationResults.length
-      ? validationResults[0]
-      : {
-        isNotValid: false,
-        message: ''
-      };
-  };
-
-  const validateAll = (validationObject: TValueType) => {
-    const validationResults: ValidationResults<TValueType> = Object.keys(validationObject)
-      .reduce((accum, current) => {
-        const typedKey = current as TKeys;
-        return {
-          ...accum,
-          [typedKey]: validateField(validationObject[typedKey], typedKey)
-        };
-      }, {});
-
+  const writeObjectValidationIntoState = (validationObject: TValueType) => {
+    const validationResults: ValidationResults<TValueType> = validateAll(validationObject, validationScheme);
+    const isValidState = isValidValidationState(validationResults, validationScheme);
     dispatch({type: 'VALIDATE_OBJECT', payload: validationResults});
-    dispatch({type: 'VALIDATE_CHECK'});
+    dispatch({type: 'SET_IS_VALID', payload: isValidState});
+    return isValidState;
   };
 
   const writeFieldValidationIntoState = (fieldValue: TValueType[typeof field], field: TKeys): void => {
@@ -53,15 +27,30 @@ export function useValidate<TValueType extends Record<string, unknown>, TKeys ex
       type: 'VALIDATE_FIELD',
       payload: {
         field,
-        info: validateField(fieldValue, field)
+        info: validateField(fieldValue, field, validationScheme)
       }
     });
-    dispatch({type: 'VALIDATE_CHECK'});
+    dispatch({type: 'VALIDATE_CHECK', payload: validationScheme});
   };
 
+  const resetValidationResult = () => dispatch({type: 'RESET_VALIDATION'});
+
+  const returnedValidateField = useCallback(
+    writeFieldValidationIntoState,
+    [validationScheme]
+  );
+
+  const returnedValidateAll = useCallback(
+    writeObjectValidationIntoState,
+    [validationScheme]
+  );
+
+  const resetValidation = useCallback(resetValidationResult, []);
+
   return {
-    validateField: writeFieldValidationIntoState,
-    validateAll,
-    validationResult: validationStore
+    validateField: returnedValidateField,
+    validateAll: returnedValidateAll,
+    validationResult: validationStore,
+    resetValidation
   };
 }

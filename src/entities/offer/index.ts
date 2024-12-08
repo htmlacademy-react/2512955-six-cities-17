@@ -1,6 +1,6 @@
-import type { MainOfferInfo } from './model/types';
+import type { MainOfferInfo, City, Location, OfferCityName, OfferType } from './model/types';
 import OfferCard from './ui/offer-card';
 
-export { type MainOfferInfo };
+export type { MainOfferInfo, City, Location, OfferCityName, OfferType };
 
 export default OfferCard;

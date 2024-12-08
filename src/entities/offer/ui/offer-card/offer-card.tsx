@@ -13,10 +13,10 @@ import { Link } from 'react-router-dom';
 type OfferCardProps = Classed<{
   offer: MainOfferInfo;
   viewType?: ViewType;
-  activateOffer?: (offerId: string) => void;
+  onActivateOffer?: (offerId: string) => void;
 }>;
 
-export function OfferCard({ offer, className, activateOffer, viewType = 'main' }: OfferCardProps): JSX.Element {
+export function OfferCard({ offer, className, onActivateOffer, viewType = 'main' }: OfferCardProps): JSX.Element {
   const {
     bookmarkButtonClassName,
     cardInfoContainerClassName,
@@ -28,13 +28,13 @@ export function OfferCard({ offer, className, activateOffer, viewType = 'main' }
   const linkSize = viewType === 'main' ? DEFAULT_IMAGE_SIZE_MAIN : DEFAULT_IMAGE_SIZE_FAVORITES;
   const offerRoute = RoutesEnum.Offer.replace(':id', offer.id);
   const mouseOverArticleHandle = () => {
-    if (activateOffer) {
-      activateOffer(offer.id);
+    if (onActivateOffer) {
+      onActivateOffer(offer.id);
     }
   };
 
   return (
-    <article className={articleClassName} onMouseOver={mouseOverArticleHandle}>
+    <article className={articleClassName} onMouseOver={onActivateOffer && mouseOverArticleHandle}>
       {offer.isPremium && <PremiumMark />}
       <div className={imageWrapperClassName}>
         <ImagedLink
