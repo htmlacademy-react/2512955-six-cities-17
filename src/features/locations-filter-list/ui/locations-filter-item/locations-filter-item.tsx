@@ -1,7 +1,6 @@
 import type { OfferCityName } from '@entities/offer';
 import { RoutesEnum } from '@shared/types';
-import classNames from 'classnames';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 type LocationsFilterItemProps = {
   filterValue: OfferCityName;
@@ -10,13 +9,6 @@ type LocationsFilterItemProps = {
 }
 
 export function LocationsFilterItem({ filterValue, onLinkClick, isActive }: LocationsFilterItemProps): JSX.Element {
-  /*const linkClassName = classNames(
-    'locations__item-link',
-    'tabs__item',
-    {
-      'tabs__item--active': isActive
-    });*/
-
   return (
     <li className='locations__item'>
       <NavLink
