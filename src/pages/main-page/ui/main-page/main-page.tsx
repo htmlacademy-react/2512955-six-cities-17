@@ -1,33 +1,84 @@
 import Layout from '@widgets/layout';
-import type { MainOfferInfo } from '@entities/offer';
+import type { MainOfferInfo, OfferCityName } from '@entities/offer';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
 import MainOffersList from '@features/main-offers-list';
-import classNames from 'classnames';
 import NoPlacesSection from '../no-places-section';
 import { UserInfo } from '@entities/user';
+import { ComponentProps, useEffect, useMemo, useState } from 'react';
+import { Nullable } from '@shared/types';
+import LocationsFilterList from '@features/locations-filter-list/';
+import { ALL_CITIES_NAMES, PAGE_TITLE, DEFAULT_CITY, DEFAULT_SEARCH_PARAMS } from '@pages/main-page/config';
+import { useSearchParams } from 'react-router-dom';
+import { getSearchParam } from '@shared/lib/url';
+import { SearchParams } from '@pages/main-page/model';
+import { getPageStyles } from './get-styles';
+import { isOfferCityName } from './type-guards';
+import LeafletMap from '@features/leaflet-map';
 
 type MainPageProps = {
   offers: MainOfferInfo[];
 }
 
-const PAGE_TITLE = '6 cities';
+function getLeafletMapProps(offers: MainOfferInfo[], activeOfferId: Nullable<string>): ComponentProps<typeof LeafletMap> {
+  const activeOffer = activeOfferId
+    ? offers.find((current) => current.id === activeOfferId)
+    : undefined;
+
+  return {
+    city: {
+      location: offers[0].city.location,
+      name: offers[0].city.name
+    },
+    points: offers.map((current) => ({
+      location: current.location,
+      name: current.title
+    })),
+    selectedPoint: activeOffer ? {
+      location: activeOffer.location,
+      name: activeOffer.title
+    } : null
+  };
+}
 
 function MainPage({ offers }: MainPageProps): JSX.Element {
-  const isOffersExists = offers.length > 0;
-  const contentClassName = classNames(
-    'page__main--index',
-    {
-      'page__main--index-empty': !isOffersExists
-    }
+  const [activeOfferId, setActiveOfferId] = useState<Nullable<string>>(null);
+  const [searchParams, setSearchParams] = useSearchParams(DEFAULT_SEARCH_PARAMS);
+  const activeCitySearchParam = getSearchParam<SearchParams, keyof SearchParams>(searchParams, 'activeCity', DEFAULT_CITY);
+  const [activeCity, setActiveCity] = useState<OfferCityName>(isOfferCityName(activeCitySearchParam) ? activeCitySearchParam : DEFAULT_CITY);
+
+  const filteredOffers = useMemo(
+    () => offers.filter((current) => current.city.name === activeCity),
+    [activeCity, offers]
+  );
+  const mapProps = useMemo(
+    () => filteredOffers.length ? getLeafletMapProps(filteredOffers, activeOfferId) : null,
+    [filteredOffers, activeOfferId]
   );
 
-  const containerClassName = classNames(
-    'cities__places-container',
-    {
-      'cities__places-container--empty': !isOffersExists
-    },
-    'container'
-  );
+  const isOffersExists = filteredOffers.length > 0;
+
+  useEffect(() => {
+    let componentIsMounted = true;
+    const activeCityParam = getSearchParam<SearchParams, keyof SearchParams>(searchParams, 'activeCity', DEFAULT_CITY);
+    if (!isOfferCityName(activeCityParam) && componentIsMounted) {
+      setSearchParams({activeCity: DEFAULT_CITY});
+      setActiveCity(DEFAULT_CITY);
+    }
+
+    return () => {
+      componentIsMounted = false;
+    };
+  }, [searchParams, setSearchParams]);
+
+  const { containerClassName, contentClassName } = getPageStyles(isOffersExists);
+
+  const activeCityChangeHandler = (cityName: OfferCityName) => {
+    if (activeCity !== cityName) {
+      setActiveCity(cityName);
+      setActiveOfferId(null);
+    }
+  };
+
   return (
     <Layout className='page--gray page--main'>
       <Layout.Header>
@@ -37,38 +88,11 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
         <h1 className='visually-hidden'>Cities</h1>
         <div className='tabs'>
           <section className='locations container'>
-            <ul className='locations__list tabs__list'>
-              <li className='locations__item'>
-                <a className='locations__item-link tabs__item' href='#'>
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className='locations__item'>
-                <a className='locations__item-link tabs__item' href='#'>
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className='locations__item'>
-                <a className='locations__item-link tabs__item' href='#'>
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className='locations__item'>
-                <a className='locations__item-link tabs__item tabs__item--active'>
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className='locations__item'>
-                <a className='locations__item-link tabs__item' href='#'>
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className='locations__item'>
-                <a className='locations__item-link tabs__item' href='#'>
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <LocationsFilterList
+              activeFilter={activeCity}
+              allFilterItems={ALL_CITIES_NAMES}
+              onFilterChange={activeCityChangeHandler}
+            />
           </section>
         </div>
         <div className='cities'>
@@ -76,7 +100,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
             {isOffersExists ?
               <section className='cities__places places'>
                 <h2 className='visually-hidden'>Places</h2>
-                <b className='places__found'>{offers.length} places to stay in Amsterdam</b>
+                <b className='places__found'>{filteredOffers.length} places to stay in {activeCity}</b>
                 <form className='places__sorting' action='#' method='get'>
                   <span className='places__sorting-caption'>Sort by</span>
                   <span className='places__sorting-type' tabIndex={0}>
@@ -92,12 +116,16 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                     <li className='places__option' tabIndex={0}>Top rated first</li>
                   </ul>
                 </form>
-                <MainOffersList offers={offers} />
+                <MainOffersList offers={filteredOffers} onActivateOffer={setActiveOfferId} />
               </section>
               :
               <NoPlacesSection />}
             <div className='cities__right-section'>
-              {isOffersExists && <section className='cities__map map'></section>}
+              {(isOffersExists && mapProps) &&
+                <LeafletMap
+                  className='cities__map map'
+                  {...mapProps}
+                />}
             </div>
           </div>
         </div>
