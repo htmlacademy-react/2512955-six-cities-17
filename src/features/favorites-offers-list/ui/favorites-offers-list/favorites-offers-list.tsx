@@ -1,4 +1,4 @@
-import type { MainOfferInfo } from '@entities/offer';
+import type { MainOfferInfo, OfferCityName } from '@entities/offer';
 import FavoritesOffersGroup from '../favorites-offers-group';
 
 type FavoritesOffersListProps = {
@@ -6,9 +6,11 @@ type FavoritesOffersListProps = {
 };
 
 export function FavoritesOffersList({ offers }: FavoritesOffersListProps): JSX.Element {
-  const groupedOffers: Record<string, MainOfferInfo[]> = offers.reduce((accum, current) => ({
+  const cities = Array.from(new Set(offers.map((current) => current.city.name)));
+
+  const groupedOffers: Record<string, MainOfferInfo[]> | null = cities.reduce((accum, current) => ({
     ...accum,
-    [`${current.city.name}`]: offers.filter((offer) => current.city.name === offer.city.name)
+    [current]: offers.filter((offer) => current === offer.city.name)
   }), {});
 
   return (
@@ -17,7 +19,7 @@ export function FavoritesOffersList({ offers }: FavoritesOffersListProps): JSX.E
         (
           <FavoritesOffersGroup
             groupName={current}
-            items={groupedOffers[current]}
+            items={groupedOffers[current as OfferCityName]}
             key={`favorite-offer-group-${current}`}
           />
         )
