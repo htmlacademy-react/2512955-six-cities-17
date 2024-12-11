@@ -3,10 +3,9 @@ import PremiumMark from '@shared/ui/premium-mark';
 import RatingInStars from '@shared/ui/rating-in-stars';
 import classNames from 'classnames';
 import type { MainOfferInfo } from '../../model/types';
-import { getOfferCardStyles } from './get-styles';
+import { getOfferCardStyles, getImageSizeByViewType } from './get-styles';
 import type { ViewType } from './types';
 import ImagedLink from '@shared/ui/imaged-link';
-import { DEFAULT_IMAGE_SIZE_FAVORITES, DEFAULT_IMAGE_SIZE_MAIN } from './consts';
 import { RoutesEnum } from '@shared/types';
 import { Link } from 'react-router-dom';
 
@@ -25,7 +24,7 @@ export function OfferCard({ offer, className, onActivateOffer, viewType = 'main'
   } = getOfferCardStyles(viewType, offer.isFavorite);
 
   const articleClassName = classNames(containerClassName, className);
-  const linkSize = viewType === 'main' ? DEFAULT_IMAGE_SIZE_MAIN : DEFAULT_IMAGE_SIZE_FAVORITES;
+  const linkSize = getImageSizeByViewType(viewType);
   const offerRoute = RoutesEnum.Offer.replace(':id', offer.id);
   const mouseOverArticleHandle = () => {
     if (onActivateOffer) {

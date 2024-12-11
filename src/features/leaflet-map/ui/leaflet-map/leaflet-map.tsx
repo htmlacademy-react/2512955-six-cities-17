@@ -4,19 +4,22 @@ import type { LeafletPoint } from '@shared/hooks/use-map';
 import { useMap } from '@shared/hooks/use-map';
 import { ACTIVE_ICON, DEFAULT_ICON } from '@features/leaflet-map/config';
 import leaflet from 'leaflet';
+import { DEFAULT_TILE_LAYER_SETTINGS } from '@features/leaflet-map/config';
+import classNames from 'classnames';
 
 type LeafletMapProps = Classed<{
-  city: LeafletPoint;
+  center: LeafletPoint;
   points: LeafletPoint[];
-  selectedPoint: Nullable<LeafletPoint>;
+  selectedPoint?: Nullable<LeafletPoint>;
 }>
 
 const isEqualsPoints = (firstPoint: LeafletPoint, secondPoint: LeafletPoint): boolean =>
   firstPoint.location.latitude === secondPoint?.location.latitude && firstPoint.location.longitude === secondPoint?.location.longitude;
 
-export function LeafletMap({ city, className, points, selectedPoint }: LeafletMapProps): JSX.Element {
+export function LeafletMap({ center, className, points, selectedPoint = null }: LeafletMapProps): JSX.Element {
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, center, DEFAULT_TILE_LAYER_SETTINGS);
+  const mapClassName = classNames(className, 'map');
 
   useEffect(
     () => {
@@ -45,6 +48,6 @@ export function LeafletMap({ city, className, points, selectedPoint }: LeafletMa
   );
 
   return (
-    <section ref={mapRef} className={className}></section>
+    <section ref={mapRef} className={mapClassName} />
   );
 }

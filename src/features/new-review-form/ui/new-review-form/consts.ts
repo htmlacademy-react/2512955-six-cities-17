@@ -1,5 +1,5 @@
 import type { State } from './types';
-import { RatingTitle, RatingValue } from '../rating-input';
+import { RatingTitle, RatingValue } from '@features/new-review-form/config';
 
 export const INITIAL_STATE: State = {
   rating: 0,

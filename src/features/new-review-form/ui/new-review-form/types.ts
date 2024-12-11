@@ -1,4 +1,4 @@
-import { RatingValue } from '../rating-input';
+import { RatingValue } from '@features/new-review-form/config';
 
 export type State = {
   rating: RatingValue | 0;

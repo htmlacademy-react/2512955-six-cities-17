@@ -9,7 +9,13 @@ export type City = {
   location: Location;
 }
 
-export type MainOfferInfo = {
+export type OfferHost = {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+}
+
+interface BaseOfferInfo {
   id: string;
   title: string;
   type: OfferType;
@@ -19,5 +25,17 @@ export type MainOfferInfo = {
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
+}
+
+export interface MainOfferInfo extends BaseOfferInfo {
   previewImage: string;
-};
+}
+
+export interface FullOfferInfo extends BaseOfferInfo {
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: OfferHost;
+  images: string[];
+  maxAdults: number;
+}

@@ -1,21 +1,17 @@
 import { ChangeEventHandler, useEffect } from 'react';
-import { RatingInput, RatingValue } from '../rating-input';
 import { RATING_INPUTS_CONFIG, INITIAL_STATE } from './consts';
 import { State } from './types';
 import { useValidate, ValidationConfig } from '@shared/hooks/use-validation';
 import classNames from 'classnames';
 import { useForm } from '@shared/hooks/use-form';
-
-const REVIEW_LENGTH = {
-  MIN: 10,
-  MAX: 30,
-};
+import { REVIEW_LENGTH, RATING_LENGTH, RatingValue} from '@features/new-review-form/config';
+import { RatingInput } from '../rating-input';
 
 const validationScheme: ValidationConfig<State> = {
   rating: [
     {
-      rule: (value) => value <= RatingValue.Perfect && value >= RatingValue.Terribly,
-      errorMessage: 'Rate from 1 to 5 stars'
+      rule: (value) => value >= RATING_LENGTH.MIN && value <= RATING_LENGTH.MAX,
+      errorMessage: `Rate from ${RATING_LENGTH.MIN} to ${RATING_LENGTH.MAX} stars`
     }
   ],
   review: [
@@ -114,7 +110,7 @@ export function NewReviewForm(): JSX.Element {
       {validations?.review?.isNotValid && <small className='error-message'>{validations.review?.message}</small>}
       <div className='reviews__button-wrapper'>
         <p className='reviews__help'>
-          To submit review please make sure to set <span className='reviews__star'>rating</span> and describe your stay with at least <b className='reviews__text-amount'>50 characters</b>.
+          To submit review please make sure to set <span className='reviews__star'>rating</span> and describe your stay with at least <b className='reviews__text-amount'>{REVIEW_LENGTH.MIN} characters</b>.
         </p>
         <button className='reviews__submit form__submit button' type='submit' disabled={!(isValid || isSubmitting)}>Submit</button>
       </div>

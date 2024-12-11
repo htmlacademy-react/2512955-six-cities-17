@@ -1,7 +1,7 @@
 import Layout from '@widgets/layout';
 import type { MainOfferInfo, OfferCityName } from '@entities/offer';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
-import MainOffersList from '@features/main-offers-list';
+import OffersList from '@features/offers-list';
 import NoPlacesSection from '../no-places-section';
 import { UserInfo } from '@entities/user';
 import { ComponentProps, useEffect, useMemo, useState } from 'react';
@@ -25,7 +25,7 @@ function getLeafletMapProps(offers: MainOfferInfo[], activeOfferId: Nullable<str
     : undefined;
 
   return {
-    city: {
+    center: {
       location: offers[0].city.location,
       name: offers[0].city.name
     },
@@ -102,7 +102,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                 <h2 className='visually-hidden'>Places</h2>
                 <b className='places__found'>{filteredOffers.length} places to stay in {activeCity}</b>
                 <form className='places__sorting' action='#' method='get'>
-                  <span className='places__sorting-caption'>Sort by</span>
+                  <span className='places__sorting-caption'>Sort by&nbsp;</span>
                   <span className='places__sorting-type' tabIndex={0}>
                     Popular
                     <svg className='places__sorting-arrow' width='7' height='4'>
@@ -116,14 +116,14 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                     <li className='places__option' tabIndex={0}>Top rated first</li>
                   </ul>
                 </form>
-                <MainOffersList offers={filteredOffers} onActivateOffer={setActiveOfferId} />
+                <OffersList offers={filteredOffers} onActivateOffer={setActiveOfferId} className='tabs__content' />
               </section>
               :
               <NoPlacesSection />}
             <div className='cities__right-section'>
               {(isOffersExists && mapProps) &&
                 <LeafletMap
-                  className='cities__map map'
+                  className='cities__map'
                   {...mapProps}
                 />}
             </div>
