@@ -5,4 +5,4 @@ export type OfferCardStyles = {
   bookmarkButtonClassName: string;
 }
 
-export type ViewType = 'main' | 'favorites'
+export type ViewType = 'main' | 'favorites' | 'near';

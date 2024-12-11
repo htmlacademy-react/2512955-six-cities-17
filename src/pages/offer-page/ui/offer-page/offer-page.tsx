@@ -1,8 +1,34 @@
 import { UserInfo } from '@entities/user';
-import NewReviewForm from '@features/new-review-form';
 import Layout from '@widgets/layout';
+import { OFFER_MOCK, NEAR_OFFERS_MOCK } from '@pages/offer-page/mock/offer-mock';
+import { ImageGallery } from '@shared/ui/gallery';
+import RatingInStars from '@shared/ui/rating-in-stars';
+import PremiumMark from '@shared/ui/premium-mark';
+import { PAGE_TITLE } from '@pages/offer-page/config';
+import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
+import { OfferFeaturesList } from '../offer-features-list';
+import { OfferInsides } from '../offer-insides';
+import { OfferHostInfo } from '../offer-host-info';
+import { OFFER_COMMENTS_MOCK } from '@pages/offer-page/mock/comment-mock';
+import OfferReviews from '@widgets/offer-reviews';
+import OffersList from '@features/offers-list';
+import LeafletMap, {type LeafletPoint } from '@features/leaflet-map';
+import { MainOfferInfo } from '@entities/offer';
+import { ComponentProps, useMemo } from 'react';
 
-export function OfferPage(): JSX.Element {
+const MAX_NEAR_OFFERS_COUNT = 3;
+
+const getMapProps = (offerPoint: LeafletPoint, nearOffers: MainOfferInfo[]): ComponentProps<typeof LeafletMap> => ({
+  center: offerPoint,
+  points: [offerPoint, ...nearOffers.map((current) => ({location: current.location, name: current.title}))],
+  selectedPoint: offerPoint
+});
+
+
+function OfferPage(): JSX.Element {
+  const nearOffers = useMemo(() => NEAR_OFFERS_MOCK.slice(0, MAX_NEAR_OFFERS_COUNT), []);
+  const offerPoint: LeafletPoint = useMemo(() => ({location: OFFER_MOCK.location, name: OFFER_MOCK.title}), []);
+  const mapProps = useMemo(() => getMapProps(offerPoint, nearOffers), [offerPoint, nearOffers]);
   return (
     <Layout>
       <Layout.Header>
@@ -11,35 +37,22 @@ export function OfferPage(): JSX.Element {
       <Layout.Content className='page__main--offer'>
         <section className='offer'>
           <div className='offer__gallery-container container'>
-            <div className='offer__gallery'>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/room.jpg' alt='Photo studio' />
-              </div>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/apartment-01.jpg' alt='Photo studio' />
-              </div>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/apartment-02.jpg' alt='Photo studio' />
-              </div>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/apartment-03.jpg' alt='Photo studio' />
-              </div>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/studio-01.jpg' alt='Photo studio' />
-              </div>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/apartment-01.jpg' alt='Photo studio' />
-              </div>
-            </div>
+            <ImageGallery
+              className='offer__gallery'
+              items={OFFER_MOCK.images}
+              renderItem={({ alt, src, index }) => (
+                <div key={`offer-pictures-${index}`} className='offer__image-wrapper'>
+                  <img className='offer__image' src={src} alt={alt} />
+                </div>
+              )}
+            />
           </div>
           <div className='offer__container container'>
             <div className='offer__wrapper'>
-              <div className='offer__mark'>
-                <span>Premium</span>
-              </div>
+              {OFFER_MOCK.isPremium && <PremiumMark className='offer__mark' />}
               <div className='offer__name-wrapper'>
                 <h1 className='offer__name'>
-                  Beautiful &amp; luxurious studio at great location
+                  {OFFER_MOCK.title}
                 </h1>
                 <button className='offer__bookmark-button button' type='button'>
                   <svg className='offer__bookmark-icon' width='31' height='33'>
@@ -49,222 +62,43 @@ export function OfferPage(): JSX.Element {
                 </button>
               </div>
               <div className='offer__rating rating'>
-                <div className='offer__stars rating__stars'>
-                  <span style={{width: '80%'}}></span>
-                  <span className='visually-hidden'>Rating</span>
-                </div>
-                <span className='offer__rating-value rating__value'>4.8</span>
+                <RatingInStars rating={OFFER_MOCK.rating} className='offer__stars rating__stars' />
+                <span className='offer__rating-value rating__value'>{OFFER_MOCK.rating}</span>
               </div>
-              <ul className='offer__features'>
-                <li className='offer__feature offer__feature--entire'>
-                  Apartment
-                </li>
-                <li className='offer__feature offer__feature--bedrooms'>
-                  3 Bedrooms
-                </li>
-                <li className='offer__feature offer__feature--adults'>
-                  Max 4 adults
-                </li>
-              </ul>
+              <OfferFeaturesList bedrooms={OFFER_MOCK.bedrooms} type={OFFER_MOCK.type} maxAudits={OFFER_MOCK.maxAdults} />
               <div className='offer__price'>
-                <b className='offer__price-value'>&euro;120</b>
+                <b className='offer__price-value'>&euro;{OFFER_MOCK.price}</b>
                 <span className='offer__price-text'>&nbsp;night</span>
               </div>
-              <div className='offer__inside'>
-                <h2 className='offer__inside-title'>What&apos;s inside</h2>
-                <ul className='offer__inside-list'>
-                  <li className='offer__inside-item'>
-                    Wi-Fi
-                  </li>
-                  <li className='offer__inside-item'>
-                    Washing machine
-                  </li>
-                  <li className='offer__inside-item'>
-                    Towels
-                  </li>
-                  <li className='offer__inside-item'>
-                    Heating
-                  </li>
-                  <li className='offer__inside-item'>
-                    Coffee machine
-                  </li>
-                  <li className='offer__inside-item'>
-                    Baby seat
-                  </li>
-                  <li className='offer__inside-item'>
-                    Kitchen
-                  </li>
-                  <li className='offer__inside-item'>
-                    Dishwasher
-                  </li>
-                  <li className='offer__inside-item'>
-                    Cabel TV
-                  </li>
-                  <li className='offer__inside-item'>
-                    Fridge
-                  </li>
-                </ul>
-              </div>
-              <div className='offer__host'>
-                <h2 className='offer__host-title'>Meet the host</h2>
-                <div className='offer__host-user user'>
-                  <div className='offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper'>
-                    <img className='offer__avatar user__avatar' src='img/avatar-angelina.jpg' width='74' height='74' alt='Host avatar' />
-                  </div>
-                  <span className='offer__user-name'>
-                    Angelina
-                  </span>
-                  <span className='offer__user-status'>
-                    Pro
-                  </span>
-                </div>
+              {(OFFER_MOCK.goods && OFFER_MOCK.goods.length > 0) && <OfferInsides insides={OFFER_MOCK.goods} offerId={OFFER_MOCK.id} />}
+              <OfferHostInfo host={OFFER_MOCK.host}>
                 <div className='offer__description'>
                   <p className='offer__text'>
-                    A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                  </p>
-                  <p className='offer__text'>
-                    An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                    {OFFER_MOCK.description}
                   </p>
                 </div>
-              </div>
-              <section className='offer__reviews reviews'>
-                <h2 className='reviews__title'>Reviews &middot; <span className='reviews__amount'>1</span></h2>
-                <ul className='reviews__list'>
-                  <li className='reviews__item'>
-                    <div className='reviews__user user'>
-                      <div className='reviews__avatar-wrapper user__avatar-wrapper'>
-                        <img className='reviews__avatar user__avatar' src='img/avatar-max.jpg' width='54' height='54' alt='Reviews avatar' />
-                      </div>
-                      <span className='reviews__user-name'>
-                        Max
-                      </span>
-                    </div>
-                    <div className='reviews__info'>
-                      <div className='reviews__rating rating'>
-                        <div className='reviews__stars rating__stars'>
-                          <span style={{width: '80%'}}></span>
-                          <span className='visually-hidden'>Rating</span>
-                        </div>
-                      </div>
-                      <p className='reviews__text'>
-                        A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                      </p>
-                      <time className='reviews__time' dateTime='2019-04-24'>April 2019</time>
-                    </div>
-                  </li>
-                </ul>
-                <NewReviewForm />
-              </section>
+              </OfferHostInfo>
+              <OfferReviews reviews={OFFER_COMMENTS_MOCK} />
             </div>
           </div>
-          <section className='offer__map map'></section>
+          <div className='container'>
+            <LeafletMap
+              className='offer__map'
+              center={mapProps.center}
+              points={mapProps.points}
+              selectedPoint={mapProps.selectedPoint}
+            />
+          </div>
         </section>
         <div className='container'>
           <section className='near-places places'>
             <h2 className='near-places__title'>Other places in the neighbourhood</h2>
-            <div className='near-places__list places__list'>
-              <article className='near-places__card place-card'>
-                <div className='near-places__image-wrapper place-card__image-wrapper'>
-                  <a href='#'>
-                    <img className='place-card__image' src='img/room.jpg' width='260' height='200' alt='Place image' />
-                  </a>
-                </div>
-                <div className='place-card__info'>
-                  <div className='place-card__price-wrapper'>
-                    <div className='place-card__price'>
-                      <b className='place-card__price-value'>&euro;80</b>
-                      <span className='place-card__price-text'>&#47;&nbsp;night</span>
-                    </div>
-                    <button className='place-card__bookmark-button place-card__bookmark-button--active button' type='button'>
-                      <svg className='place-card__bookmark-icon' width='18' height='19'>
-                        <use xlinkHref='#icon-bookmark'></use>
-                      </svg>
-                      <span className='visually-hidden'>In bookmarks</span>
-                    </button>
-                  </div>
-                  <div className='place-card__rating rating'>
-                    <div className='place-card__stars rating__stars'>
-                      <span style={{width: '80%'}}></span>
-                      <span className='visually-hidden'>Rating</span>
-                    </div>
-                  </div>
-                  <h2 className='place-card__name'>
-                    <a href='#'>Wood and stone place</a>
-                  </h2>
-                  <p className='place-card__type'>Room</p>
-                </div>
-              </article>
-
-              <article className='near-places__card place-card'>
-                <div className='near-places__image-wrapper place-card__image-wrapper'>
-                  <a href='#'>
-                    <img className='place-card__image' src='img/apartment-02.jpg' width='260' height='200' alt='Place image' />
-                  </a>
-                </div>
-                <div className='place-card__info'>
-                  <div className='place-card__price-wrapper'>
-                    <div className='place-card__price'>
-                      <b className='place-card__price-value'>&euro;132</b>
-                      <span className='place-card__price-text'>&#47;&nbsp;night</span>
-                    </div>
-                    <button className='place-card__bookmark-button button' type='button'>
-                      <svg className='place-card__bookmark-icon' width='18' height='19'>
-                        <use xlinkHref='#icon-bookmark'></use>
-                      </svg>
-                      <span className='visually-hidden'>To bookmarks</span>
-                    </button>
-                  </div>
-                  <div className='place-card__rating rating'>
-                    <div className='place-card__stars rating__stars'>
-                      <span style={{width: '80%'}}></span>
-                      <span className='visually-hidden'>Rating</span>
-                    </div>
-                  </div>
-                  <h2 className='place-card__name'>
-                    <a href='#'>Canal View Prinsengracht</a>
-                  </h2>
-                  <p className='place-card__type'>Apartment</p>
-                </div>
-              </article>
-
-              <article className='near-places__card place-card'>
-                <div className='place-card__mark'>
-                  <span>Premium</span>
-                </div>
-                <div className='near-places__image-wrapper place-card__image-wrapper'>
-                  <a href='#'>
-                    <img className='place-card__image' src='img/apartment-03.jpg' width='260' height='200' alt='Place image' />
-                  </a>
-                </div>
-                <div className='place-card__info'>
-                  <div className='place-card__price-wrapper'>
-                    <div className='place-card__price'>
-                      <b className='place-card__price-value'>&euro;180</b>
-                      <span className='place-card__price-text'>&#47;&nbsp;night</span>
-                    </div>
-                    <button className='place-card__bookmark-button button' type='button'>
-                      <svg className='place-card__bookmark-icon' width='18' height='19'>
-                        <use xlinkHref='#icon-bookmark'></use>
-                      </svg>
-                      <span className='visually-hidden'>To bookmarks</span>
-                    </button>
-                  </div>
-                  <div className='place-card__rating rating'>
-                    <div className='place-card__stars rating__stars'>
-                      <span style={{width: '100%'}}></span>
-                      <span className='visually-hidden'>Rating</span>
-                    </div>
-                  </div>
-                  <h2 className='place-card__name'>
-                    <a href='#'>Nice, cozy, warm big bed apartment</a>
-                  </h2>
-                  <p className='place-card__type'>Apartment</p>
-                </div>
-              </article>
-            </div>
+            <OffersList offers={NEAR_OFFERS_MOCK} viewType='near' />
           </section>
         </div>
       </Layout.Content>
     </Layout>
   );
 }
+
+export const OfferPageWithBrowserTitle = componentWithBrowserTitle(OfferPage, PAGE_TITLE);

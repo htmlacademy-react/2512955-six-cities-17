@@ -1,3 +1,3 @@
-import { OfferPage } from './offer-page';
+import { OfferPageWithBrowserTitle } from './offer-page';
 
-export default OfferPage;
+export default OfferPageWithBrowserTitle;

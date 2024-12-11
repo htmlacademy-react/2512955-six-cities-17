@@ -1,5 +1,7 @@
 import type { MainOfferInfo } from '@entities/offer';
 import OfferCard from '@entities/offer';
+import { RoutesEnum } from '@shared/types';
+import { Link } from 'react-router-dom';
 
 type FavoritesOffersGroupProps = {
   groupName: string;
@@ -11,9 +13,9 @@ export function FavoritesOffersGroup({ items, groupName }: FavoritesOffersGroupP
     <li className='favorites__locations-items'>
       <div className='favorites__locations locations locations--current'>
         <div className='locations__item'>
-          <a className='locations__item-link' href='#'>
+          <Link className='locations__item-link' to={`${RoutesEnum.Main}?activeCity=${groupName}`}>
             <span>{groupName}</span>
-          </a>
+          </Link>
         </div>
       </div>
       <div className='favorites__places'>

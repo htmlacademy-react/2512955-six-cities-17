@@ -1,9 +1,9 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
-import type { LeafletPoint } from './types';
+import type { LeafletPoint, TileLayerSettings } from './types';
 import { Nullable } from '@shared/types';
 import leaflet from 'leaflet';
 
-export function useMap<TRefType extends Nullable<HTMLElement>>(mapRef: MutableRefObject<TRefType>, city: LeafletPoint): Nullable<leaflet.Map> {
+export function useMap<TRefType extends Nullable<HTMLElement>>(mapRef: MutableRefObject<TRefType>, center: LeafletPoint, config: TileLayerSettings): Nullable<leaflet.Map> {
   const [map, setMap] = useState<Nullable<leaflet.Map>>(null);
   const isRenderedMap = useRef(false);
 
@@ -11,34 +11,32 @@ export function useMap<TRefType extends Nullable<HTMLElement>>(mapRef: MutableRe
     if (mapRef.current !== null && !isRenderedMap.current) {
       const mapInstance = leaflet.map(mapRef.current, {
         center: {
-          lat: city.location.latitude,
-          lng: city.location.longitude
+          lat: center.location.latitude,
+          lng: center.location.longitude
         },
-        zoom: city.location.zoom
+        zoom: center.location.zoom
       });
 
-      leaflet.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(mapInstance);
+      leaflet.tileLayer(config.urlTemplate, config.options).addTo(mapInstance);
 
       setMap(mapInstance);
       isRenderedMap.current = true;
     }
-  }, [city, setMap, mapRef, map]);
+  }, [center, setMap, mapRef, config]);
 
   useEffect(() => {
     if (map) {
-      const center = map.getCenter();
-      if (center.lat !== city.location.latitude || center.lng !== city.location.longitude) {
+      const mapCenter = map.getCenter();
+      if (mapCenter.lat !== center.location.latitude || mapCenter.lng !== center.location.longitude) {
         map.flyTo({
-          lat: city.location.latitude,
-          lng: city.location.longitude
-        }, city.location.zoom, {
+          lat: center.location.latitude,
+          lng: center.location.longitude
+        }, center.location.zoom, {
           duration: 1.5
         });
       }
     }
-  }, [city, map]);
+  }, [center, map]);
 
   return map;
 }

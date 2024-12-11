@@ -11,7 +11,7 @@ type RatingInStarsProps = Classed<{
 export function RatingInStars({ rating, className, maxStars = MAX_STARS }: RatingInStarsProps): JSX.Element {
   return (
     <div className={className}>
-      <span style={{ width: `${percentOfNumber(rating, maxStars)}%` }}></span>
+      <span style={{ width: `${Math.round(percentOfNumber(rating, maxStars))}%` }}></span>
       <span className='visually-hidden'>Rating</span>
     </div>
   );
