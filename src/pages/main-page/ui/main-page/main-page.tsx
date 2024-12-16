@@ -6,7 +6,7 @@ import NoPlacesSection from '../no-places-section';
 import { UserInfo } from '@entities/user';
 import { ComponentProps, useEffect, useMemo, useState } from 'react';
 import { Nullable } from '@shared/types';
-import LocationsFilterList from '@features/locations-filter-list/';
+import LocationsFilterList, { useActiveLocation } from '@features/locations-filter-list/';
 import { ALL_CITIES_NAMES, PAGE_TITLE, DEFAULT_CITY, DEFAULT_SEARCH_PARAMS } from '@pages/main-page/config';
 import { useSearchParams } from 'react-router-dom';
 import { getSearchParam } from '@shared/lib/url';
@@ -44,11 +44,11 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<Nullable<string>>(null);
   const [searchParams, setSearchParams] = useSearchParams(DEFAULT_SEARCH_PARAMS);
   const activeCitySearchParam = getSearchParam<SearchParams, keyof SearchParams>(searchParams, 'activeCity', DEFAULT_CITY);
-  const [activeCity, setActiveCity] = useState<OfferCityName>(isOfferCityName(activeCitySearchParam) ? activeCitySearchParam : DEFAULT_CITY);
+  const { activeLocation } = useActiveLocation(isOfferCityName(activeCitySearchParam) ? activeCitySearchParam : DEFAULT_CITY);
 
   const filteredOffers = useMemo(
-    () => offers.filter((current) => current.city.name === activeCity),
-    [activeCity, offers]
+    () => offers.filter((current) => current.city.name === activeLocation),
+    [activeLocation, offers]
   );
   const mapProps = useMemo(
     () => filteredOffers.length ? getLeafletMapProps(filteredOffers, activeOfferId) : null,
@@ -62,7 +62,6 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
     const activeCityParam = getSearchParam<SearchParams, keyof SearchParams>(searchParams, 'activeCity', DEFAULT_CITY);
     if (!isOfferCityName(activeCityParam) && componentIsMounted) {
       setSearchParams({activeCity: DEFAULT_CITY});
-      setActiveCity(DEFAULT_CITY);
     }
 
     return () => {
@@ -73,8 +72,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
   const { containerClassName, contentClassName } = getPageStyles(isOffersExists);
 
   const activeCityChangeHandler = (cityName: OfferCityName) => {
-    if (activeCity !== cityName) {
-      setActiveCity(cityName);
+    if (activeLocation !== cityName) {
       setActiveOfferId(null);
     }
   };
@@ -89,7 +87,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
         <div className='tabs'>
           <section className='locations container'>
             <LocationsFilterList
-              activeFilter={activeCity}
+              activeFilter={activeLocation}
               allFilterItems={ALL_CITIES_NAMES}
               onFilterChange={activeCityChangeHandler}
             />
@@ -100,7 +98,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
             {isOffersExists ?
               <section className='cities__places places'>
                 <h2 className='visually-hidden'>Places</h2>
-                <b className='places__found'>{filteredOffers.length} places to stay in {activeCity}</b>
+                <b className='places__found'>{filteredOffers.length} places to stay in {activeLocation}</b>
                 <form className='places__sorting' action='#' method='get'>
                   <span className='places__sorting-caption'>Sort by&nbsp;</span>
                   <span className='places__sorting-type' tabIndex={0}>
