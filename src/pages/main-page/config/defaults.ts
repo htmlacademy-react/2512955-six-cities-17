@@ -19,7 +19,7 @@ export const ALL_CITIES_NAMES: OfferCityName[] = ['Paris', 'Cologne', 'Brussels'
 export const PAGE_TITLE = '6 cities';
 
 export const DEFAULT_SEARCH_PARAMS: SearchParams = {
-  activeCity: 'Paris'
+  activeCity: 'Paris',
 };
 
 export const DEFAULT_CITY: OfferCityName = 'Paris';

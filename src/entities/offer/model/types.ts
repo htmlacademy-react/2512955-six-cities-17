@@ -15,7 +15,7 @@ export type OfferHost = {
   isPro: boolean;
 }
 
-interface BaseOfferInfo {
+export interface BaseOfferInfo {
   id: string;
   title: string;
   type: OfferType;
