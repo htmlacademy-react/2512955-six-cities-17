@@ -14,7 +14,7 @@ import { SearchParams } from '@pages/main-page/model';
 import { getPageStyles } from './get-styles';
 import { isOfferCityName } from './type-guards';
 import LeafletMap from '@features/leaflet-map';
-import { PriceSortingSelect, offerSortTypeToComparerMap, usePriceSorting } from '@features/price-sorting-select';
+import { OfferSortingSelect, offerSortTypeToComparerMap, useOfferSorting } from '@features/offer-sorting-select';
 
 type MainPageProps = {
   offers: MainOfferInfo[];
@@ -46,7 +46,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams(DEFAULT_SEARCH_PARAMS);
   const activeCitySearchParam = getSearchParam<SearchParams, keyof SearchParams>(searchParams, 'activeCity', DEFAULT_CITY);
   const { activeLocation } = useActiveLocation(isOfferCityName(activeCitySearchParam) ? activeCitySearchParam : DEFAULT_CITY);
-  const { activeSotingType } = usePriceSorting();
+  const { activeSotingType } = useOfferSorting();
 
   const filteredOffers = useMemo(
     () => offers.filter((current) => current.city.name === activeLocation).sort(offerSortTypeToComparerMap.get(activeSotingType)),
@@ -103,7 +103,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                 <b className='places__found'>{filteredOffers.length} places to stay in {activeLocation}</b>
                 <form className='places__sorting' action='#' method='get'>
                   <span className='places__sorting-caption'>Sort by&nbsp;</span>
-                  <PriceSortingSelect />
+                  <OfferSortingSelect />
                 </form>
                 <OffersList offers={filteredOffers} onActivateOffer={setActiveOfferId} className='tabs__content' />
               </section>

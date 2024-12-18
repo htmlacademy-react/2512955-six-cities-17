@@ -2,16 +2,16 @@ import { ElementSize } from '@shared/types';
 import classNames from 'classnames';
 import { MouseEventHandler, useEffect, useState } from 'react';
 import { SUPPORTED_SORTING_TYPES, sortTypeToCaptionMap } from '../../config/const';
-import { usePriceSorting } from '@features/price-sorting-select/lib/use-price-sorting';
+import { useOfferSorting } from '@features/offer-sorting-select';
 
 const ARROW_SIZE: ElementSize = {
   height: 4,
   width: 7
 };
 
-export function PriceSortingSelect(): JSX.Element {
+export function OfferSortingSelect(): JSX.Element {
   const [isOpened, setIsOpened] = useState(false);
-  const { activeSotingType, changeActiveSortType } = usePriceSorting();
+  const { activeSotingType, changeActiveSortType } = useOfferSorting();
 
   const selectOptionsListClassName = classNames(
     'places__options',

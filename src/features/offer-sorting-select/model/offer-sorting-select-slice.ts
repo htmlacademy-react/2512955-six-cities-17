@@ -10,7 +10,7 @@ const initialState: SliceState = {
   priceSorting: OfferSortType.Default
 };
 
-const priceSortingSlice = createSlice({
+const offerSortingSlice = createSlice({
   initialState,
   name: 'priceSorting',
   reducers: {
@@ -20,8 +20,8 @@ const priceSortingSlice = createSlice({
   }
 });
 
-export const getPriceSortingType = (state: RootState) => state.activeSorting.priceSorting;
+export const getOfferSortingType = (state: RootState) => state.activeSorting.priceSorting;
 
-export const { changeSorting } = priceSortingSlice.actions;
+export const { changeSorting } = offerSortingSlice.actions;
 
-export default priceSortingSlice.reducer;
+export default offerSortingSlice.reducer;

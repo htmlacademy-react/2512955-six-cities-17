@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { activeLocationReducer } from '@features/locations-filter-list';
-import { sortingSliceReducer } from '@features/price-sorting-select';
+import { sortingSliceReducer } from '@features/offer-sorting-select';
 
 const rootReducer = combineReducers({
   activeLocation: activeLocationReducer,

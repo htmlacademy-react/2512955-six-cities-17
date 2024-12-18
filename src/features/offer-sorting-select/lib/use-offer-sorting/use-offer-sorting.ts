@@ -1,15 +1,15 @@
 import { useAppSelector, useAppDispatch } from '@shared/lib/store';
-import { OfferSortType } from '@features/price-sorting-select/model/types';
-import { changeSorting, getPriceSortingType } from '../../model/price-sorting-select-slice';
+import { OfferSortType } from '@features/offer-sorting-select/model/types';
+import { changeSorting, getOfferSortingType } from '../../model/offer-sorting-select-slice';
 import { useCallback } from 'react';
 
-type UsePriceSortingReturn = {
+type UseOfferSortingReturn = {
   activeSotingType: OfferSortType;
   changeActiveSortType: (newSortType: OfferSortType) => void;
 };
 
-export function usePriceSorting(): UsePriceSortingReturn {
-  const storedSortType = useAppSelector(getPriceSortingType);
+export function useOfferSorting(): UseOfferSortingReturn {
+  const storedSortType = useAppSelector(getOfferSortingType);
   const dispatch = useAppDispatch();
 
   const changeActiveSorting = useCallback(
