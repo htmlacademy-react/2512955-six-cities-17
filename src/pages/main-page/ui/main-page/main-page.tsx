@@ -14,6 +14,7 @@ import { SearchParams } from '@pages/main-page/model';
 import { getPageStyles } from './get-styles';
 import { isOfferCityName } from './type-guards';
 import LeafletMap from '@features/leaflet-map';
+import { OfferSortingSelect, offerSortTypeToComparerMap, useOfferSorting } from '@features/offer-sorting-select';
 
 type MainPageProps = {
   offers: MainOfferInfo[];
@@ -45,10 +46,11 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams(DEFAULT_SEARCH_PARAMS);
   const activeCitySearchParam = getSearchParam<SearchParams, keyof SearchParams>(searchParams, 'activeCity', DEFAULT_CITY);
   const { activeLocation } = useActiveLocation(isOfferCityName(activeCitySearchParam) ? activeCitySearchParam : DEFAULT_CITY);
+  const { activeSotingType } = useOfferSorting();
 
   const filteredOffers = useMemo(
-    () => offers.filter((current) => current.city.name === activeLocation),
-    [activeLocation, offers]
+    () => offers.filter((current) => current.city.name === activeLocation).sort(offerSortTypeToComparerMap.get(activeSotingType)),
+    [activeLocation, activeSotingType, offers]
   );
   const mapProps = useMemo(
     () => filteredOffers.length ? getLeafletMapProps(filteredOffers, activeOfferId) : null,
@@ -101,18 +103,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                 <b className='places__found'>{filteredOffers.length} places to stay in {activeLocation}</b>
                 <form className='places__sorting' action='#' method='get'>
                   <span className='places__sorting-caption'>Sort by&nbsp;</span>
-                  <span className='places__sorting-type' tabIndex={0}>
-                    Popular
-                    <svg className='places__sorting-arrow' width='7' height='4'>
-                      <use xlinkHref='#icon-arrow-select'></use>
-                    </svg>
-                  </span>
-                  <ul className='places__options places__options--custom places__options--opened'>
-                    <li className='places__option places__option--active' tabIndex={0}>Popular</li>
-                    <li className='places__option' tabIndex={0}>Price: low to high</li>
-                    <li className='places__option' tabIndex={0}>Price: high to low</li>
-                    <li className='places__option' tabIndex={0}>Top rated first</li>
-                  </ul>
+                  <OfferSortingSelect />
                 </form>
                 <OffersList offers={filteredOffers} onActivateOffer={setActiveOfferId} className='tabs__content' />
               </section>
