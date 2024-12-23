@@ -9,15 +9,33 @@ import FavoritesPage from '@pages/favorites-page';
 import OfferPage from '@pages/offer-page';
 import NotFoundPage from '@pages/not-found-page';
 import { useAuthorization } from '@entities/user';
+import { useGlobalLoader } from '@shared/hooks/use-global-loader';
+import { useOffersList } from '@entities/offer';
+import { useEffect } from 'react';
 
 export function RouterProvider(): JSX.Element {
   const { isAuthorized } = useAuthorization();
+  const { setLoading } = useGlobalLoader();
+  const { fetchList, offersList, loading } = useOffersList();
+
+  useEffect(
+    () => setLoading(loading),
+    [loading, setLoading]
+  );
+
+  useEffect(
+    () => {
+      fetchList();
+    },
+    [fetchList]
+  );
+
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={RoutesEnum.Main}
-          element={<MainPage offers={OFFERS_INFO_MOCK} />}
+          element={<MainPage offers={offersList} />}
         />
         <Route
           path={RoutesEnum.Login}

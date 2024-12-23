@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { OfferSortType } from './types';
 import { RootState } from '@shared/lib/store';
 
-type SliceState = {
+type SortingSliceState = {
   priceSorting: OfferSortType;
 }
 
-const initialState: SliceState = {
+const initialState: SortingSliceState = {
   priceSorting: OfferSortType.Default
 };
 
