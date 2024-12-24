@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthorizedUser, User, AuthorizationData } from '../types';
 import { AxiosInstance } from 'axios';
-import { ServerRoutesEnum } from '@shared/types';
+import { Nullable, ServerRoutesEnum } from '@shared/types';
 import { tokenServiceInstance } from '@shared/lib/token-service';
 
 export const checkAuthorizationAction = createAsyncThunk<
-  User,
+  Nullable<User>,
   undefined,
   {
     extra: AxiosInstance;
@@ -13,13 +13,18 @@ export const checkAuthorizationAction = createAsyncThunk<
 >(
   'authorization/check',
   async (_arg, { extra: apiInstance }) => {
-    const { data } = await apiInstance.get<AuthorizedUser>(ServerRoutesEnum.Login);
-    return {
-      avatarUrl: data.avatarUrl,
-      email: data.email,
-      isPro: data.isPro,
-      name: data.name,
-    };
+    const authorizationToken = tokenServiceInstance.authorizationToken;
+    if (authorizationToken.get()) {
+      const { data } = await apiInstance.get<AuthorizedUser>(ServerRoutesEnum.Login);
+      authorizationToken.set(data.token);
+      return {
+        avatarUrl: data.avatarUrl,
+        email: data.email,
+        isPro: data.isPro,
+        name: data.name,
+      };
+    }
+    return null;
   }
 );
 
@@ -41,5 +46,18 @@ export const loginAction = createAsyncThunk<
       isPro: data.isPro,
       name: data.name,
     };
+  }
+);
+
+export const logoutAction = createAsyncThunk<
+  void,
+  undefined,
+  {
+    extra: AxiosInstance;
+  }
+>('authorization/logout',
+  async (_, { extra: apiInstance }) => {
+    await apiInstance.delete(ServerRoutesEnum.Logout);
+    tokenServiceInstance.authorizationToken.clear();
   }
 );

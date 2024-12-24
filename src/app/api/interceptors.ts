@@ -14,6 +14,11 @@ type ResponseInterceptor = Parameters<AxiosInstance['interceptors']['response'][
 
 type RequestInterceptor = Parameters<AxiosInstance['interceptors']['request']['use']>
 
+const handleErrorProcess = (errorMessage: string) => {
+  toast.dismiss({containerId: TOAST_CONTAINER_ID});
+  toast.error(errorMessage, TOAST_OPTIONS);
+};
+
 const addAuthorizationToken = (request: InternalAxiosRequestConfig<unknown>) => {
   const authorizationToken = tokenServiceInstance.authorizationToken.get();
 
@@ -21,13 +26,16 @@ const addAuthorizationToken = (request: InternalAxiosRequestConfig<unknown>) => 
     request.headers['x-token'] = authorizationToken;
   }
 
+  if (request?.timeoutErrorMessage) {
+    handleErrorProcess(request.timeoutErrorMessage);
+  }
+
   return request;
 };
 
 const handleResponseError = (error: AxiosError<{message: string}>) => {
   if (error?.response && !!StatusCodeMapping[error.response.status]) {
-    toast.dismiss({containerId: TOAST_CONTAINER_ID});
-    toast.error(error.response.data.message, TOAST_OPTIONS);
+    handleErrorProcess(error.response.data.message);
   }
 
   throw error;

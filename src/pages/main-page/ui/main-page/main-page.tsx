@@ -18,6 +18,7 @@ import { OfferSortingSelect, offerSortTypeToComparerMap, useOfferSorting } from 
 
 type MainPageProps = {
   offers: MainOfferInfo[];
+  favoritesCount: number;
 }
 
 function getLeafletMapProps(offers: MainOfferInfo[], activeOfferId: Nullable<string>): ComponentProps<typeof LeafletMap> {
@@ -41,7 +42,7 @@ function getLeafletMapProps(offers: MainOfferInfo[], activeOfferId: Nullable<str
   };
 }
 
-function MainPage({ offers }: MainPageProps): JSX.Element {
+function MainPage({ offers, favoritesCount }: MainPageProps): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<Nullable<string>>(null);
   const [searchParams, setSearchParams] = useSearchParams(DEFAULT_SEARCH_PARAMS);
   const activeCitySearchParam = getSearchParam<SearchParams, keyof SearchParams>(searchParams, 'activeCity', DEFAULT_CITY);
@@ -82,7 +83,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
   return (
     <Layout className='page--gray page--main'>
       <Layout.Header>
-        <UserInfo favoritesCount={offers.filter((current) => current.isFavorite).length} />
+        <UserInfo favoritesCount={favoritesCount} />
       </Layout.Header>
       <Layout.Content className={contentClassName}>
         <h1 className='visually-hidden'>Cities</h1>

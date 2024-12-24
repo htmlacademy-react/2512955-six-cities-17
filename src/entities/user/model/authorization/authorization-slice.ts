@@ -1,9 +1,10 @@
 import type { User } from '../types';
 import { createSlice } from '@reduxjs/toolkit';
 import type { LoadableState, Nullable } from '@shared/types';
-import { checkAuthorizationAction, loginAction } from './actions';
-import { DEFAULT_AUTHORIZATION_CHECK_ERROR, DEFAULT_AUTHORIZATION_LOGIN_ERROR } from '@entities/user/config/const';
+import { checkAuthorizationAction, loginAction, logoutAction } from './actions';
+import { DEFAULT_AUTHORIZATION_CHECK_ERROR, DEFAULT_AUTHORIZATION_LOGIN_ERROR, DEFAULT_AUTHORIZATION_LOGOUT_ERROR } from '@entities/user/config/const';
 import { AuthorizationStatusEnum } from '@shared/types';
+import { RootState } from '@shared/lib/store';
 
 type AuthorizationInfo = {
   status: AuthorizationStatusEnum;
@@ -34,7 +35,7 @@ const authorizationSlice = createSlice({
     builder.addCase(checkAuthorizationAction.fulfilled, (state, action) => {
       state.loading = false;
       state.value = {
-        status: AuthorizationStatusEnum.Authorized,
+        status: action.payload ? AuthorizationStatusEnum.Authorized : AuthorizationStatusEnum.NoAuthorized,
         user: action.payload
       };
       state.error = null;
@@ -75,7 +76,29 @@ const authorizationSlice = createSlice({
         message: action.error?.message ?? DEFAULT_AUTHORIZATION_LOGIN_ERROR.message
       };
     });
+
+    builder.addCase(logoutAction.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(logoutAction.fulfilled, (state) => {
+      state.error = null;
+      state.loading = false;
+      state.value = {
+        status: AuthorizationStatusEnum.NoAuthorized,
+        user: null,
+      };
+    });
+    builder.addCase(logoutAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = {
+        code: action.error?.code ?? DEFAULT_AUTHORIZATION_LOGOUT_ERROR.code,
+        message: action.error?.message ?? DEFAULT_AUTHORIZATION_LOGOUT_ERROR.message
+      };
+    });
   },
 });
+
+export const authorizationSelector = (state: RootState) => state.authorization;
 
 export const authorizationSliceReducer = authorizationSlice.reducer;
