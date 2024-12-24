@@ -11,12 +11,8 @@ export function useGlobalLoader(): UseGlobalLoaderReturn {
   const loading = useAppSelector(getLoaderSelector);
   const dispatch = useAppDispatch();
   const setLoading = useCallback(
-    (value: boolean) => {
-      if (loading !== value) {
-        dispatch(setLoadingAction(value));
-      }
-    },
-    [dispatch, loading]
+    (value: boolean) => dispatch(setLoadingAction(value)),
+    [dispatch]
   );
 
   return {

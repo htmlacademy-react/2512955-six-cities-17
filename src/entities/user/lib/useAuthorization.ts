@@ -1,23 +1,50 @@
-import { useContext } from 'react';
-import { userContext } from './authorization-context';
+import { useAppDispatch, useAppSelector } from '@shared/lib/store';
+import { authorizationSelector, loginAction, checkAuthorizationAction, logoutAction } from '../model/authorization';
 import { User } from '@entities/user';
-import { Nullable } from '@shared/types';
+import { AuthorizationStatusEnum, Nullable } from '@shared/types';
+import { AuthorizationData } from '../model/types';
+import { useCallback } from 'react';
 
 type UseAuthorizationReturnType = {
   readonly user: Nullable<User>;
-  readonly isAuthorized: boolean;
+  readonly authorizationStatus: AuthorizationStatusEnum;
+  readonly loading: boolean;
   readonly logout: () => void;
+  readonly login: (data: AuthorizationData) => void;
+  readonly checkAuthorization: () => void;
 }
 
 export function useAuthorization(): UseAuthorizationReturnType {
-  const { user, setUser } = useContext(userContext);
-  const logout = () => {
-    setUser(null);
-  };
+  const { value: authorizationInfo, loading } = useAppSelector(authorizationSelector);
+  const dispatch = useAppDispatch();
+
+  const checkAuthorization = useCallback(
+    () => {
+      dispatch(checkAuthorizationAction());
+    },
+    [dispatch]
+  );
+
+  const login = useCallback(
+    (data: AuthorizationData) => {
+      dispatch(loginAction(data));
+    },
+    [dispatch]
+  );
+
+  const logout = useCallback(
+    () => {
+      dispatch(logoutAction());
+    },
+    [dispatch]
+  );
 
   return {
-    user,
-    isAuthorized: user !== null,
-    logout
+    loading,
+    user: authorizationInfo.user,
+    authorizationStatus: authorizationInfo.status,
+    logout,
+    login,
+    checkAuthorization
   };
 }

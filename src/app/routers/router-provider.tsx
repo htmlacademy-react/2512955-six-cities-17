@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { OFFERS_INFO_MOCK } from '@app/mock/offers-mock';
 import { PrivateRoute } from './private-route';
-import { RoutesEnum } from '@shared/types';
+import { AuthorizationStatusEnum, RoutesEnum } from '@shared/types';
 
 import MainPage from '@pages/main-page';
 import LoginPage from '@pages/login-page';
@@ -9,38 +8,26 @@ import FavoritesPage from '@pages/favorites-page';
 import OfferPage from '@pages/offer-page';
 import NotFoundPage from '@pages/not-found-page';
 import { useAuthorization } from '@entities/user';
-import { useGlobalLoader } from '@shared/hooks/use-global-loader';
-import { useOffersList } from '@entities/offer';
-import { useEffect } from 'react';
+import { MainOfferInfo } from '@entities/offer';
 
-export function RouterProvider(): JSX.Element {
-  const { isAuthorized } = useAuthorization();
-  const { setLoading } = useGlobalLoader();
-  const { fetchList, offersList, loading } = useOffersList();
+type RouterProviderProps = {
+  allOffers: MainOfferInfo[];
+  favoritesOffers: MainOfferInfo[];
+}
 
-  useEffect(
-    () => setLoading(loading),
-    [loading, setLoading]
-  );
-
-  useEffect(
-    () => {
-      fetchList();
-    },
-    [fetchList]
-  );
-
+export function RouterProvider({ allOffers, favoritesOffers }: RouterProviderProps): JSX.Element {
+  const { authorizationStatus } = useAuthorization();
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={RoutesEnum.Main}
-          element={<MainPage offers={offersList} />}
+          element={<MainPage offers={allOffers} favoritesCount={favoritesOffers.length} />}
         />
         <Route
           path={RoutesEnum.Login}
           element={
-            <PrivateRoute isPrivate={!isAuthorized} redirectPath={RoutesEnum.Main}>
+            <PrivateRoute isPrivate={authorizationStatus !== AuthorizationStatusEnum.Authorized} redirectPath={RoutesEnum.Main}>
               <LoginPage />
             </PrivateRoute>
           }
@@ -48,14 +35,14 @@ export function RouterProvider(): JSX.Element {
         <Route
           path={RoutesEnum.Favorites}
           element={
-            <PrivateRoute isPrivate={isAuthorized} redirectPath={RoutesEnum.Login}>
-              <FavoritesPage offers={OFFERS_INFO_MOCK} />
+            <PrivateRoute isPrivate={authorizationStatus === AuthorizationStatusEnum.Authorized} redirectPath={RoutesEnum.Login}>
+              <FavoritesPage offers={favoritesOffers} />
             </PrivateRoute>
           }
         />
         <Route
           path={RoutesEnum.Offer}
-          element={<OfferPage />}
+          element={<OfferPage favoritesCount={favoritesOffers.length} />}
         />
         <Route
           path={RoutesEnum.NotFound}

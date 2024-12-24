@@ -1,4 +1,4 @@
-import type { Classed } from '@shared/types';
+import type { Classed, ElementSize } from '@shared/types';
 import PremiumMark from '@shared/ui/premium-mark';
 import RatingInStars from '@shared/ui/rating-in-stars';
 import classNames from 'classnames';
@@ -8,14 +8,21 @@ import type { ViewType } from './types';
 import ImagedLink from '@shared/ui/imaged-link';
 import { RoutesEnum } from '@shared/types';
 import { Link } from 'react-router-dom';
+import { MouseEventHandler } from 'react';
 
 type OfferCardProps = Classed<{
   offer: MainOfferInfo;
   viewType?: ViewType;
+  onFavoritesButtonClick?: (offerId: string) => void;
   onActivateOffer?: (offerId: string) => void;
 }>;
 
-export function OfferCard({ offer, className, onActivateOffer, viewType = 'main' }: OfferCardProps): JSX.Element {
+const FAVORITES_BUTTON_SIZE: ElementSize = {
+  height: 19,
+  width: 18,
+};
+
+export function OfferCard({ offer, className, onActivateOffer, viewType = 'main', onFavoritesButtonClick }: OfferCardProps): JSX.Element {
   const {
     bookmarkButtonClassName,
     cardInfoContainerClassName,
@@ -29,6 +36,12 @@ export function OfferCard({ offer, className, onActivateOffer, viewType = 'main'
   const mouseOverArticleHandle = () => {
     if (onActivateOffer) {
       onActivateOffer(offer.id);
+    }
+  };
+
+  const favoritesButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
+    if (onFavoritesButtonClick) {
+      onFavoritesButtonClick(offer.id);
     }
   };
 
@@ -52,12 +65,18 @@ export function OfferCard({ offer, className, onActivateOffer, viewType = 'main'
             <b className='place-card__price-value'>&euro;{offer.price}</b>
             <span className='place-card__price-text'>&#47;&nbsp;night</span>
           </div>
-          <button className={bookmarkButtonClassName} type='button'>
-            <svg className='place-card__bookmark-icon' width='18' height='19'>
+          <button
+            className={bookmarkButtonClassName}
+            type='button'
+            onClick={onFavoritesButtonClick && favoritesButtonClickHandler}
+          >
+            <svg className='place-card__bookmark-icon' width={FAVORITES_BUTTON_SIZE.width} height={FAVORITES_BUTTON_SIZE.height}>
               <use xlinkHref='#icon-bookmark'></use>
             </svg>
             <span className='visually-hidden'>To bookmarks</span>
           </button>
+
+
         </div>
         <div className='place-card__rating rating'>
           <RatingInStars rating={offer.rating} className='place-card__stars rating__stars' />

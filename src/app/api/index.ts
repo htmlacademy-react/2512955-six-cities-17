@@ -1,4 +1,4 @@
 import { createApiInstance } from './api';
-import { responseErrorInterceptor } from './interceptors';
+import { responseErrorInterceptor, requestHeadersInterceptor } from './interceptors';
 
-export { createApiInstance, responseErrorInterceptor };
+export { createApiInstance, responseErrorInterceptor, requestHeadersInterceptor };

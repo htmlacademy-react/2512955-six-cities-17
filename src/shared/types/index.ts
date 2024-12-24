@@ -5,6 +5,7 @@ import type { ElementSize } from './style-types';
 import type { Location } from './location';
 import type { LoadableState } from './loadable-state';
 import { ServerRoutesEnum } from './server-routes';
+import { AuthorizationStatusEnum } from './authorization-status';
 
 export {
   type Classed,
@@ -15,5 +16,6 @@ export {
   type Location,
   type LoadableState,
   RoutesEnum,
-  ServerRoutesEnum
+  ServerRoutesEnum,
+  AuthorizationStatusEnum
 };
