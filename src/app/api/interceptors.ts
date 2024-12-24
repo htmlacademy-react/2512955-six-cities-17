@@ -1,7 +1,8 @@
-import { AxiosError, AxiosInstance } from 'axios';
+import { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
 import { TOAST_CONTAINER_ID, TOAST_OPTIONS } from '@app/config';
+import { tokenServiceInstance } from '@shared/lib/token-service';
 
 const StatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.BAD_REQUEST]: true,
@@ -10,8 +11,18 @@ const StatusCodeMapping: Record<number, boolean> = {
 };
 
 type ResponseInterceptor = Parameters<AxiosInstance['interceptors']['response']['use']>
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 type RequestInterceptor = Parameters<AxiosInstance['interceptors']['request']['use']>
+
+const addAuthorizationToken = (request: InternalAxiosRequestConfig<unknown>) => {
+  const authorizationToken = tokenServiceInstance.authorizationToken.get();
+
+  if (request.headers && authorizationToken) {
+    request.headers['x-token'] = authorizationToken;
+  }
+
+  return request;
+};
 
 const handleResponseError = (error: AxiosError<{message: string}>) => {
   if (error?.response && !!StatusCodeMapping[error.response.status]) {
@@ -21,6 +32,10 @@ const handleResponseError = (error: AxiosError<{message: string}>) => {
 
   throw error;
 };
+
+export const requestHeadersInterceptor: RequestInterceptor = [
+  addAuthorizationToken,
+];
 
 export const responseErrorInterceptor: ResponseInterceptor = [
   (response) => response,
