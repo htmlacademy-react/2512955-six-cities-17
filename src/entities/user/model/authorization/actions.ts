@@ -3,7 +3,7 @@ import { AuthorizedUser, User, AuthorizationData } from '../types';
 import { AxiosInstance } from 'axios';
 import { Nullable, RoutesEnum, ServerRoutesEnum } from '@shared/types';
 import { tokenServiceInstance } from '@shared/lib/token-service';
-import { redirectToRouteAction } from '@shared/lib/store/actions';
+import { redirectToRouteAction } from '@shared/lib/store';
 import { AppDispatch } from '@shared/lib/store';
 
 export const checkAuthorizationAction = createAsyncThunk<
