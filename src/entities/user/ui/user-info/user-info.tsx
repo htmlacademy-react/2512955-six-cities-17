@@ -1,7 +1,7 @@
 import { useAuthorization } from '@entities/user/lib/useAuthorization';
-import { Classed, RoutesEnum } from '@shared/types';
+import { AuthorizationStatusEnum, Classed, RoutesEnum } from '@shared/types';
 import classNames from 'classnames';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { MouseEventHandler } from 'react';
 
 type UserInfoProps = Classed<{
@@ -15,13 +15,13 @@ type UserInfoProps = Classed<{
  */
 export function UserInfo({ favoritesCount = 0, className }: UserInfoProps): JSX.Element {
   const containerClassName = classNames('header__nav', className);
-  const { isAuthorized, user, logout } = useAuthorization();
-  const navigate = useNavigate();
+  const { authorizationStatus, user, logout } = useAuthorization();
+
+  const isAuthorized = authorizationStatus === AuthorizationStatusEnum.Authorized;
 
   const signOutHandler: MouseEventHandler<HTMLAnchorElement> = (event) => {
     event.preventDefault();
     logout();
-    navigate(RoutesEnum.Login);
   };
 
   return (
@@ -33,7 +33,7 @@ export function UserInfo({ favoritesCount = 0, className }: UserInfoProps): JSX.
             className='header__nav-link header__nav-link--profile'
           >
             <div className='header__avatar-wrapper user__avatar-wrapper'>
-              <img src={user?.avatarUrl} alt='Avatar' className='user__avatar' />
+              {isAuthorized && <img src={user?.avatarUrl} alt='Avatar' className='user__avatar' />}
             </div>
             {isAuthorized
               ?

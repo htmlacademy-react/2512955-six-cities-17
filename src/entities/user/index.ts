@@ -1,12 +1,11 @@
-import type { User } from './model/types';
-import { AuthorizationContextProvider, userContext } from './lib/authorization-context';
+import type { User, AuthorizationData } from './model/types';
 import { useAuthorization } from './lib/useAuthorization';
 import UserInfo from './ui/user-info';
+import { authorizationSliceReducer } from './model/authorization';
 
-export type { User };
+export type { User, AuthorizationData };
 export {
-  AuthorizationContextProvider,
-  userContext,
   useAuthorization,
-  UserInfo
+  UserInfo,
+  authorizationSliceReducer
 };

@@ -16,6 +16,10 @@ import LeafletMap, {type LeafletPoint } from '@features/leaflet-map';
 import { MainOfferInfo } from '@entities/offer';
 import { ComponentProps, useMemo } from 'react';
 
+type OfferPageProps = {
+  favoritesCount: number;
+}
+
 const MAX_NEAR_OFFERS_COUNT = 3;
 
 const getMapProps = (offerPoint: LeafletPoint, nearOffers: MainOfferInfo[]): ComponentProps<typeof LeafletMap> => ({
@@ -24,15 +28,14 @@ const getMapProps = (offerPoint: LeafletPoint, nearOffers: MainOfferInfo[]): Com
   selectedPoint: offerPoint
 });
 
-
-function OfferPage(): JSX.Element {
+function OfferPage({ favoritesCount }: OfferPageProps): JSX.Element {
   const nearOffers = useMemo(() => NEAR_OFFERS_MOCK.slice(0, MAX_NEAR_OFFERS_COUNT), []);
   const offerPoint: LeafletPoint = useMemo(() => ({location: OFFER_MOCK.location, name: OFFER_MOCK.title}), []);
   const mapProps = useMemo(() => getMapProps(offerPoint, nearOffers), [offerPoint, nearOffers]);
   return (
     <Layout>
       <Layout.Header>
-        <UserInfo />
+        <UserInfo favoritesCount={favoritesCount} />
       </Layout.Header>
       <Layout.Content className='page__main--offer'>
         <section className='offer'>
