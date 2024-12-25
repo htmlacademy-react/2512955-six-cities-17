@@ -1,8 +1,8 @@
 import Layout from '@widgets/layout';
 import { LoginForm } from '@features/login-form';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthorizationStatusEnum, RoutesEnum } from '@shared/types';
+import { Link } from 'react-router-dom';
+import { RoutesEnum } from '@shared/types';
 import { OfferCityName } from '@entities/offer';
 import { useAuthorization } from '@entities/user';
 import { useEffect } from 'react';
@@ -12,24 +12,8 @@ const PAGE_TITLE = '6 cities: authorization';
 const DEFAULT_CITY: OfferCityName = 'Amsterdam';
 
 function LoginPage(): JSX.Element {
-  const { authorizationStatus, login, loading } = useAuthorization();
-  const navigate = useNavigate();
+  const { login, loading } = useAuthorization();
   const { setLoading } = useGlobalLoader();
-
-  useEffect(
-    () => {
-      let componentIsRendered = false;
-
-      if (!componentIsRendered && authorizationStatus === AuthorizationStatusEnum.Authorized) {
-        navigate(RoutesEnum.Main, {replace: true});
-      }
-
-      return () => {
-        componentIsRendered = true;
-      };
-    },
-    [authorizationStatus, navigate]
-  );
 
   useEffect(
     () => {

@@ -1,7 +1,7 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { PrivateRoute } from './private-route';
 import { AuthorizationStatusEnum, RoutesEnum } from '@shared/types';
-
+import { HistoryRouter, browserHistory } from './history-router';
 import MainPage from '@pages/main-page';
 import LoginPage from '@pages/login-page';
 import FavoritesPage from '@pages/favorites-page';
@@ -18,7 +18,7 @@ type RouterProviderProps = {
 export function RouterProvider({ allOffers, favoritesOffers }: RouterProviderProps): JSX.Element {
   const { authorizationStatus } = useAuthorization();
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={RoutesEnum.Main}
@@ -49,6 +49,6 @@ export function RouterProvider({ allOffers, favoritesOffers }: RouterProviderPro
           element={<NotFoundPage />}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }

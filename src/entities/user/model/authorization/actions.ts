@@ -1,8 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthorizedUser, User, AuthorizationData } from '../types';
 import { AxiosInstance } from 'axios';
-import { Nullable, ServerRoutesEnum } from '@shared/types';
+import { Nullable, RoutesEnum, ServerRoutesEnum } from '@shared/types';
 import { tokenServiceInstance } from '@shared/lib/token-service';
+import { redirectToRouteAction } from '@shared/lib/store/actions';
+import { AppDispatch } from '@shared/lib/store';
 
 export const checkAuthorizationAction = createAsyncThunk<
   Nullable<User>,
@@ -32,14 +34,19 @@ export const loginAction = createAsyncThunk<
   User,
   AuthorizationData,
   {
+    dispatch: AppDispatch;
     extra: AxiosInstance;
   }
 >(
   'authorization/login',
-  async (authData, { extra: apiInstance }) => {
+  async (authData, { extra: apiInstance, dispatch }) => {
     tokenServiceInstance.authorizationToken.clear();
     const { data } = await apiInstance.post<AuthorizedUser>(ServerRoutesEnum.Login, authData);
     tokenServiceInstance.authorizationToken.set(data.token);
+    dispatch(redirectToRouteAction({
+      route: RoutesEnum.Main,
+      replace: true
+    }));
     return {
       avatarUrl: data.avatarUrl,
       email: data.email,
@@ -53,11 +60,16 @@ export const logoutAction = createAsyncThunk<
   void,
   undefined,
   {
+    dispatch: AppDispatch;
     extra: AxiosInstance;
   }
 >('authorization/logout',
-  async (_, { extra: apiInstance }) => {
+  async (_, { extra: apiInstance, dispatch }) => {
     await apiInstance.delete(ServerRoutesEnum.Logout);
+    dispatch(redirectToRouteAction({
+      route: RoutesEnum.Login,
+      replace: true
+    }));
     tokenServiceInstance.authorizationToken.clear();
   }
 );

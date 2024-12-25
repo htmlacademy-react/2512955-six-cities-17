@@ -1,7 +1,7 @@
 import { useAuthorization } from '@entities/user/lib/useAuthorization';
 import { AuthorizationStatusEnum, Classed, RoutesEnum } from '@shared/types';
 import classNames from 'classnames';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { MouseEventHandler } from 'react';
 
 type UserInfoProps = Classed<{
@@ -16,14 +16,12 @@ type UserInfoProps = Classed<{
 export function UserInfo({ favoritesCount = 0, className }: UserInfoProps): JSX.Element {
   const containerClassName = classNames('header__nav', className);
   const { authorizationStatus, user, logout } = useAuthorization();
-  const navigate = useNavigate();
 
   const isAuthorized = authorizationStatus === AuthorizationStatusEnum.Authorized;
 
   const signOutHandler: MouseEventHandler<HTMLAnchorElement> = (event) => {
     event.preventDefault();
     logout();
-    navigate(RoutesEnum.Login);
   };
 
   return (
