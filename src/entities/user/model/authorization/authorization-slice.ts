@@ -4,7 +4,6 @@ import type { LoadableState, Nullable } from '@shared/types';
 import { checkAuthorizationAction, loginAction, logoutAction } from './actions';
 import { DEFAULT_AUTHORIZATION_CHECK_ERROR, DEFAULT_AUTHORIZATION_LOGIN_ERROR, DEFAULT_AUTHORIZATION_LOGOUT_ERROR } from '@entities/user/config/const';
 import { AuthorizationStatusEnum } from '@shared/types';
-import { RootState } from '@shared/lib/store';
 
 type AuthorizationInfo = {
   status: AuthorizationStatusEnum;
@@ -98,7 +97,5 @@ const authorizationSlice = createSlice({
     });
   },
 });
-
-export const authorizationSelector = (state: RootState) => state.authorization;
 
 export const authorizationSliceReducer = authorizationSlice.reducer;

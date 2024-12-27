@@ -1,6 +1,7 @@
 import { ChangeEventHandler } from 'react';
 import { INPUT_ELEMENT_SIZE } from './consts';
-import { RatingTitle, RatingValue } from '@features/new-review-form/config';
+import { RatingTitle } from '@features/new-review-form/config';
+import { RatingValue } from '@shared/types';
 
 type RatingInputProps = {
   value: RatingValue;

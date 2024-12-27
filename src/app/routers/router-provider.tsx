@@ -46,7 +46,7 @@ export function RouterProvider({ allOffers, favoritesOffers }: RouterProviderPro
         />
         <Route
           path={RoutesEnum.NotFound}
-          element={<NotFoundPage />}
+          element={<NotFoundPage favoritesCount={favoritesOffers.length} />}
         />
       </Routes>
     </HistoryRouter>
