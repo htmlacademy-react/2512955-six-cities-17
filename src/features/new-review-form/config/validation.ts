@@ -1,4 +1,4 @@
-import { RatingValue } from './rating';
+import { RatingValue } from '@shared/types';
 
 export const REVIEW_LENGTH = {
   MIN: 50,

@@ -6,6 +6,7 @@ import type { Location } from './location';
 import type { LoadableState } from './loadable-state';
 import { ServerRoutesEnum } from './server-routes';
 import { AuthorizationStatusEnum } from './authorization-status';
+import { RatingValue } from './rating-value';
 
 export {
   type Classed,
@@ -17,5 +18,6 @@ export {
   type LoadableState,
   RoutesEnum,
   ServerRoutesEnum,
-  AuthorizationStatusEnum
+  AuthorizationStatusEnum,
+  RatingValue,
 };

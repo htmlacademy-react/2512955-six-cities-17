@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@shared/lib/store';
-import { offersListSelector, fetchOffersList } from '@entities/offer/model/offers-info-slice';
+import { offersListSelector, fetchOffersList } from '@entities/offer/model/offer-info-slice';
 import { useCallback } from 'react';
 
 type OffersListSelectorReturn = ReturnType<typeof offersListSelector>;

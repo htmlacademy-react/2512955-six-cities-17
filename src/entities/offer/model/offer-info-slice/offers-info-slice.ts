@@ -1,8 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ServerRoutesEnum, type LoadableState } from '@shared/types';
-import type { MainOfferInfo } from './types';
-import { AxiosInstance } from 'axios';
-import { RootState } from '@shared/lib/store';
+import { createSlice } from '@reduxjs/toolkit';
+import type { LoadableState } from '@shared/types';
+import type { MainOfferInfo } from '../types';
+import { fetchOffersList } from './actions';
 import { StatusCodes } from 'http-status-codes';
 
 const initialState: LoadableState<MainOfferInfo[]> = {
@@ -15,22 +14,6 @@ const DEFAULT_ERROR: LoadableState<MainOfferInfo[]>['error'] = {
   code: StatusCodes.BAD_REQUEST,
   message: 'Load failed',
 };
-
-export const fetchOffersList = createAsyncThunk<
-  MainOfferInfo[],
-  undefined,
-  {
-    extra: AxiosInstance;
-  }
->(
-  'data/fetchOffersList',
-  async (_arg, {extra: api}) => {
-    const { data } = await api.get<MainOfferInfo[]>(ServerRoutesEnum.Offers);
-    return data;
-  },
-);
-
-export const offersListSelector = (state: RootState) => state.offersList;
 
 const offersInfoSlice = createSlice({
   initialState,
