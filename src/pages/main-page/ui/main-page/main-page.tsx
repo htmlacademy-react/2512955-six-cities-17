@@ -3,7 +3,6 @@ import type { MainOfferInfo, OfferCityName } from '@entities/offer';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
 import OffersList from '@features/offers-list';
 import NoPlacesSection from '../no-places-section';
-import { UserInfo } from '@entities/user';
 import { ComponentProps, useEffect, useMemo, useState } from 'react';
 import { Nullable } from '@shared/types';
 import LocationsFilterList, { useActiveLocation } from '@features/locations-filter-list/';
@@ -18,7 +17,6 @@ import { OfferSortingSelect, offerSortTypeToComparerMap, useOfferSorting } from 
 
 type MainPageProps = {
   offers: MainOfferInfo[];
-  favoritesCount: number;
 }
 
 function getLeafletMapProps(offers: MainOfferInfo[], activeOfferId: Nullable<string>): ComponentProps<typeof LeafletMap> {
@@ -42,7 +40,7 @@ function getLeafletMapProps(offers: MainOfferInfo[], activeOfferId: Nullable<str
   };
 }
 
-function MainPage({ offers, favoritesCount }: MainPageProps): JSX.Element {
+function MainPage({ offers }: MainPageProps): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<Nullable<string>>(null);
   const [searchParams, setSearchParams] = useSearchParams(DEFAULT_SEARCH_PARAMS);
   const activeCitySearchParam = getSearchParam<SearchParams, keyof SearchParams>(searchParams, 'activeCity', DEFAULT_CITY);
@@ -82,9 +80,7 @@ function MainPage({ offers, favoritesCount }: MainPageProps): JSX.Element {
 
   return (
     <Layout className='page--gray page--main'>
-      <Layout.Header>
-        <UserInfo favoritesCount={favoritesCount} />
-      </Layout.Header>
+      <Layout.Header />
       <Layout.Content className={contentClassName}>
         <h1 className='visually-hidden'>Cities</h1>
         <div className='tabs'>

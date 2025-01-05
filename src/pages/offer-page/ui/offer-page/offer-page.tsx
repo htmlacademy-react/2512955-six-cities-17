@@ -1,4 +1,3 @@
-import { UserInfo } from '@entities/user';
 import Layout from '@widgets/layout';
 import { PAGE_TITLE } from '@pages/offer-page/config';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
@@ -15,13 +14,9 @@ type OfferPageUrlParams = {
   id: string;
 }
 
-type OfferPageProps = {
-  favoritesCount: number;
-}
-
 const MAX_NEAR_OFFERS_COUNT = 3;
 
-function OfferPage({ favoritesCount }: OfferPageProps): JSX.Element {
+function OfferPage(): JSX.Element {
   const { id: offerId } = useParams<OfferPageUrlParams>();
   const {
     nearOffers: fullNearOffers,
@@ -62,9 +57,7 @@ function OfferPage({ favoritesCount }: OfferPageProps): JSX.Element {
   const nearOffers = useMemo(() => fullNearOffers.slice(0, MAX_NEAR_OFFERS_COUNT), [fullNearOffers]);
   return (
     <Layout>
-      <Layout.Header>
-        <UserInfo favoritesCount={favoritesCount} />
-      </Layout.Header>
+      <Layout.Header />
       <Layout.Content className='page__main--offer'>
         {offer && (
           <OfferInfo

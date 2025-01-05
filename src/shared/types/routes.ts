@@ -4,5 +4,5 @@ export enum RoutesEnum {
   Favorites = '/favorites',
   Offer = '/offer/:id',
   NotFound = '*',
-  NotExists = '/not_found_page',
+  NotExists = '/not-found-page',
 }

@@ -22,7 +22,7 @@ export function RouterProvider({ allOffers, favoritesOffers }: RouterProviderPro
       <Routes>
         <Route
           path={RoutesEnum.Main}
-          element={<MainPage offers={allOffers} favoritesCount={favoritesOffers.length} />}
+          element={<MainPage offers={allOffers} />}
         />
         <Route
           path={RoutesEnum.Login}
@@ -42,11 +42,11 @@ export function RouterProvider({ allOffers, favoritesOffers }: RouterProviderPro
         />
         <Route
           path={RoutesEnum.Offer}
-          element={<OfferPage favoritesCount={favoritesOffers.length} />}
+          element={<OfferPage />}
         />
         <Route
           path={RoutesEnum.NotFound}
-          element={<NotFoundPage favoritesCount={favoritesOffers.length} />}
+          element={<NotFoundPage />}
         />
       </Routes>
     </HistoryRouter>

@@ -31,7 +31,7 @@ function LoginPage(): JSX.Element {
 
   return (
     <Layout className='page--gray page--login'>
-      <Layout.Header />
+      <Layout.Header showUserNavigation={false} />
       <Layout.Content className='page__main--login'>
         <div className="page__login-container container">
           <section className="login">

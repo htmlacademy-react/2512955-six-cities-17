@@ -12,5 +12,5 @@ export const rootReducer = combineReducers({
   loading: globalLoaderReducer,
   offersList: offersListReducer,
   authorization: authorizationSliceReducer,
-  fullscreanOffer: offerPageReducer
+  fullScreanOffer: offerPageReducer
 });
