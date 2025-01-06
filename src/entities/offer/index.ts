@@ -8,7 +8,7 @@ import type {
   BaseOfferInfo
 } from './model/types';
 import OfferCard, { type ViewType } from './ui/offer-card';
-import { offersListReducer } from './model/offers-info-slice';
+import { offersListReducer } from './model/offer-info-slice';
 import { useOffersList } from './lib/use-offers-list';
 
 export type {

@@ -1,7 +1,8 @@
-import type { State } from './types';
-import { RatingTitle, RatingValue } from '@features/new-review-form/config';
+import type { NewReviewData } from '@entities/review';
+import { RatingTitle } from '@features/new-review-form/config';
+import { RatingValue } from '@shared/types';
 
-export const INITIAL_STATE: State = {
+export const INITIAL_STATE: NewReviewData = {
   rating: 0,
   review: ''
 };
