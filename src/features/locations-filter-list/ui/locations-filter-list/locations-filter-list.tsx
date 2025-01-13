@@ -1,6 +1,7 @@
 import type { OfferCityName } from '@entities/offer';
 import { LocationsFilterItem } from '../locations-filter-item';
 import { useActiveLocation } from '@features/locations-filter-list/lib/use-active-location';
+import { useCallback } from 'react';
 
 type LocationsFilterListProps = {
   activeFilter: OfferCityName;
@@ -10,15 +11,18 @@ type LocationsFilterListProps = {
 
 export function LocationsFilterList({ activeFilter, allFilterItems, onFilterChange }: LocationsFilterListProps): JSX.Element {
   const { activeLocation, changeActiveLocation } = useActiveLocation(activeFilter);
-  const linkClickHandler = (filterValue: OfferCityName) => {
-    if (filterValue !== activeLocation) {
-      changeActiveLocation(filterValue);
+  const linkClickHandler = useCallback(
+    (filterValue: OfferCityName) => {
+      if (filterValue !== activeLocation) {
+        changeActiveLocation(filterValue);
 
-      if (onFilterChange) {
-        onFilterChange(filterValue);
+        if (onFilterChange) {
+          onFilterChange(filterValue);
+        }
       }
-    }
-  };
+    },
+    [activeLocation, changeActiveLocation, onFilterChange]
+  );
   return (
     <ul className='locations__list tabs__list'>
       {allFilterItems.map((current) => (
