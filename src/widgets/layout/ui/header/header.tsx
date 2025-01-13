@@ -1,8 +1,7 @@
-import type { ComponentProps, MouseEventHandler, PropsWithChildren } from 'react';
+import type { MouseEventHandler, PropsWithChildren } from 'react';
 import { AuthorizationStatusEnum, Classed } from '@shared/types';
 import classNames from 'classnames';
-//import Logo from '@shared/ui/logo';
-import ImagedLink from '@shared/ui/imaged-link';
+import { Logo } from '../logo';
 import { RoutesEnum } from '@shared/types';
 import { useAuthorization, UserInfo } from '@entities/user';
 
@@ -15,18 +14,6 @@ import { Link } from 'react-router-dom';
 type HeaderProps = Classed<PropsWithChildren & {
   showUserNavigation?: boolean;
 }>;
-
-const DEFAULT_LINK_PROPS: ComponentProps<typeof ImagedLink> = {
-  linkConfig: {
-    to: RoutesEnum.Main,
-    className: 'header__logo',
-  },
-  className: 'header__logo',
-  src: 'img/logo.svg',
-  width: 81,
-  height: 41,
-  alt: '6 cities logo'
-};
 
 export function Header({ className, children, showUserNavigation = true }: HeaderProps): JSX.Element {
   const headerClassName = classNames('header', {
@@ -45,9 +32,7 @@ export function Header({ className, children, showUserNavigation = true }: Heade
     <header className={headerClassName}>
       <div className='container'>
         <div className='header__wrapper'>
-          <div className='header__left'>
-            <ImagedLink {...DEFAULT_LINK_PROPS} />
-          </div>
+          <Logo />
           {showUserNavigation &&
             <nav className='header__nav'>
               <ul className='header__nav-list'>

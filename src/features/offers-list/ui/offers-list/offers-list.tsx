@@ -1,5 +1,5 @@
 import type { MainOfferInfo } from '@entities/offer';
-import OfferCard, {type ViewType } from '@entities/offer';
+import OfferCard, { type ViewType } from '@entities/offer';
 import { useAuthorization } from '@entities/user';
 import { AuthorizationStatusEnum, Classed, RoutesEnum } from '@shared/types';
 import classNames from 'classnames';

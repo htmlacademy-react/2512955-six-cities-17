@@ -2,7 +2,7 @@ import Layout from '@widgets/layout';
 import { PAGE_TITLE } from '@pages/offer-page/config';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
 import { OfferInfo } from '../offer-info';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import OffersList from '@features/offers-list';
 import { useParams } from 'react-router-dom';
 import { useOfferPage } from '@pages/offer-page/lib/use-offer-page';
@@ -54,7 +54,7 @@ function OfferPage(): JSX.Element {
     [addNewReview, offerId]
   );
 
-  const nearOffers = useMemo(() => fullNearOffers.slice(0, MAX_NEAR_OFFERS_COUNT), [fullNearOffers]);
+  const nearOffers = fullNearOffers.slice(0, MAX_NEAR_OFFERS_COUNT);
   return (
     <Layout>
       <Layout.Header />
@@ -64,7 +64,7 @@ function OfferPage(): JSX.Element {
             nearOffers={nearOffers}
             offer={offer}
           >
-            {comments?.length && <OfferReviews reviews={comments} onReviewSubmit={reviewSubmitHandler} />}
+            {!!comments?.length && <OfferReviews reviews={comments} onReviewSubmit={reviewSubmitHandler} />}
           </OfferInfo>
         )}
         {nearOffers?.length && (
