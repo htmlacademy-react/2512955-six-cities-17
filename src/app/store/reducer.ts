@@ -1,4 +1,4 @@
-import { offersListReducer } from '@entities/offer';
+import { offersListReducer, favoritesOffersReducer } from '@entities/offer';
 import { authorizationSliceReducer } from '@entities/user';
 import { activeLocationReducer } from '@features/locations-filter-list';
 import { sortingSliceReducer } from '@features/offer-sorting-select';
@@ -12,5 +12,6 @@ export const rootReducer = combineReducers({
   loading: globalLoaderReducer,
   offersList: offersListReducer,
   authorization: authorizationSliceReducer,
-  fullScreanOffer: offerPageReducer
+  fullScreanOffer: offerPageReducer,
+  favoritesOffers: favoritesOffersReducer
 });

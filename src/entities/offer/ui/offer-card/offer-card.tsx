@@ -13,7 +13,7 @@ import { MouseEventHandler } from 'react';
 type OfferCardProps = Classed<{
   offer: MainOfferInfo;
   viewType?: ViewType;
-  onFavoritesButtonClick?: (offerId: string) => void;
+  onFavoritesButtonClick?: (offerId: string, isFavorite: boolean) => void;
   onActivateOffer?: (offerId: string) => void;
 }>;
 
@@ -41,7 +41,7 @@ export function OfferCard({ offer, className, onActivateOffer, viewType = 'main'
 
   const favoritesButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
     if (onFavoritesButtonClick) {
-      onFavoritesButtonClick(offer.id);
+      onFavoritesButtonClick(offer.id, !offer.isFavorite);
     }
   };
 

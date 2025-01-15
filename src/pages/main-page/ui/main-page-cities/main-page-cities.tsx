@@ -5,6 +5,7 @@ import OffersList from '@features/offers-list';
 import type { Classed, Nullable } from '@shared/types';
 import { ComponentProps, useEffect, useState } from 'react';
 import NoPlacesSection from '../no-places-section';
+import { useAddToFavoriteOffer } from '@features/add-offer-to-favorites';
 
 type MainPageCitiesProps = Classed<{
   offers: MainOfferInfo[];
@@ -37,6 +38,7 @@ export function MainPageCities({ offers, className, activeLocation }: MainPageCi
   const [activeOfferId, setActiveOfferId] = useState<Nullable<string>>(null);
   const isOffersExists = offers.length > 0;
   const mapProps = getLeafletMapProps(offers, activeOfferId);
+  const addToFavorite = useAddToFavoriteOffer();
 
   useEffect(
     () => {
@@ -58,7 +60,12 @@ export function MainPageCities({ offers, className, activeLocation }: MainPageCi
               <span className='places__sorting-caption'>Sort by&nbsp;</span>
               <OfferSortingSelect />
             </form>
-            <OffersList offers={offers} onActivateOffer={setActiveOfferId} className='tabs__content' />
+            <OffersList
+              offers={offers}
+              onActivateOffer={setActiveOfferId}
+              className='tabs__content'
+              onFavoriteClick={addToFavorite}
+            />
           </section>
           :
           <NoPlacesSection />}

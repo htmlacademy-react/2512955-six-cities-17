@@ -1,23 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { LoadableState } from '@shared/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { MainOfferInfo } from '../types';
 import { fetchOffersList } from './actions';
-import { StatusCodes } from 'http-status-codes';
-
-const initialState: LoadableState<MainOfferInfo[]> = {
-  error: null,
-  loading: false,
-  value: []
-};
-
-const DEFAULT_ERROR: LoadableState<MainOfferInfo[]>['error'] = {
-  code: StatusCodes.BAD_REQUEST,
-  message: 'Load failed',
-};
+import { DEFAULT_LOADING_ERROR, STATE_TEMPLATE } from '@entities/offer/config/const';
 
 const offersInfoSlice = createSlice({
-  initialState,
-  reducers: {},
+  initialState: STATE_TEMPLATE,
+  reducers: {
+    updateOffer: (state, action: PayloadAction<MainOfferInfo>) => {
+      const offer = action.payload;
+      for (let offerIndex = 0; offerIndex < state.value.length; offerIndex++) {
+        if (state.value[offerIndex].id === offer.id) {
+          state.value[offerIndex] = offer;
+          break;
+        }
+      }
+    }
+  },
   name: 'offersList',
   extraReducers: (builder) => {
     builder.addCase(fetchOffersList.pending, (state) => {
@@ -33,11 +31,17 @@ const offersInfoSlice = createSlice({
       state.loading = false;
       state.value = [];
       state.error = {
-        code: action.error.code ?? DEFAULT_ERROR.code,
-        message: action.error.message ?? DEFAULT_ERROR.message
+        code: action.error.code ?? DEFAULT_LOADING_ERROR.code,
+        message: action.error.message ?? DEFAULT_LOADING_ERROR.message
       };
     });
   },
 });
 
-export const offersListReducer = offersInfoSlice.reducer;
+const offersListReducer = offersInfoSlice.reducer;
+const { updateOffer } = offersInfoSlice.actions;
+
+export {
+  offersListReducer,
+  updateOffer
+};

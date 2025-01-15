@@ -1,5 +1,5 @@
-import { offersListReducer } from './offers-info-slice';
+import { offersListReducer, updateOffer } from './offers-info-slice';
 import { fetchOffersList } from './actions';
 import { offersListSelector } from './selectors';
 
-export { offersListReducer, fetchOffersList, offersListSelector };
+export { offersListReducer, fetchOffersList, offersListSelector, updateOffer };

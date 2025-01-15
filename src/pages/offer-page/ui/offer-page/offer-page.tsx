@@ -4,11 +4,14 @@ import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-ti
 import { OfferInfo } from '../offer-info';
 import { useCallback, useEffect } from 'react';
 import OffersList from '@features/offers-list';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useOfferPage } from '@pages/offer-page/lib/use-offer-page';
 import { useGlobalLoader } from '@shared/hooks/use-global-loader';
 import { NewReviewData } from '@entities/review';
 import OfferReviews from '@widgets/offer-reviews';
+import { useAuthorization } from '@entities/user';
+import { AuthorizationStatusEnum, RoutesEnum } from '@shared/types';
+import { useAddToFavoriteOffer } from '@features/add-offer-to-favorites';
 
 type OfferPageUrlParams = {
   id: string;
@@ -18,10 +21,12 @@ const MAX_NEAR_OFFERS_COUNT = 3;
 
 function OfferPage(): JSX.Element {
   const { id: offerId } = useParams<OfferPageUrlParams>();
+  const { authorizationStatus } = useAuthorization();
+  const navigate = useNavigate();
+  const addOfferToFavorites = useAddToFavoriteOffer();
   const {
     nearOffers: fullNearOffers,
     offer,
-    comments,
     loading,
     fetchOfferPageInfo,
     addNewReview
@@ -54,6 +59,18 @@ function OfferPage(): JSX.Element {
     [addNewReview, offerId]
   );
 
+  const favoriteButtonClickHandler = useCallback(
+    (id: string, isFavorite: boolean) => {
+      if (authorizationStatus !== AuthorizationStatusEnum.Authorized) {
+        navigate(RoutesEnum.Login, { replace: true });
+        return;
+      }
+
+      addOfferToFavorites(id, isFavorite);
+    },
+    [addOfferToFavorites, authorizationStatus, navigate]
+  );
+
   const nearOffers = fullNearOffers.slice(0, MAX_NEAR_OFFERS_COUNT);
   return (
     <Layout>
@@ -63,15 +80,16 @@ function OfferPage(): JSX.Element {
           <OfferInfo
             nearOffers={nearOffers}
             offer={offer}
+            onFavoritesButtonClick={favoriteButtonClickHandler}
           >
-            {!!comments?.length && <OfferReviews reviews={comments} onReviewSubmit={reviewSubmitHandler} />}
+            <OfferReviews onReviewSubmit={reviewSubmitHandler} />
           </OfferInfo>
         )}
-        {nearOffers?.length && (
+        {!!nearOffers?.length && (
           <div className='container'>
             <section className='near-places places'>
               <h2 className='near-places__title'>Other places in the neighbourhood</h2>
-              <OffersList offers={nearOffers} viewType='near' />
+              <OffersList offers={nearOffers} viewType='near' onFavoriteClick={favoriteButtonClickHandler} />
             </section>
           </div>
         )}

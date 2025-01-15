@@ -1,6 +1,6 @@
 import { Nullable } from './nullable';
 
-type StateError = {
+export type StateError = {
   code: number | string;
   message: string;
 }

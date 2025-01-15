@@ -4,5 +4,7 @@ export enum ServerRoutesEnum {
   Logout = '/logout',
   FullOffer = '/offers/:id',
   NearOffers = '/offers/:id/nearby',
-  Reviews = '/comments/:offerId'
+  Reviews = '/comments/:offerId',
+  Favorite = '/favorite',
+  FavoriteChange = 'favorite/:offerId/:status'
 }

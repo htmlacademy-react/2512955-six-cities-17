@@ -8,21 +8,15 @@ import FavoritesPage from '@pages/favorites-page';
 import OfferPage from '@pages/offer-page';
 import NotFoundPage from '@pages/not-found-page';
 import { useAuthorization } from '@entities/user';
-import { MainOfferInfo } from '@entities/offer';
 
-type RouterProviderProps = {
-  allOffers: MainOfferInfo[];
-  favoritesOffers: MainOfferInfo[];
-}
-
-export function RouterProvider({ allOffers, favoritesOffers }: RouterProviderProps): JSX.Element {
+export function RouterProvider(): JSX.Element {
   const { authorizationStatus } = useAuthorization();
   return (
     <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={RoutesEnum.Main}
-          element={<MainPage offers={allOffers} />}
+          element={<MainPage />}
         />
         <Route
           path={RoutesEnum.Login}
@@ -36,7 +30,7 @@ export function RouterProvider({ allOffers, favoritesOffers }: RouterProviderPro
           path={RoutesEnum.Favorites}
           element={
             <PrivateRoute isPrivate={authorizationStatus === AuthorizationStatusEnum.Authorized} redirectPath={RoutesEnum.Login}>
-              <FavoritesPage offers={favoritesOffers} />
+              <FavoritesPage />
             </PrivateRoute>
           }
         />

@@ -4,18 +4,15 @@ import classNames from 'classnames';
 import { Logo } from '../logo';
 import { RoutesEnum } from '@shared/types';
 import { useAuthorization, UserInfo } from '@entities/user';
-
-/**
- * @todo УДАЛИТЬ ЭТОТ ИМПОРТ КАК БУДЕТ ГОТОВ СЛАЙС С ИЗБРАННЫМ
- */
-import { OFFERS_INFO_MOCK } from '@app/mock/offers-mock';
 import { Link } from 'react-router-dom';
+import { useFavoritesOffers } from '@entities/offer';
 
 type HeaderProps = Classed<PropsWithChildren & {
   showUserNavigation?: boolean;
 }>;
 
 export function Header({ className, children, showUserNavigation = true }: HeaderProps): JSX.Element {
+  const { favoritesOffers } = useFavoritesOffers();
   const headerClassName = classNames('header', {
     [className ?? '']: !!className
   });
@@ -47,7 +44,7 @@ export function Header({ className, children, showUserNavigation = true }: Heade
                     {(user && isAuthorized) &&
                       <UserInfo
                         email={user.email}
-                        favoritesCount={OFFERS_INFO_MOCK.length}
+                        favoritesCount={favoritesOffers.length}
                       />}
                     {!isAuthorized && <span className='header__login'>Sign in</span>}
                   </Link>
