@@ -1,17 +1,14 @@
 import Layout from '@widgets/layout';
-import type { MainOfferInfo } from '@entities/offer';
 import NoPlacesSection from '../no-places-section';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
 import classNames from 'classnames';
 import FavoritesOffersList from '@features/favorites-offers-list';
-
-type FavoritesPageProps = {
-  offers: MainOfferInfo[];
-}
+import { useFavoritesOffers } from '@entities/offer';
 
 const PAGE_TITLE = '6 cities: favorites';
 
-function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
+function FavoritesPage(): JSX.Element {
+  const { favoritesOffers: offers } = useFavoritesOffers();
   const isOffersExists = offers.length > 0;
   const contentClassName = classNames('page__main--favorites', {
     ['page__main--favorites-empty']: !isOffersExists

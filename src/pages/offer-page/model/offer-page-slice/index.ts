@@ -1,4 +1,4 @@
-import { offerPageReducer } from './offer-page-slice';
+import { offerPageReducer, updateOffer } from './offer-page-slice';
 import { fullOfferInfoSelector } from './selectors';
 
-export { offerPageReducer, fullOfferInfoSelector };
+export { offerPageReducer, fullOfferInfoSelector, updateOffer };

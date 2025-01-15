@@ -1,6 +1,5 @@
-import { useAppDispatch, useAppSelector } from '@shared/lib/store';
 import { offersListSelector, fetchOffersList } from '@entities/offer/model/offer-info-slice';
-import { useCallback } from 'react';
+import { useOffers } from '../use-offers';
 
 type OffersListSelectorReturn = ReturnType<typeof offersListSelector>;
 
@@ -12,24 +11,17 @@ type UseOffersListReturn = {
 }
 
 export function useOffersList(): UseOffersListReturn {
-  const dispatch = useAppDispatch();
   const {
     error,
+    getOffers,
     loading,
-    value
-  } = useAppSelector(offersListSelector);
-
-  const fetchList = useCallback(
-    () => {
-      dispatch(fetchOffersList());
-    },
-    [dispatch]
-  );
+    offers
+  } = useOffers(offersListSelector, fetchOffersList);
 
   return {
     error,
     loading,
-    offersList: value,
-    fetchList
+    offersList: offers,
+    fetchList: getOffers
   };
 }

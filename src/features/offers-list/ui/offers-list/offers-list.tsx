@@ -9,20 +9,20 @@ type OffersListProps = Classed<{
   offers: MainOfferInfo[];
   onActivateOffer?: (offerId: string) => void;
   viewType?: Exclude<ViewType, 'favorites'>;
+  onFavoriteClick: (offerId: string, isFavorite: boolean) => void;
 }>
 
-export function OffersList({ offers, className, onActivateOffer, viewType = 'main' }: OffersListProps): JSX.Element {
+export function OffersList({ offers, className, onActivateOffer, viewType = 'main', onFavoriteClick }: OffersListProps): JSX.Element {
   const { authorizationStatus } = useAuthorization();
   const navigate = useNavigate();
 
-  /**
-   * @todo Допилить когда буду делать реальное добавление в избранное
-   */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const favoritesButtonCLickHandler = (_offerId: string) => {
+  const favoritesButtonClickHandler = (offerId: string, isFavorite: boolean) => {
     if (authorizationStatus !== AuthorizationStatusEnum.Authorized) {
       navigate(RoutesEnum.Login, { replace: true });
+      return;
     }
+
+    onFavoriteClick(offerId, isFavorite);
   };
 
   const listClassName = classNames(
@@ -42,7 +42,7 @@ export function OffersList({ offers, className, onActivateOffer, viewType = 'mai
           key={current.id}
           viewType={viewType}
           onActivateOffer={onActivateOffer}
-          onFavoritesButtonClick={favoritesButtonCLickHandler}
+          onFavoritesButtonClick={favoritesButtonClickHandler}
         />))}
     </div>
   );

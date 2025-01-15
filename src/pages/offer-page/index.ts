@@ -1,6 +1,6 @@
 import OfferPage from './ui/offer-page';
-import { offerPageReducer } from './model/offer-page-slice';
+import { offerPageReducer, updateOffer } from './model/offer-page-slice';
 
-export { offerPageReducer };
+export { offerPageReducer, updateOffer as updatePageOffer };
 
 export default OfferPage;

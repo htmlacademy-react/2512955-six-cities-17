@@ -1,8 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { OfferPageState } from './types';
 import type { LoadableState } from '@shared/types';
 import { fetchOfferPageAction, addNewReviewAction } from './actions';
 import { DEFAULT_FETCH_OFFER_ERROR, DEFAULT_ADD_NEW_REVIEW_ERROR } from './consts';
+import { MainOfferInfo } from '@entities/offer';
 
 const initialState: LoadableState<OfferPageState> = {
   loading: false,
@@ -17,7 +18,22 @@ const initialState: LoadableState<OfferPageState> = {
 const offerPageSlice = createSlice({
   initialState,
   name: 'offerPage',
-  reducers: {},
+  reducers: {
+    updateOffer: (state, action: PayloadAction<MainOfferInfo>) => {
+      if (action.payload.id === state.value.offer?.id) {
+        state.value.offer.isFavorite = action.payload.isFavorite;
+      }
+
+      if (state.value.nearOffers.find((current) => current.id === action.payload.id)) {
+        for (let offerIndex = 0; offerIndex < state.value.nearOffers.length; offerIndex++) {
+          if (action.payload.id === state.value.nearOffers[offerIndex].id) {
+            state.value.nearOffers[offerIndex] = action.payload;
+            break;
+          }
+        }
+      }
+    }
+  },
   extraReducers(builder) {
     builder.addCase(fetchOfferPageAction.pending, (state) => {
       state.loading = true;
@@ -55,5 +71,7 @@ const offerPageSlice = createSlice({
     });
   },
 });
+
+export const { updateOffer } = offerPageSlice.actions;
 
 export const offerPageReducer = offerPageSlice.reducer;

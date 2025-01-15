@@ -1,5 +1,5 @@
 import Layout from '@widgets/layout';
-import type { MainOfferInfo } from '@entities/offer';
+import { useOffersList } from '@entities/offer';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
 import { useEffect, useMemo } from 'react';
 import LocationsFilterList, { useActiveLocation } from '@features/locations-filter-list/';
@@ -12,15 +12,12 @@ import { isOfferCityName } from './type-guards';
 import { offerSortTypeToComparerMap, useOfferSorting } from '@features/offer-sorting-select';
 import { MainPageCities } from '../main-page-cities';
 
-type MainPageProps = {
-  offers: MainOfferInfo[];
-}
-
-function MainPage({ offers }: MainPageProps): JSX.Element {
+function MainPage(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams(DEFAULT_SEARCH_PARAMS);
   const activeCitySearchParam = getSearchParam<SearchParams, keyof SearchParams>(searchParams, 'activeCity', DEFAULT_CITY);
   const { activeLocation } = useActiveLocation(isOfferCityName(activeCitySearchParam) ? activeCitySearchParam : DEFAULT_CITY);
   const { activeSotingType } = useOfferSorting();
+  const { offersList: offers } = useOffersList();
 
   const filteredOffers = useMemo(
     () => offers.filter((current) => current.city.name === activeLocation).sort(offerSortTypeToComparerMap.get(activeSotingType)),
