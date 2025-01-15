@@ -9,7 +9,6 @@ export function App(): JSX.Element {
 
   return (
     <>
-      <GlobalLoader />
       <ToastContainer
         limit={1}
         autoClose={3000}
@@ -18,6 +17,7 @@ export function App(): JSX.Element {
         containerId={TOAST_CONTAINER_ID}
       />
       <RouterProvider />
+      <GlobalLoader />
     </>
   );
 }

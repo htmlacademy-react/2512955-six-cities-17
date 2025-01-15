@@ -7,10 +7,12 @@ import { OfferHostInfo } from '../offer-host-info';
 import LeafletMap, { LeafletPoint } from '@features/leaflet-map';
 import { FullOfferInfo, MainOfferInfo } from '@entities/offer';
 import { ComponentProps, PropsWithChildren, useMemo } from 'react';
+import classNames from 'classnames';
 
 type OfferInfoProps = PropsWithChildren<{
   offer: FullOfferInfo;
   nearOffers: MainOfferInfo[];
+  onFavoritesButtonClick: (offerId: string, isFavorite: boolean) => void;
 }>
 
 const getMapProps = (offerPoint: LeafletPoint, nearOffers: MainOfferInfo[]): ComponentProps<typeof LeafletMap> => ({
@@ -19,9 +21,22 @@ const getMapProps = (offerPoint: LeafletPoint, nearOffers: MainOfferInfo[]): Com
   selectedPoint: offerPoint
 });
 
-export function OfferInfo({ offer, nearOffers, children }: OfferInfoProps): JSX.Element {
+export function OfferInfo({ offer, nearOffers, children, onFavoritesButtonClick }: OfferInfoProps): JSX.Element {
   const offerPoint: LeafletPoint = useMemo(() => ({ location: offer.location, name: offer.title }), [offer.location, offer.title]);
   const mapProps = useMemo(() => getMapProps(offerPoint, nearOffers), [offerPoint, nearOffers]);
+
+  const favoritesButtonClickHandler = () => {
+    onFavoritesButtonClick(offer.id, !offer.isFavorite);
+  };
+
+  const favoritesButtonClassName = classNames(
+    'offer__bookmark-button',
+    {
+      'offer__bookmark-button--active': offer.isFavorite
+    },
+    'button'
+  );
+
   return (
     <section className='offer'>
       <div className='offer__gallery-container container'>
@@ -42,7 +57,7 @@ export function OfferInfo({ offer, nearOffers, children }: OfferInfoProps): JSX.
             <h1 className='offer__name'>
               {offer.title}
             </h1>
-            <button className='offer__bookmark-button button' type='button'>
+            <button className={favoritesButtonClassName} type='button' onClick={favoritesButtonClickHandler}>
               <svg className='offer__bookmark-icon' width='31' height='33'>
                 <use xlinkHref='#icon-bookmark'></use>
               </svg>
@@ -58,7 +73,7 @@ export function OfferInfo({ offer, nearOffers, children }: OfferInfoProps): JSX.
             <b className='offer__price-value'>&euro;{offer.price}</b>
             <span className='offer__price-text'>&nbsp;night</span>
           </div>
-          {(offer.goods && offer.goods.length > 0) && <OfferInsides insides={offer.goods} offerId={offer.id} />}
+          {(!!offer?.goods?.length) && <OfferInsides insides={offer.goods} offerId={offer.id} />}
           <OfferHostInfo host={offer.host}>
             <div className='offer__description'>
               <p className='offer__text'>

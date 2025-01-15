@@ -29,7 +29,6 @@ export function useStartup() {
       let componentIsRendered = false;
       if (!componentIsRendered) {
         checkAuthorization();
-        fetchList();
       }
 
       return () => {
@@ -37,6 +36,21 @@ export function useStartup() {
       };
     },
     [fetchList, checkAuthorization]
+  );
+
+  useEffect(
+    () => {
+      let componentIsRendered = false;
+
+      if (!componentIsRendered && authorizationStatus !== AuthorizationStatusEnum.Unknown) {
+        fetchList();
+      }
+
+      return () => {
+        componentIsRendered = true;
+      };
+    },
+    [authorizationStatus, fetchList]
   );
 
   useEffect(
