@@ -10,3 +10,7 @@ export type LoadableState<TStateType> = {
   value: TStateType;
   error: Nullable<StateError>;
 }
+
+export interface BaseFetchedState {
+  error: Nullable<StateError>;
+}

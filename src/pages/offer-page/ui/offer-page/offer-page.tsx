@@ -32,7 +32,7 @@ function OfferPage(): JSX.Element {
     addNewReview
   } = useOfferPage();
 
-  const { setLoading } = useGlobalLoader();
+  const setLoading = useGlobalLoader();
 
   useEffect(
     () => {

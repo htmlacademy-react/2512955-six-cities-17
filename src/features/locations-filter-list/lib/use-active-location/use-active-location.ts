@@ -8,7 +8,7 @@ type UseActiveLocationReturn = {
   changeActiveLocation: (newLocation: OfferCityName) => void;
 }
 
-export function useActiveLocation(initLocation: OfferCityName): UseActiveLocationReturn {
+export function useActiveLocation(initLocation?: OfferCityName): UseActiveLocationReturn {
   const storedLocation = useAppSelector(getActiveLocation);
   const dispatch = useAppDispatch();
 
@@ -23,7 +23,9 @@ export function useActiveLocation(initLocation: OfferCityName): UseActiveLocatio
 
   useEffect(
     () => {
-      changeActiveLocation(initLocation);
+      if (initLocation) {
+        changeActiveLocation(initLocation);
+      }
     },
     [changeActiveLocation, initLocation]
   );

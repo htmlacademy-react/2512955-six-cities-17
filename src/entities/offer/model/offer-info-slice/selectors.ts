@@ -1,3 +1,5 @@
 import type { RootState } from '@shared/lib/store';
 
-export const offersListSelector = (state: RootState) => state.offersList;
+type OfferListSliceState = Pick<RootState, 'offersList'>;
+
+export const offersListSelector = (state: OfferListSliceState) => state.offersList.offers;

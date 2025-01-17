@@ -70,11 +70,16 @@ export function MainPageCities({ offers, className, activeLocation }: MainPageCi
           :
           <NoPlacesSection />}
         <div className='cities__right-section'>
-          {(isOffersExists && mapProps) &&
-            <LeafletMap
-              className='cities__map'
-              {...mapProps}
-            />}
+          {
+            (isOffersExists && mapProps)
+              ?
+              <LeafletMap
+                className='cities__map'
+                {...mapProps}
+              />
+              :
+              <section className='cities__map map' />
+          }
         </div>
       </div>
     </div>
