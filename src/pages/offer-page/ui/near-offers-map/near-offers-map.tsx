@@ -10,7 +10,8 @@ type NearOffersMapProps = {
 const getMapProps = (offerPoint: LeafletPoint, nearOffers: MainOfferInfo[]): ComponentProps<typeof LeafletMap> => ({
   center: offerPoint,
   points: [offerPoint, ...nearOffers.map((current) => ({ location: current.location, name: current.title }))],
-  selectedPoint: offerPoint
+  selectedPoint: offerPoint,
+  className: 'offer__map'
 });
 
 export function NearOffersMap({ mainOfferPoint }: NearOffersMapProps): ReactNode {
