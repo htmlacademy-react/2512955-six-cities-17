@@ -4,27 +4,17 @@ import RatingInStars from '@shared/ui/rating-in-stars';
 import { OfferFeaturesList } from '../offer-features-list';
 import { OfferInsides } from '../offer-insides';
 import { OfferHostInfo } from '../offer-host-info';
-import LeafletMap, { LeafletPoint } from '@features/leaflet-map';
-import { FullOfferInfo, MainOfferInfo } from '@entities/offer';
-import { ComponentProps, PropsWithChildren, useMemo } from 'react';
+import { FullOfferInfo } from '@entities/offer';
+import { PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 
 type OfferInfoProps = PropsWithChildren<{
+  leafletMap: ReactNode;
   offer: FullOfferInfo;
-  nearOffers: MainOfferInfo[];
   onFavoritesButtonClick: (offerId: string, isFavorite: boolean) => void;
 }>
 
-const getMapProps = (offerPoint: LeafletPoint, nearOffers: MainOfferInfo[]): ComponentProps<typeof LeafletMap> => ({
-  center: offerPoint,
-  points: [offerPoint, ...nearOffers.map((current) => ({ location: current.location, name: current.title }))],
-  selectedPoint: offerPoint
-});
-
-export function OfferInfo({ offer, nearOffers, children, onFavoritesButtonClick }: OfferInfoProps): JSX.Element {
-  const offerPoint: LeafletPoint = useMemo(() => ({ location: offer.location, name: offer.title }), [offer.location, offer.title]);
-  const mapProps = useMemo(() => getMapProps(offerPoint, nearOffers), [offerPoint, nearOffers]);
-
+export function OfferInfo({ offer, children, onFavoritesButtonClick, leafletMap }: OfferInfoProps): JSX.Element {
   const favoritesButtonClickHandler = () => {
     onFavoritesButtonClick(offer.id, !offer.isFavorite);
   };
@@ -85,12 +75,7 @@ export function OfferInfo({ offer, nearOffers, children, onFavoritesButtonClick 
         </div>
       </div>
       <div className='container'>
-        <LeafletMap
-          className='offer__map'
-          center={mapProps.center}
-          points={mapProps.points}
-          selectedPoint={mapProps.selectedPoint}
-        />
+        {leafletMap}
       </div>
     </section>
   );

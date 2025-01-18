@@ -1,62 +1,55 @@
 import Layout from '@widgets/layout';
 import { PAGE_TITLE } from '@pages/offer-page/config';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
-import { OfferInfo } from '../offer-info';
 import { useCallback, useEffect } from 'react';
-import OffersList from '@features/offers-list';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useOfferPage } from '@pages/offer-page/lib/use-offer-page';
+import { useOfferPageQueries } from '@pages/offer-page/lib/use-offer-page-queries';
 import { useGlobalLoader } from '@shared/hooks/use-global-loader';
 import { NewReviewData } from '@entities/review';
-import OfferReviews from '@widgets/offer-reviews';
 import { useAuthorization } from '@entities/user';
 import { AuthorizationStatusEnum, RoutesEnum } from '@shared/types';
 import { useAddToFavoriteOffer } from '@features/add-offer-to-favorites';
+import { OfferMainInfoSection } from '../offer-main-info-section';
+import { OfferReviewsSection } from '../offer-reviews-section';
+import { NearOffersSection } from '../near-offers-section';
 
 type OfferPageUrlParams = {
   id: string;
 }
 
-const MAX_NEAR_OFFERS_COUNT = 3;
 
 function OfferPage(): JSX.Element {
   const { id: offerId } = useParams<OfferPageUrlParams>();
   const { authorizationStatus } = useAuthorization();
   const navigate = useNavigate();
   const addOfferToFavorites = useAddToFavoriteOffer();
-  const {
-    nearOffers: fullNearOffers,
-    offer,
-    loading,
-    fetchOfferPageInfo,
-    addNewReview
-  } = useOfferPage();
-
   const setLoading = useGlobalLoader();
+  const { fetchOffer, addNewReview } = useOfferPageQueries();
 
   useEffect(
     () => {
-      setLoading(loading);
-    },
-    [loading, setLoading]
-  );
+      const fetchOfferData = async (id: string) => {
+        setLoading(true);
+        await fetchOffer(id);
+        setLoading(false);
+      };
 
-  useEffect(
-    () => {
       if (offerId) {
-        fetchOfferPageInfo(offerId);
+        fetchOfferData(offerId);
       }
     },
-    [fetchOfferPageInfo, offerId]
+    [fetchOffer, offerId, setLoading]
   );
 
   const reviewSubmitHandler = useCallback(
-    (reviewData: NewReviewData) => {
+    async (reviewData: NewReviewData) => {
       if (offerId) {
-        addNewReview(reviewData, offerId);
+        setLoading(true);
+        await addNewReview(offerId, reviewData);
+        setLoading(false);
       }
     },
-    [addNewReview, offerId]
+    [addNewReview, offerId, setLoading]
   );
 
   const favoriteButtonClickHandler = useCallback(
@@ -71,28 +64,14 @@ function OfferPage(): JSX.Element {
     [addOfferToFavorites, authorizationStatus, navigate]
   );
 
-  const nearOffers = fullNearOffers.slice(0, MAX_NEAR_OFFERS_COUNT);
   return (
     <Layout>
       <Layout.Header />
       <Layout.Content className='page__main--offer'>
-        {offer && (
-          <OfferInfo
-            nearOffers={nearOffers}
-            offer={offer}
-            onFavoritesButtonClick={favoriteButtonClickHandler}
-          >
-            <OfferReviews onReviewSubmit={reviewSubmitHandler} />
-          </OfferInfo>
-        )}
-        {!!nearOffers?.length && (
-          <div className='container'>
-            <section className='near-places places'>
-              <h2 className='near-places__title'>Other places in the neighbourhood</h2>
-              <OffersList offers={nearOffers} viewType='near' onFavoriteClick={favoriteButtonClickHandler} />
-            </section>
-          </div>
-        )}
+        <OfferMainInfoSection onFavoriteButtonClick={favoriteButtonClickHandler}>
+          <OfferReviewsSection onReviewSubmit={reviewSubmitHandler} />
+        </OfferMainInfoSection>
+        <NearOffersSection onFavoriteButtonClick={favoriteButtonClickHandler} />
       </Layout.Content>
     </Layout>
   );

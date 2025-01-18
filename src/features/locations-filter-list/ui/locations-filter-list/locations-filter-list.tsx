@@ -10,6 +10,7 @@ type LocationsFilterListProps = {
 
 export function LocationsFilterList({ allFilterItems, onFilterChange }: LocationsFilterListProps): JSX.Element {
   const { activeLocation, changeActiveLocation } = useActiveLocation();
+
   const linkClickHandler = useCallback(
     (filterValue: OfferCityName) => {
       if (filterValue !== activeLocation) {

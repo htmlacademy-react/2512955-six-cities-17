@@ -31,12 +31,11 @@ export function MainPageContent({ activeCitySearchParam, tabSection }: MainPageC
     <Layout.Content className={contentClassName}>
       <h1 className='visually-hidden'>Cities</h1>
       {tabSection}
-      {isOffersExists &&
-        <MainPageCities
-          activeLocation={activeLocation}
-          offers={filteredOffers}
-          className={containerClassName}
-        />}
+      <MainPageCities
+        activeLocation={activeLocation}
+        offers={filteredOffers}
+        className={containerClassName}
+      />
     </Layout.Content>
   );
 }

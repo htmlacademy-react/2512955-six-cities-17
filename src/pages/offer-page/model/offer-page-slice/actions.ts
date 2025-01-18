@@ -8,6 +8,8 @@ import { FullOfferInfo, MainOfferInfo } from '@entities/offer';
 import { StatusCodes } from 'http-status-codes';
 import { NewReviewData, Review } from '@entities/review';
 
+const MAX_NEAR_OFFERS_COUNT = 3;
+
 export const fetchOfferPageAction = createAsyncThunk<
   OfferPageState,
   string,
@@ -24,7 +26,8 @@ export const fetchOfferPageAction = createAsyncThunk<
     const result: OfferPageState = {
       offer: null,
       comments: [],
-      nearOffers: []
+      nearOffers: [],
+      error: null,
     };
 
     try {
@@ -49,7 +52,7 @@ export const fetchOfferPageAction = createAsyncThunk<
     ]);
 
     result.comments = reviews;
-    result.nearOffers = nearOffers;
+    result.nearOffers = nearOffers.slice(0, MAX_NEAR_OFFERS_COUNT);
 
     return result;
   }
