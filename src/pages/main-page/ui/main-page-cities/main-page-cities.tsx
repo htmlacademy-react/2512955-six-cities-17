@@ -37,7 +37,6 @@ function getLeafletMapProps(offers: MainOfferInfo[], activeOfferId: Nullable<str
 export function MainPageCities({ offers, className, activeLocation }: MainPageCitiesProps): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<Nullable<string>>(null);
   const isOffersExists = offers.length > 0;
-  const mapProps = getLeafletMapProps(offers, activeOfferId);
   const addToFavorite = useAddToFavoriteOffer();
 
   useEffect(
@@ -71,11 +70,11 @@ export function MainPageCities({ offers, className, activeLocation }: MainPageCi
           <NoPlacesSection />}
         <div className='cities__right-section'>
           {
-            (isOffersExists && mapProps)
+            (isOffersExists)
               ?
               <LeafletMap
                 className='cities__map'
-                {...mapProps}
+                {...getLeafletMapProps(offers, activeOfferId)}
               />
               :
               <section className='cities__map map' />
