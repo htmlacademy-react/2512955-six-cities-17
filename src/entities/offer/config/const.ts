@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { OfferListState } from '../model/types';
 
 export const DEFAULT_LOADING_ERROR: StateError = {
-  code: StatusCodes.BAD_REQUEST,
+  code: String(StatusCodes.BAD_REQUEST),
   message: 'Load failed',
 };
 

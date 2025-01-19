@@ -1,4 +1,5 @@
 import { OfferCityName } from '@entities/offer';
 import type { RootState } from '@shared/lib/store';
 
-export const getActiveLocation = (state: RootState): OfferCityName => state.activeLocation.location;
+export type ActiveLocationStatePick = Pick<RootState, 'activeLocation'>;
+export const getActiveLocation = (state: ActiveLocationStatePick): OfferCityName => state.activeLocation.location;

@@ -5,7 +5,9 @@ export function isValidValidationState<TValueType>(state: ValidationResults<TVal
   const stateKeys = Object.keys(state);
   return schemaKeys.every((current) => {
     const typedCurrentKey = current as keyof ValidationResults<TValueType>;
-    return !!stateKeys.find((key) => key === current) && !state[typedCurrentKey]?.isNotValid;
+    return stateKeys.find((key) => key === current)
+      ? !state[typedCurrentKey]?.isNotValid
+      : true;
   });
 }
 
@@ -27,7 +29,7 @@ export function validateField<TValueType>(fieldValue: TValueType[typeof field], 
     };
 }
 
-export function validateAll<TValueType extends Record<string, unknown>, TKeys extends keyof TValueType = keyof TValueType>(validationObject: TValueType, schema: ValidationConfig<TValueType>) {
+export function validateAll<TValueType extends Record<string, unknown>, TKeys extends keyof TValueType = keyof TValueType>(validationObject: TValueType, schema: ValidationConfig<TValueType>): ValidationResults<TValueType> {
   return Object.keys(validationObject)
     .reduce((accum, current) => {
       const typedKey = current as TKeys;

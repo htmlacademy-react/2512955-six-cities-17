@@ -1,7 +1,7 @@
 import { Nullable } from './nullable';
 
 export type StateError = {
-  code: number | string;
+  code: string;
   message: string;
 }
 

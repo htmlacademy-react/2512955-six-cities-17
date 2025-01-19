@@ -5,7 +5,7 @@ import { checkAuthorizationAction, loginAction, logoutAction } from './actions';
 import { DEFAULT_AUTHORIZATION_CHECK_ERROR, DEFAULT_AUTHORIZATION_LOGIN_ERROR, DEFAULT_AUTHORIZATION_LOGOUT_ERROR } from '@entities/user/config/const';
 import { AuthorizationStatusEnum } from '@shared/types';
 
-interface AuthorizationSliceState extends BaseFetchedState {
+export interface AuthorizationSliceState extends BaseFetchedState {
   status: AuthorizationStatusEnum;
   user: Nullable<User>;
 }

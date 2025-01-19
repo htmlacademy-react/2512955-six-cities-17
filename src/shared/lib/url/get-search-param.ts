@@ -1,4 +1,4 @@
-export function getSearchParam<TSeachParams, TKey extends keyof TSeachParams>(
+export function getSearchParam<TSeachParams extends Record<string, unknown>, TKey extends keyof TSeachParams>(
   searchParams: URLSearchParams,
   key: TKey,
   defaultValue: TSeachParams[TKey]): TSeachParams[TKey] {
