@@ -1,3 +1,13 @@
-import { createReviewAuthorMock, createReviewMock } from './create-review-mock';
+import {
+  createReviewAuthorMock,
+  createReviewMock,
+  createNewReviewDataMock,
+  creatNewReviewMock
+} from './create-review-mock';
 
-export { createReviewAuthorMock, createReviewMock };
+export {
+  createReviewAuthorMock,
+  createReviewMock,
+  createNewReviewDataMock,
+  creatNewReviewMock
+};
