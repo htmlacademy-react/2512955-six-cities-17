@@ -1,5 +1,7 @@
 import { Nullable } from '@shared/types';
 
+export type AuhtorizationTokenStorage = Partial<Record<'AUTHORIZATION_TOKEN', string>>;
+
 export class LocalStorageMock {
   private values: Record<string, string>;
 

@@ -26,8 +26,8 @@ export const createOfferHostMock = (): OfferHost => ({
   name: faker.name.title(),
 });
 
-export const createUnionOfferInfoMock = (): UnionOfferInfo => ({
-  id: faker.datatype.uuid(),
+export const createUnionOfferInfoMock = (offerId?: string): UnionOfferInfo => ({
+  id: offerId ?? faker.datatype.uuid(),
   bedrooms: faker.datatype.number(),
   city: createCityMock(),
   description: faker.lorem.paragraph(3),
@@ -45,9 +45,9 @@ export const createUnionOfferInfoMock = (): UnionOfferInfo => ({
   location: createLocationMock(),
 });
 
-export const createMainOfferInfoMock = (): MainOfferInfo => ({
+export const createMainOfferInfoMock = (offerId?: string): MainOfferInfo => ({
   city: createCityMock(),
-  id: faker.datatype.uuid(),
+  id: offerId ?? faker.datatype.uuid(),
   isFavorite: faker.datatype.boolean(),
   isPremium: faker.datatype.boolean(),
   location: createLocationMock(),
@@ -58,8 +58,8 @@ export const createMainOfferInfoMock = (): MainOfferInfo => ({
   type: 'hotel',
 });
 
-export const createFullOfferInfoMock = (): FullOfferInfo => ({
-  id: faker.datatype.uuid(),
+export const createFullOfferInfoMock = (offerId?: string): FullOfferInfo => ({
+  id: offerId ?? faker.datatype.uuid(),
   bedrooms: faker.datatype.number(),
   city: createCityMock(),
   description: faker.lorem.paragraph(3),
