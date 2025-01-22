@@ -18,7 +18,7 @@ export function GlobalLoader({className}: GlobalLoaderProps): ReactNode {
     className
   );
   return (
-    <div className={loaderClassName}>
+    <div className={loaderClassName} data-testid='global-loader-container'>
       <Spinner isActive={loading} />
     </div>
   );

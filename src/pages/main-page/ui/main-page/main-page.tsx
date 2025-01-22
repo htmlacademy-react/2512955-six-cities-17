@@ -9,7 +9,7 @@ import { isOfferCityName } from '@pages/main-page/lib/type-guards/is-offer-city-
 import { MainPageContent } from '../main-page-content';
 import LocationsFilterList from '@features/locations-filter-list';
 
-function MainPage(): JSX.Element {
+export function MainPage(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams(DEFAULT_SEARCH_PARAMS);
   const activeCitySearchParam = getSearchParam<SearchParams, keyof SearchParams>(searchParams, 'activeCity', DEFAULT_CITY);
 
@@ -32,7 +32,7 @@ function MainPage(): JSX.Element {
         activeCitySearchParam={activeCitySearchParam}
         tabSection={
           <div className='tabs'>
-            <section className='locations container'>
+            <section className='locations container' data-testid='main-page-filter-container'>
               <LocationsFilterList
                 allFilterItems={ALL_CITIES_NAMES}
               />

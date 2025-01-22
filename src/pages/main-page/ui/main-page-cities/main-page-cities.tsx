@@ -67,7 +67,7 @@ export function MainPageCities({ offers, className, activeLocation }: MainPageCi
             />
           </section>
           :
-          <NoPlacesSection />}
+          <NoPlacesSection location={activeLocation}/>}
         <div className='cities__right-section'>
           {
             (isOffersExists)

@@ -5,6 +5,7 @@ import {
   createMainOfferInfoMock,
   createOfferHostMock,
   createUnionOfferInfoMock,
+  createOffersMockByLocation
 } from './offer-mock-creators';
 
 export {
@@ -14,4 +15,5 @@ export {
   createMainOfferInfoMock,
   createOfferHostMock,
   createUnionOfferInfoMock,
+  createOffersMockByLocation
 };

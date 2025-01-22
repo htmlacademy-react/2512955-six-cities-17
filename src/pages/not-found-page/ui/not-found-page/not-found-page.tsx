@@ -7,7 +7,7 @@ export function NotFoundPage(): JSX.Element {
       <Layout.Header />
       <Layout.Content>
         <div className='container' style={DEFAULT_STYLES_CONTAINER}>
-          <img src='img/not-found.svg' style={DEFAULT_STYLES_IMAGE} />
+          <img src='img/not-found.svg' style={DEFAULT_STYLES_IMAGE} alt='Not found icon' />
           <h1>
             404 Page not found!
           </h1>

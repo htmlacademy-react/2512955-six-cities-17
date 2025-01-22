@@ -13,7 +13,7 @@ export function FavoritesPageContent(): JSX.Element {
 
   return (
     <Layout.Content className={contentClassName}>
-      <div className='page__favorites-container container'>
+      <div className='page__favorites-container container' data-testid='favorites-page-content'>
         {isOffersExists &&
           <section className='favorites'>
             <h1 className='favorites__title'>Saved listing</h1>

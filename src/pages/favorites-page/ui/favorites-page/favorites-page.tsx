@@ -4,7 +4,7 @@ import { FavoritesPageContent } from '../favorites-page-content';
 
 const PAGE_TITLE = '6 cities: favorites';
 
-function FavoritesPage(): JSX.Element {
+export function FavoritesPage(): JSX.Element {
   return (
     <Layout>
       <Layout.Header />

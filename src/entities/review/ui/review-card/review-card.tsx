@@ -2,6 +2,7 @@ import type { Review } from '@entities/review/model/types';
 import type { ElementSize } from '@shared/types';
 import RatingInStars from '@shared/ui/rating-in-stars';
 import { Avatar } from '@shared/ui/avatar';
+import { getDateDescription } from '@entities/review/lib/get-date-description';
 
 type ReviewCardPros = {
   review: Review;
@@ -10,19 +11,6 @@ type ReviewCardPros = {
 const AVATAR_SIZE: ElementSize = {
   height: 54,
   width: 54
-};
-
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-  dateStyle: 'long'
-});
-
-const getDateDescription = (date: number): string => {
-  let result = dateFormatter.format(date);
-  const matches = /\s\d{2},/g.exec(dateFormatter.format(date));
-  matches?.forEach((current) => {
-    result = result.replace(current, '');
-  });
-  return result;
 };
 
 export function ReviewCard({ review }: ReviewCardPros) {
@@ -46,7 +34,7 @@ export function ReviewCard({ review }: ReviewCardPros) {
         <p className='reviews__text'>
           {otherInfo.comment}
         </p>
-        <time className='reviews__time' dateTime={otherInfo.date}>{getDateDescription(Date.parse(otherInfo.date))}</time>
+        <time className='reviews__time' dateTime={otherInfo.date}>{getDateDescription(Date.parse('2025-01-01T21:00:00.056Z'))}</time>
       </div>
     </>
   );

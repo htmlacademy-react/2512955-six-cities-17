@@ -14,7 +14,7 @@ export function Header({ className, children, showUserNavigation = true }: Heade
   });
 
   return (
-    <header className={headerClassName}>
+    <header className={headerClassName} data-testid='page-layout-header'>
       <div className='container'>
         <div className='header__wrapper'>
           <Logo />

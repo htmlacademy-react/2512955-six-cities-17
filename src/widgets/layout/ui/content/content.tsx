@@ -10,7 +10,7 @@ export function Content({ children, className }: ContentProps): JSX.Element {
   });
 
   return (
-    <main className={contentClassName}>
+    <main className={contentClassName} data-testid='page-layout-content'>
       {children}
     </main>
   );

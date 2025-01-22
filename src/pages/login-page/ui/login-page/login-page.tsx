@@ -9,7 +9,7 @@ import { LocationLink } from '../location-link';
 const PAGE_TITLE = '6 cities: authorization';
 const DEFAULT_CITY: OfferCityName = 'Amsterdam';
 
-function LoginPage(): JSX.Element {
+export function LoginPage(): JSX.Element {
   const { login } = useAuthorization();
   return (
     <Layout className='page--gray page--login'>

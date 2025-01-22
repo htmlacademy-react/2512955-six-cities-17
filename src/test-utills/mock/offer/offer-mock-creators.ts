@@ -6,6 +6,7 @@ import type {
   MainOfferInfo,
   City,
   OfferHost,
+  OfferCityName,
 } from '@entities/offer';
 
 export const createLocationMock = (): Location => ({
@@ -75,3 +76,11 @@ export const createFullOfferInfoMock = (offerId?: string): FullOfferInfo => ({
   isPremium: faker.datatype.boolean(),
   location: createLocationMock(),
 });
+
+export const createOffersMockByLocation = (activeLocation: OfferCityName, offersCount: number) => {
+  const source = faker.datatype.array(offersCount).map(() => createMainOfferInfoMock());
+  source.forEach((current) => {
+    current.city.name = activeLocation;
+  });
+  return source;
+};
