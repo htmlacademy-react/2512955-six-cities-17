@@ -13,11 +13,11 @@ export function OfferReviews({ onReviewSubmit, reviews }: OfferReviewsProps): Re
   const { authorizationStatus } = useAuthorization();
 
   return (
-    <section className='offer__reviews reviews'>
+    <section className='offer__reviews reviews' data-testid='offers-reviews-section'>
       <h2 className='reviews__title'>Reviews &middot; <span className='reviews__amount'>{reviews.length}</span></h2>
       <ul className='reviews__list'>
         {reviews.map((current) => (
-          <li key={current.id} className='reviews__item'>
+          <li key={current.id} className='reviews__item' data-testid='reviews-list-item'>
             <ReviewCard review={current} />
           </li>
         ))}

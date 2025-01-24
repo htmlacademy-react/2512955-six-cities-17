@@ -22,15 +22,18 @@ describe('Component NotFoundPage', () => {
         authorization: {
           error: null,
           status: AuthorizationStatusEnum.Authorized,
-          user: createUserMock()
+          user: createUserMock(),
+          loading: false,
         },
         offersList: {
           error: null,
-          offers: createOffersMockByLocation(activeLocation, 3)
+          offers: createOffersMockByLocation(activeLocation, 3),
+          loading: false,
         },
         favoritesOffers: {
           error: null,
-          offers: []
+          offers: [],
+          loading: false,
         },
         activeLocation: {
           location: activeLocation

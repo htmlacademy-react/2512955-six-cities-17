@@ -28,7 +28,7 @@ export function OfferInfo({ offer, children, onFavoritesButtonClick, leafletMap 
   );
 
   return (
-    <section className='offer'>
+    <section className='offer' data-testid='offer-info-section'>
       <div className='offer__gallery-container container'>
         <ImageGallery
           className='offer__gallery'

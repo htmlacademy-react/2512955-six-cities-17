@@ -24,7 +24,7 @@ export function LocationsFilterList({ allFilterItems, onFilterChange }: Location
     [activeLocation, changeActiveLocation, onFilterChange]
   );
   return (
-    <ul className='locations__list tabs__list'>
+    <ul className='locations__list tabs__list' data-testid='locations-filter-container'>
       {allFilterItems.map((current) => (
         <LocationsFilterItem filterValue={current} onLinkClick={linkClickHandler} isActive={current === activeLocation} key={`city-filter-${current}`} />
       ))}

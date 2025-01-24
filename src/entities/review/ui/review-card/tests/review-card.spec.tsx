@@ -9,13 +9,16 @@ vi.mock('@entities/review/lib/get-date-description', () => ({
 }));
 
 describe('Component ReviewCard', () => {
+  const reviewContainerTestId = 'review-rating-container';
+  const reviewAvatarTestId = 'review-avatar';
+
   it('should correct render', () => {
     const reviewMock = createReviewMock();
 
     const screen = render(<ReviewCard review={reviewMock} />);
 
-    expect(screen.container.querySelector('.reviews__user.user')).toBeInTheDocument();
-    expect(screen.container.querySelector('.reviews__rating.rating')).toBeInTheDocument();
+    expect(screen.getByTestId(reviewAvatarTestId)).toBeInTheDocument();
+    expect(screen.getByTestId(reviewContainerTestId)).toBeInTheDocument();
     expect(screen.getByText(reviewMock.comment)).toBeInTheDocument();
     expect(screen.getByText('January 1')).toBeInTheDocument();
   });

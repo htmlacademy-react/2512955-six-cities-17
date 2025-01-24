@@ -9,5 +9,6 @@ export const DEFAULT_LOADING_ERROR: StateError = {
 
 export const STATE_TEMPLATE: OfferListState = {
   error: null,
-  offers: []
+  offers: [],
+  loading: false
 };

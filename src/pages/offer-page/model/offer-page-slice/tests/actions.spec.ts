@@ -21,7 +21,7 @@ describe('Async offer page actions', () => {
   const reviewsUrl = generatePath(ServerRoutesEnum.Reviews, { offerId });
 
   beforeEach(() => {
-    store = mockStoreCreator({ fullScreanOffer: { error: null, comments: [], nearOffers: [], offer: null } });
+    store = mockStoreCreator({ fullScreanOffer: { error: null, comments: [], nearOffers: [], offer: null, loading: false } });
   });
 
   describe('get offer data action', () => {

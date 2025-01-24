@@ -17,11 +17,13 @@ describe('Component FavoritesPage', () => {
         authorization: {
           error: null,
           status: AuthorizationStatusEnum.Authorized,
-          user: createUserMock()
+          user: createUserMock(),
+          loading: false,
         },
         favoritesOffers: {
           error: null,
-          offers: Array.from({ length: 3 }).map(() => createMainOfferInfoMock())
+          offers: Array.from({ length: 3 }).map(() => createMainOfferInfoMock()),
+          loading: false,
         }
       },
       [],

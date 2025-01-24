@@ -13,7 +13,7 @@ describe('Async "fetchOffersList" action', () => {
   let store: ReturnType<typeof mockStoreCreator>;
 
   beforeEach(() => {
-    store = mockStoreCreator({offersList: {error: null, offers: []}});
+    store = mockStoreCreator({offersList: {error: null, offers: [], loading: false}});
   });
 
   it('should dispatch all necessary actions if resolved', async () => {

@@ -22,8 +22,7 @@ export function OfferMainInfoSection({ onFavoriteButtonClick, children }: OfferM
     [offer?.location.latitude, offer?.location.longitude, offer?.title, offer?.location.zoom]
   );
 
-  return offer
-    ?
+  return !!offer && (
     <OfferInfo
       offer={offer}
       onFavoritesButtonClick={onFavoriteButtonClick}
@@ -31,6 +30,5 @@ export function OfferMainInfoSection({ onFavoriteButtonClick, children }: OfferM
     >
       {children}
     </OfferInfo>
-    :
-    null;
+  );
 }

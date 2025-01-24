@@ -25,15 +25,18 @@ describe('Component MainPage', () => {
         authorization: {
           error: null,
           status: AuthorizationStatusEnum.Authorized,
-          user: createUserMock()
+          user: createUserMock(),
+          loading: false,
         },
         offersList: {
           error: null,
-          offers: createOffersMockByLocation(activeLocation, offersCount)
+          offers: createOffersMockByLocation(activeLocation, offersCount),
+          loading: false,
         },
         favoritesOffers: {
           error: null,
-          offers: []
+          offers: [],
+          loading: false,
         },
         activeLocation: {
           location: activeLocation

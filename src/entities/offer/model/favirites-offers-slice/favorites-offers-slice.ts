@@ -22,10 +22,12 @@ const favoritesOffersSlice = createSlice({
     builder.addCase(fetchFavoritesOffersList.pending, (state) => {
       state.error = null;
       state.offers = [];
+      state.loading = true;
     });
     builder.addCase(fetchFavoritesOffersList.fulfilled, (state, action) => {
       state.error = null;
       state.offers = action.payload;
+      state.loading = false;
     });
     builder.addCase(fetchFavoritesOffersList.rejected, (state, action) => {
       state.offers = [];
@@ -33,6 +35,7 @@ const favoritesOffersSlice = createSlice({
         code: action.error.code ?? DEFAULT_LOADING_ERROR.code,
         message: action.error.message ?? DEFAULT_LOADING_ERROR.message
       };
+      state.loading = false;
     });
   },
 });

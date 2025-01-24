@@ -24,11 +24,13 @@ describe('Component MainPageCities', () => {
         authorization: {
           error: null,
           status: AuthorizationStatusEnum.Authorized,
-          user: createUserMock()
+          user: createUserMock(),
+          loading: false,
         },
         offersList: {
           error: null,
-          offers: offersMock
+          offers: offersMock,
+          loading: false,
         },
         activeLocation: {
           location: activeLocation
@@ -61,11 +63,13 @@ describe('Component MainPageCities', () => {
         authorization: {
           error: null,
           status: AuthorizationStatusEnum.Authorized,
-          user: createUserMock()
+          user: createUserMock(),
+          loading: false,
         },
         offersList: {
           error: null,
-          offers: []
+          offers: [],
+          loading: false,
         },
         activeLocation: {
           location: activeLocation

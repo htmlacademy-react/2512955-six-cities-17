@@ -34,11 +34,13 @@ describe('Component MainPageContent', () => {
         authorization: {
           error: null,
           status: AuthorizationStatusEnum.Authorized,
-          user: createUserMock()
+          user: createUserMock(),
+          loading: false,
         },
         offersList: {
           error: null,
-          offers: createOffersMock()
+          offers: createOffersMock(),
+          loading: false,
         },
         activeLocation: {
           location: activeLocation

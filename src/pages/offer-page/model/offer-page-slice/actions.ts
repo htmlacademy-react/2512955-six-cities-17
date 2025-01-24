@@ -28,6 +28,7 @@ export const fetchOfferPageAction = createAsyncThunk<
       comments: [],
       nearOffers: [],
       error: null,
+      loading: false,
     };
 
     try {

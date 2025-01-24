@@ -19,7 +19,7 @@ export function Header({ className, children, showUserNavigation = true }: Heade
         <div className='header__wrapper'>
           <Logo />
           {showUserNavigation &&
-            <nav className='header__nav'>
+            <nav className='header__nav' data-testid='header-user-navigation'>
               <UserNavigationList />
             </nav>}
           {children}

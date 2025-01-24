@@ -12,6 +12,8 @@ vi.mock('@features/locations-filter-list/lib/use-active-location', () => ({
 
 describe('Component LocationsFilterList', () => {
   const allLocations: OfferCityName[] = ['Paris', 'Cologne'];
+  const filterContainerTestId = 'locations-filter-container';
+  const filterItemTestId = 'locations-filter-item';
 
   it('should correct render', () => {
     const onFilterChangeMock = vi.fn();
@@ -24,7 +26,7 @@ describe('Component LocationsFilterList', () => {
 
     const screen = render(component);
 
-    expect(screen.container.querySelector('.locations__list.tabs__list')).not.toBeNull();
-    expect(screen.container.querySelectorAll('.locations__item').length).toBe(allLocations.length);
+    expect(screen.getByTestId(filterContainerTestId)).toBeInTheDocument();
+    expect(screen.queryAllByTestId(filterItemTestId).length).toBe(allLocations.length);
   });
 });

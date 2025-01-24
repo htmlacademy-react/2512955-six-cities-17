@@ -3,6 +3,7 @@ import {
   offerDataSelector,
   offerNearsSelector,
   offerReviewsSelector,
+  offerLoadingSelector,
   SliceState
 } from '../selectors';
 import { createFullOfferInfoMock, createMainOfferInfoMock } from '@test-utills/mock/offer';
@@ -13,9 +14,18 @@ describe('Offer page slice selectors', () => {
       comments: [createReviewMock()],
       nearOffers: [createMainOfferInfoMock()],
       offer: createFullOfferInfoMock(),
-      error: null
+      error: null,
+      loading: false
     }
   };
+
+  describe('Offer loading selector', () => {
+    it('should return correct state', () => {
+      const result = offerLoadingSelector(state);
+
+      expect(result).toEqual(state.fullScreanOffer.loading);
+    });
+  });
 
   describe('Offer data selector', () => {
     it('should return correct state', () => {

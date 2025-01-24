@@ -10,7 +10,5 @@ type OfferReviewsSectionProps = {
 export function OfferReviewsSection({ onReviewSubmit }: OfferReviewsSectionProps): ReactNode {
   const reviews = useOfferReviewsData();
 
-  return reviews.length > 0
-    ? <OfferReviews onReviewSubmit={onReviewSubmit} reviews={reviews} />
-    : null;
+  return !!reviews?.length && <OfferReviews onReviewSubmit={onReviewSubmit} reviews={reviews} />;
 }

@@ -77,7 +77,7 @@ export function OfferCard({ offer, className, onActivateOffer, viewType = 'main'
           </button>
 
         </div>
-        <div className='place-card__rating rating'>
+        <div className='place-card__rating rating' data-testid='rating-container'>
           <RatingInStars rating={offer.rating} className='place-card__stars rating__stars' />
         </div>
         <h2 className='place-card__name'>
