@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@shared/lib/store';
 
-type LoaderSliceState = {
+export type LoaderSliceState = {
   loading: boolean;
 }
 
-const initialState: LoaderSliceState = {
+export const initialState: LoaderSliceState = {
   loading: false
 };
 
@@ -21,4 +21,4 @@ const globalLoaderSlice = createSlice({
 
 export const globalLoaderReducer = globalLoaderSlice.reducer;
 export const { setLoading } = globalLoaderSlice.actions;
-export const getLoaderSelector = (state: RootState) => state.loading.loading;
+export const getLoaderSelector = (state: Pick<RootState, 'loading'>) => state.loading.loading;

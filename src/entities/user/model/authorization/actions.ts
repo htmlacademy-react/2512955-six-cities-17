@@ -66,10 +66,10 @@ export const logoutAction = createAsyncThunk<
 >('authorization/logout',
   async (_, { extra: apiInstance, dispatch }) => {
     await apiInstance.delete(ServerRoutesEnum.Logout);
+    tokenServiceInstance.authorizationToken.clear();
     dispatch(redirectToRouteAction({
       route: RoutesEnum.Login,
       replace: true
     }));
-    tokenServiceInstance.authorizationToken.clear();
   }
 );

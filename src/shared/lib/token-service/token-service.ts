@@ -3,7 +3,7 @@ import { LocalStorageToken } from './token';
 
 const AUTHORIZATION_TOKEN_NAME = 'AUTHORIZATION_TOKEN';
 
-class TokenService {
+export class TokenService {
   private authorizationTokenInstance: IToken<string>;
 
   constructor() {

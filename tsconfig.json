@@ -28,6 +28,7 @@
       "@pages/*": ["pages/*"],
       "@shared/*": ["shared/*"],
       "@widgets/*": ["widgets/*"],
+      "@test-utills/*": ["test-utills/*"],
     }
   },
   "include": ["src", "vite.config.ts"],

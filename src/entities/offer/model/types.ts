@@ -1,4 +1,4 @@
-import type { Location } from '@shared/types';
+import type { BaseFetchedState, Location } from '@shared/types';
 
 export type OfferType = 'apartment' | 'room' | 'house' | 'hotel';
 
@@ -38,4 +38,10 @@ export interface FullOfferInfo extends BaseOfferInfo {
   host: OfferHost;
   images: string[];
   maxAdults: number;
+}
+
+export type UnionOfferInfo = MainOfferInfo & FullOfferInfo;
+
+export interface OfferListState extends BaseFetchedState {
+  offers: MainOfferInfo[];
 }

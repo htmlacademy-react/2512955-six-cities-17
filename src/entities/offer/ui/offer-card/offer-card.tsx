@@ -46,7 +46,7 @@ export function OfferCard({ offer, className, onActivateOffer, viewType = 'main'
   };
 
   return (
-    <article className={articleClassName} onMouseOver={onActivateOffer && mouseOverArticleHandle}>
+    <article className={articleClassName} onMouseOver={onActivateOffer && mouseOverArticleHandle} data-testid='offer-card-component'>
       {offer.isPremium && <PremiumMark />}
       <div className={imageWrapperClassName}>
         <ImagedLink
@@ -75,7 +75,6 @@ export function OfferCard({ offer, className, onActivateOffer, viewType = 'main'
             </svg>
             <span className='visually-hidden'>To bookmarks</span>
           </button>
-
 
         </div>
         <div className='place-card__rating rating'>

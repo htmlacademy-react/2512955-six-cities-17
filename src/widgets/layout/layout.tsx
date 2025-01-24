@@ -19,7 +19,7 @@ export const Layout: FC<LayoutProps> & LayoutExtensions = ({ className, children
   });
 
   return (
-    <div className={layoutClassName}>
+    <div className={layoutClassName} data-testid='page-layout'>
       {children}
     </div>
   );

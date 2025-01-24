@@ -3,7 +3,7 @@ import { createApiInstance, responseErrorInterceptor, requestHeadersInterceptor 
 import { DEFAULT_API_SETTINGS } from '../config/api';
 import { rootReducer } from './reducer';
 import { createRedirectMiddleware } from '@shared/lib/store';
-import { browserHistory } from '@app/routers';
+import { browserHistory } from '@shared/ui/history-router';
 import { createAddToFavoriteMiddleware } from '@features/add-offer-to-favorites';
 import { setLoading as setLoadingAction } from '@shared/model/global-loader-slice';
 import { updateFavoriteOffer, updateMainOffer } from '@entities/offer';

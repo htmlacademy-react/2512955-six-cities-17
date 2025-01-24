@@ -50,7 +50,7 @@ export function OfferSortingSelect(): JSX.Element {
           <use xlinkHref='#icon-arrow-select' />
         </svg>
       </span>
-      <ul className={selectOptionsListClassName}>
+      <ul className={selectOptionsListClassName} data-testid='sorting-list-container'>
         {SUPPORTED_SORTING_TYPES.map((current, index) => (
           <li
             // eslint-disable-next-line react/no-array-index-key
@@ -58,6 +58,7 @@ export function OfferSortingSelect(): JSX.Element {
             className={classNames('places__option', {'places__option--active': activeSotingType === current})}
             tabIndex={0}
             onClick={() => changeActiveSortType(current)}
+            data-testid='sorting-list-item'
           >
             {sortTypeToCaptionMap.get(current)}
           </li>

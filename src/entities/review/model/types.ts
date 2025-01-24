@@ -1,6 +1,6 @@
 import { RatingValue } from '@shared/types';
 
-type ReviewAuthor = {
+export type ReviewAuthor = {
   name: string;
   avatarUrl: string;
   isPro: boolean;

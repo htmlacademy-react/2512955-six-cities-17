@@ -1,56 +1,58 @@
-import { useFavoritesOffers, useOffersList } from '@entities/offer';
+import { useFavoritesOffersListFetch, useMainOffersListFetch } from '@entities/offer';
 import { useAuthorization } from '@entities/user';
 import { useGlobalLoader } from '@shared/hooks/use-global-loader';
 import { AuthorizationStatusEnum } from '@shared/types';
 import { useEffect } from 'react';
 
 export function useStartup() {
-  const { setLoading } = useGlobalLoader();
-  const { fetchList, loading } = useOffersList();
-  const { loading: favoritesLoading, fetchFavoritesOffers } = useFavoritesOffers();
-  const { loading: authorizationQueryLoading, checkAuthorization, authorizationStatus } = useAuthorization();
+  const setLoading = useGlobalLoader();
+  const { checkAuthorization, authorizationStatus } = useAuthorization();
+  const fetchMainOffers = useMainOffersListFetch();
+  const fetchFavoritesOffers = useFavoritesOffersListFetch();
 
   useEffect(
     () => {
       let componentIsRendered = false;
-      if (!componentIsRendered) {
-        setLoading(loading || authorizationQueryLoading || favoritesLoading);
-      }
+
+      const runAuthorizationCheck = async () => {
+        if (!componentIsRendered) {
+          setLoading(true);
+          await checkAuthorization();
+          setLoading(false);
+        }
+      };
+
+      runAuthorizationCheck();
 
       return () => {
         componentIsRendered = true;
       };
     },
-    [loading, authorizationQueryLoading, setLoading, favoritesLoading]
-  );
-
-  useEffect(
-    () => {
-      let componentIsRendered = false;
-      if (!componentIsRendered) {
-        checkAuthorization();
-      }
-
-      return () => {
-        componentIsRendered = true;
-      };
-    },
-    [fetchList, checkAuthorization]
+    [checkAuthorization, setLoading]
   );
 
   useEffect(
     () => {
       let componentIsRendered = false;
 
-      if (!componentIsRendered && authorizationStatus !== AuthorizationStatusEnum.Unknown) {
-        fetchList();
-      }
+      const fetchOffersData = async () => {
+        if (!componentIsRendered) {
+          setLoading(true);
+          await Promise.all([
+            authorizationStatus !== AuthorizationStatusEnum.Unknown ? fetchMainOffers() : Promise.resolve(),
+            authorizationStatus === AuthorizationStatusEnum.Authorized ? fetchFavoritesOffers() : Promise.resolve()
+          ]);
+          setLoading(false);
+        }
+      };
+
+      fetchOffersData();
 
       return () => {
         componentIsRendered = true;
       };
     },
-    [authorizationStatus, fetchList]
+    [authorizationStatus, fetchFavoritesOffers, fetchMainOffers, setLoading]
   );
 
   useEffect(

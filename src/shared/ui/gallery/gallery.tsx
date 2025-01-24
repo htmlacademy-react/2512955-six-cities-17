@@ -8,7 +8,7 @@ type ImageGalleryProps = Classed<{
 
 export function ImageGallery({className, renderItem, items}: ImageGalleryProps) {
   return (
-    <div className={className}>
+    <div className={className} data-testid='image-gallery-container'>
       {items.map((current, index) => renderItem({src: current, alt: `Gallery item №${index}`, index}))}
     </div>
   );

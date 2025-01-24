@@ -4,7 +4,7 @@ import { useValidate, ValidationConfig } from '@shared/hooks/use-validation';
 import classNames from 'classnames';
 
 type LoginFormProps = {
-  onSubmit: (data: AuthorizationData) => void;
+  onSubmit: (data: AuthorizationData) => Promise<void>;
 }
 
 const initialFormValue: AuthorizationData = {

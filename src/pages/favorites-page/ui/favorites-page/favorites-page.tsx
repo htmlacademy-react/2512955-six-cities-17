@@ -1,32 +1,14 @@
 import Layout from '@widgets/layout';
-import NoPlacesSection from '../no-places-section';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
-import classNames from 'classnames';
-import FavoritesOffersList from '@features/favorites-offers-list';
-import { useFavoritesOffers } from '@entities/offer';
+import { FavoritesPageContent } from '../favorites-page-content';
 
 const PAGE_TITLE = '6 cities: favorites';
 
-function FavoritesPage(): JSX.Element {
-  const { favoritesOffers: offers } = useFavoritesOffers();
-  const isOffersExists = offers.length > 0;
-  const contentClassName = classNames('page__main--favorites', {
-    ['page__main--favorites-empty']: !isOffersExists
-  });
-
+export function FavoritesPage(): JSX.Element {
   return (
     <Layout>
       <Layout.Header />
-      <Layout.Content className={contentClassName}>
-        <div className='page__favorites-container container'>
-          {isOffersExists &&
-            <section className='favorites'>
-              <h1 className='favorites__title'>Saved listing</h1>
-              <FavoritesOffersList offers={offers} />
-            </section>}
-          {!isOffersExists && <NoPlacesSection />}
-        </div>
-      </Layout.Content>
+      <FavoritesPageContent />
       <Layout.Footer />
     </Layout>
   );

@@ -1,11 +1,15 @@
 import { authorizationSliceReducer } from './authorization-slice';
 import { checkAuthorizationAction, loginAction, logoutAction } from './actions';
-import { authorizationSelector } from './selectors';
+import {
+  authorizationStatusSelector,
+  authorizedUserSelector
+} from './selectors';
 
 export {
   authorizationSliceReducer,
   checkAuthorizationAction,
   loginAction,
-  authorizationSelector,
+  authorizationStatusSelector,
+  authorizedUserSelector,
   logoutAction
 };

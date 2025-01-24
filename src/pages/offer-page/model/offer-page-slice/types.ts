@@ -1,9 +1,9 @@
 import type { FullOfferInfo, MainOfferInfo } from '@entities/offer';
 import type { Review } from '@entities/review';
-import type { Nullable } from '@shared/types';
+import type { BaseFetchedState, Nullable } from '@shared/types';
 
-export type OfferPageState = {
+export interface OfferPageState extends BaseFetchedState {
   offer: Nullable<FullOfferInfo>;
   comments: Review[];
   nearOffers: MainOfferInfo[];
-};
+}

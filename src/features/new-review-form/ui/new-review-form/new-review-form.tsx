@@ -9,7 +9,7 @@ import { RatingInput } from '../rating-input';
 import { RatingValue } from '@shared/types';
 
 type NewReviewFormProps = {
-  onSubmit: (reviewData: NewReviewData) => void;
+  onSubmit: (reviewData: NewReviewData) => Promise<void>;
 }
 
 const validationScheme: ValidationConfig<NewReviewData> = {
@@ -31,9 +31,6 @@ const validationScheme: ValidationConfig<NewReviewData> = {
   ]
 };
 
-/**
- * @todo СДЕЛАТЬ ВАЛИДАЦИИ И САБМИТ!!
- */
 export function NewReviewForm({ onSubmit }: NewReviewFormProps): JSX.Element {
   const {
     getFieldValue,

@@ -5,13 +5,15 @@ import type {
   OfferType,
   FullOfferInfo,
   OfferHost,
-  BaseOfferInfo
+  BaseOfferInfo,
+  UnionOfferInfo,
 } from './model/types';
 import OfferCard, { type ViewType } from './ui/offer-card';
 import { offersListReducer, updateOffer as updateMainOffer } from './model/offer-info-slice';
 import { favoritesOffersReducer, updateOffer as updateFavoriteOffer } from './model/favirites-offers-slice';
-import { useOffersList } from './lib/use-offers-list';
-import { useFavoritesOffers } from './lib/use-favorites-offers';
+import { useFavoritesOffersListData, useMainOffersListData } from './lib/use-offers-list-data';
+import { useMainOffersListFetch, useFavoritesOffersListFetch } from './lib/use-offers-list-fetch';
+import { unionToFullOfferInfoAdapter, unionToMainOfferInfoAdapter } from './lib/adapters/union-offer-info-adapters';
 
 export type {
   MainOfferInfo,
@@ -21,16 +23,21 @@ export type {
   ViewType,
   FullOfferInfo,
   OfferHost,
-  BaseOfferInfo
+  BaseOfferInfo,
+  UnionOfferInfo
 };
 
 export {
   offersListReducer,
-  useOffersList,
-  useFavoritesOffers,
+  useFavoritesOffersListData,
+  useMainOffersListData,
+  useMainOffersListFetch,
+  useFavoritesOffersListFetch,
   favoritesOffersReducer,
   updateMainOffer,
-  updateFavoriteOffer
+  updateFavoriteOffer,
+  unionToFullOfferInfoAdapter,
+  unionToMainOfferInfoAdapter
 };
 
 export default OfferCard;

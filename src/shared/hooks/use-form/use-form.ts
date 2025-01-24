@@ -1,9 +1,6 @@
 import { useCallback, useState } from 'react';
 import type { FormState, UseFormReturn } from './types';
 
-/**
- * @todo Добавить обработку ошибок сабмита
- */
 export function useForm<TObjectValue extends Record<string, unknown>>(initialValue: TObjectValue): UseFormReturn<TObjectValue, keyof TObjectValue> {
   const [formState, setFormState] = useState<FormState<TObjectValue>>({ values: initialValue, isSubmitting: false });
 

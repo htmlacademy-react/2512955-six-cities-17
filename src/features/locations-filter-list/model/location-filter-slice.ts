@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { OfferCityName } from '@entities/offer';
 
-type SliceState = {
+export type SliceState = {
   location: OfferCityName;
 }
 

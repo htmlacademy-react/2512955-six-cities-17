@@ -4,13 +4,13 @@ import { useActiveLocation } from '@features/locations-filter-list/lib/use-activ
 import { useCallback } from 'react';
 
 type LocationsFilterListProps = {
-  activeFilter: OfferCityName;
   allFilterItems: OfferCityName[];
   onFilterChange?: (filterValue: OfferCityName) => void;
 }
 
-export function LocationsFilterList({ activeFilter, allFilterItems, onFilterChange }: LocationsFilterListProps): JSX.Element {
-  const { activeLocation, changeActiveLocation } = useActiveLocation(activeFilter);
+export function LocationsFilterList({ allFilterItems, onFilterChange }: LocationsFilterListProps): JSX.Element {
+  const { activeLocation, changeActiveLocation } = useActiveLocation();
+
   const linkClickHandler = useCallback(
     (filterValue: OfferCityName) => {
       if (filterValue !== activeLocation) {
@@ -26,7 +26,7 @@ export function LocationsFilterList({ activeFilter, allFilterItems, onFilterChan
   return (
     <ul className='locations__list tabs__list'>
       {allFilterItems.map((current) => (
-        <LocationsFilterItem filterValue={current} onLinkClick={linkClickHandler} isActive={current === activeFilter} key={`city-filter-${current}`} />
+        <LocationsFilterItem filterValue={current} onLinkClick={linkClickHandler} isActive={current === activeLocation} key={`city-filter-${current}`} />
       ))}
     </ul>
   );

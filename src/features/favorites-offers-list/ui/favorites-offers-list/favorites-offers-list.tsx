@@ -1,8 +1,5 @@
 import type { MainOfferInfo, OfferCityName } from '@entities/offer';
 import FavoritesOffersGroup from '../favorites-offers-group';
-import { useNavigate } from 'react-router-dom';
-import { useAuthorization } from '@entities/user';
-import { AuthorizationStatusEnum, RoutesEnum } from '@shared/types';
 import { useAddToFavoriteOffer } from '@features/add-offer-to-favorites';
 
 type FavoritesOffersListProps = {
@@ -12,8 +9,6 @@ type FavoritesOffersListProps = {
 export function FavoritesOffersList({ offers }: FavoritesOffersListProps): JSX.Element {
   const cities = Array.from(new Set(offers.map((current) => current.city.name)));
 
-  const navigate = useNavigate();
-  const { authorizationStatus } = useAuthorization();
   const addToFavorite = useAddToFavoriteOffer();
 
   const groupedOffers: Record<string, MainOfferInfo[]> | null = cities.reduce((accum, current) => ({
@@ -22,19 +17,12 @@ export function FavoritesOffersList({ offers }: FavoritesOffersListProps): JSX.E
   }), {});
 
   const favoriteButtonClickHandler = (offerId: string, isFavorite: boolean) => {
-    if (authorizationStatus !== AuthorizationStatusEnum.Authorized) {
-      navigate(RoutesEnum.Login, {
-        replace: true
-      });
-      return;
-    }
-
     addToFavorite(offerId, isFavorite);
   };
 
 
   return (
-    <ul className='favorites__list'>
+    <ul className='favorites__list' data-testid='favorites-offers-list'>
       {Object.keys(groupedOffers).map((current) =>
         (
           <FavoritesOffersGroup

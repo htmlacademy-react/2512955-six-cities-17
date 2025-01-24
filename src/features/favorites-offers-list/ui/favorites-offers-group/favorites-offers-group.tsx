@@ -11,7 +11,7 @@ type FavoritesOffersGroupProps = {
 
 export function FavoritesOffersGroup({ items, groupName, onFavoriteButtonClick }: FavoritesOffersGroupProps): JSX.Element {
   return (
-    <li className='favorites__locations-items'>
+    <li className='favorites__locations-items' data-testid='favorites__locations-items'>
       <div className='favorites__locations locations locations--current'>
         <div className='locations__item'>
           <Link className='locations__item-link' to={`${RoutesEnum.Main}?activeCity=${groupName}`}>

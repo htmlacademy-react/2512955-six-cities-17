@@ -48,6 +48,6 @@ export function LeafletMap({ center, className, points, selectedPoint = null }: 
   );
 
   return (
-    <section ref={mapRef} className={mapClassName} />
+    <section ref={mapRef} className={mapClassName} data-testid='leaflet-map' />
   );
 }

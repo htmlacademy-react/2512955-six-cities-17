@@ -3,12 +3,12 @@ import { ActionCreator, Middleware, PayloadAction } from '@reduxjs/toolkit';
 import { changeFavoriteAction } from './change-favorite-action';
 import { ServerRoutesEnum } from '@shared/types';
 import { generatePath } from 'react-router-dom';
-import { MainOfferInfo } from '@entities/offer';
+import { UnionOfferInfo } from '@entities/offer';
 
 export const createAddToFavoriteMiddleware = (
   apiInstance: AxiosInstance,
   changeLoadingAction: ActionCreator<PayloadAction<boolean>>,
-  updateOfferActions: ActionCreator<PayloadAction<MainOfferInfo>>[]
+  updateOfferActions: ActionCreator<PayloadAction<UnionOfferInfo>>[]
 ) => {
   const middleware: Middleware = ({ dispatch }) =>
     (next) =>
@@ -21,7 +21,7 @@ export const createAddToFavoriteMiddleware = (
               status: `${Number(action.payload.isFavorite)}`
             });
 
-            const { data } = await apiInstance.post<MainOfferInfo>(changeFavoriteUrl);
+            const { data } = await apiInstance.post<UnionOfferInfo>(changeFavoriteUrl);
 
             updateOfferActions.forEach((current) => {
               dispatch(current(data));

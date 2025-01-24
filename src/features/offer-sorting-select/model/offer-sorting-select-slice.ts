@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { OfferSortType } from './types';
 import { RootState } from '@shared/lib/store';
 
-type SortingSliceState = {
+export type SortingSliceState = {
   priceSorting: OfferSortType;
 }
 
@@ -20,7 +20,9 @@ const offerSortingSlice = createSlice({
   }
 });
 
-export const getOfferSortingType = (state: RootState) => state.activeSorting.priceSorting;
+export type OfferSortingPick = Pick<RootState, 'activeSorting'>
+
+export const getOfferSortingType = (state: OfferSortingPick) => state.activeSorting.priceSorting;
 
 export const { changeSorting } = offerSortingSlice.actions;
 
