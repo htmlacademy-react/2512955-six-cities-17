@@ -9,6 +9,7 @@ const initialState: OfferPageState = {
   comments: [],
   nearOffers: [],
   offer: null,
+  loading: false,
 };
 
 const offerPageSlice = createSlice({
@@ -32,6 +33,7 @@ const offerPageSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(fetchOfferPageAction.pending, (state) => {
+      state.loading = true;
       state.error = null;
     });
     builder.addCase(fetchOfferPageAction.fulfilled, (state, action) => {
@@ -39,6 +41,7 @@ const offerPageSlice = createSlice({
       state.comments = action.payload.comments;
       state.nearOffers = action.payload.nearOffers;
       state.offer = action.payload.offer;
+      state.loading = false;
     });
     builder.addCase(fetchOfferPageAction.rejected, (state, action) => {
       state.offer = initialState.offer;
@@ -48,20 +51,24 @@ const offerPageSlice = createSlice({
         code: action.error?.code ?? DEFAULT_FETCH_OFFER_ERROR.code,
         message: action.error?.message ?? DEFAULT_FETCH_OFFER_ERROR.message
       };
+      state.loading = false;
     });
 
     builder.addCase(addNewReviewAction.pending, (state) => {
       state.error = null;
+      state.loading = true;
     });
     builder.addCase(addNewReviewAction.fulfilled, (state, action) => {
       state.error = null;
       state.comments.push(action.payload);
+      state.loading = false;
     });
     builder.addCase(addNewReviewAction.rejected, (state, action) => {
       state.error = {
         code: action.error?.code ?? DEFAULT_ADD_NEW_REVIEW_ERROR.code,
         message: action.error?.message ?? DEFAULT_ADD_NEW_REVIEW_ERROR.message
       };
+      state.loading = false;
     });
   },
 });

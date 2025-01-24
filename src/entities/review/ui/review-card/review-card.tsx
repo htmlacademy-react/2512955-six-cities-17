@@ -17,7 +17,7 @@ export function ReviewCard({ review }: ReviewCardPros) {
   const { user, ...otherInfo } = review;
   return (
     <>
-      <div className='reviews__user user'>
+      <div className='reviews__user user' data-testid='review-avatar'>
         <Avatar
           alt='Reviews avatar'
           avatarUrl={user.avatarUrl}
@@ -28,7 +28,7 @@ export function ReviewCard({ review }: ReviewCardPros) {
         />
       </div>
       <div className='reviews__info'>
-        <div className='reviews__rating rating'>
+        <div className='reviews__rating rating' data-testid='review-rating-container'>
           <RatingInStars className='reviews__stars rating__stars' rating={otherInfo.rating} />
         </div>
         <p className='reviews__text'>

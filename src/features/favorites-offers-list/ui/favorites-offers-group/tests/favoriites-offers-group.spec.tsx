@@ -13,6 +13,7 @@ const createPropsMock = (offersCount: number): ComponentProps<typeof FavoritesOf
 
 describe('Component FavoritesOffersGroup', () => {
   const offerGroupTestId = 'favorites__locations-items';
+  const offerCardTestId = 'offer-card-component';
 
   it('should correct render', () => {
     const offersCount = 2;
@@ -22,8 +23,6 @@ describe('Component FavoritesOffersGroup', () => {
 
     expect(screen.getByTestId(offerGroupTestId)).toBeInTheDocument();
     expect(screen.getByText(propsMock.groupName)).toBeInTheDocument();
-    expect(screen.container
-      .querySelector('.favorites__places')
-      ?.querySelectorAll('.place-card').length ?? 0).toBe(offersCount);
+    expect(screen.getAllByTestId(offerCardTestId).length).toBe(offersCount);
   });
 });

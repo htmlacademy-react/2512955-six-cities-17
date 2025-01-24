@@ -1,11 +1,9 @@
 import { useFavoritesOffersListFetch, useMainOffersListFetch } from '@entities/offer';
 import { useAuthorization } from '@entities/user';
-import { useGlobalLoader } from '@shared/hooks/use-global-loader';
 import { AuthorizationStatusEnum } from '@shared/types';
 import { useEffect } from 'react';
 
 export function useStartup() {
-  const setLoading = useGlobalLoader();
   const { checkAuthorization, authorizationStatus } = useAuthorization();
   const fetchMainOffers = useMainOffersListFetch();
   const fetchFavoritesOffers = useFavoritesOffersListFetch();
@@ -16,9 +14,7 @@ export function useStartup() {
 
       const runAuthorizationCheck = async () => {
         if (!componentIsRendered) {
-          setLoading(true);
           await checkAuthorization();
-          setLoading(false);
         }
       };
 
@@ -28,7 +24,7 @@ export function useStartup() {
         componentIsRendered = true;
       };
     },
-    [checkAuthorization, setLoading]
+    [checkAuthorization]
   );
 
   useEffect(
@@ -37,12 +33,10 @@ export function useStartup() {
 
       const fetchOffersData = async () => {
         if (!componentIsRendered) {
-          setLoading(true);
           await Promise.all([
             authorizationStatus !== AuthorizationStatusEnum.Unknown ? fetchMainOffers() : Promise.resolve(),
             authorizationStatus === AuthorizationStatusEnum.Authorized ? fetchFavoritesOffers() : Promise.resolve()
           ]);
-          setLoading(false);
         }
       };
 
@@ -52,7 +46,7 @@ export function useStartup() {
         componentIsRendered = true;
       };
     },
-    [authorizationStatus, fetchFavoritesOffers, fetchMainOffers, setLoading]
+    [authorizationStatus, fetchFavoritesOffers, fetchMainOffers]
   );
 
   useEffect(

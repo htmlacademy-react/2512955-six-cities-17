@@ -24,7 +24,8 @@ describe('Offer page reducer', () => {
       comments: [],
       error: null,
       nearOffers: [],
-      offer: null
+      offer: null,
+      loading: false
     };
   });
 
@@ -53,7 +54,8 @@ describe('Offer page reducer', () => {
         comments: [],
         error: null,
         nearOffers: [],
-        offer: adaptedOffer
+        offer: adaptedOffer,
+        loading: false
       };
 
       const result = offerPageReducer(initialSliceState, updateOffer(unionOffer));
@@ -72,7 +74,8 @@ describe('Offer page reducer', () => {
         comments: [],
         error: null,
         nearOffers: [adaptedOffer],
-        offer: null
+        offer: null,
+        loading: false,
       };
 
       const result = offerPageReducer(initialSliceState, updateOffer(unionOffer));
@@ -103,6 +106,7 @@ describe('Offer page reducer', () => {
       error: null,
       nearOffers: [],
       offer: null,
+      loading: true
     };
 
     const result = offerPageReducer(initialSliceState, fetchOfferPageAction.pending);
@@ -120,6 +124,7 @@ describe('Offer page reducer', () => {
       error: null,
       nearOffers: [nearOfferMock],
       offer: offer,
+      loading: false
     };
 
     const actionPayload = structuredClone(expectedState);
@@ -140,6 +145,7 @@ describe('Offer page reducer', () => {
       },
       nearOffers: [],
       offer: null,
+      loading: false
     };
 
     const result = offerPageReducer(initialSliceState, fetchOfferPageAction.rejected(errorMock, '', ''));
@@ -158,9 +164,25 @@ describe('Offer page reducer', () => {
       error: null,
       nearOffers: [],
       offer: null,
+      loading: true
     };
 
     const result = offerPageReducer(initialSliceState, addNewReviewAction.pending);
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should return correct state by "addNewReview.fullfilled" action', () => {
+    const reviewMock = createReviewMock();
+    const expectedState: OfferPageState = {
+      comments: [reviewMock],
+      error: null,
+      nearOffers: [],
+      offer: null,
+      loading: false
+    };
+
+    const result = offerPageReducer(initialSliceState, addNewReviewAction.fulfilled(reviewMock, '', { offerId: faker.datatype.uuid(), reviewData: createNewReviewDataMock() }));
 
     expect(result).toEqual(expectedState);
   });
@@ -173,6 +195,7 @@ describe('Offer page reducer', () => {
       error: null,
       nearOffers: [],
       offer: null,
+      loading: false
     };
 
     const result = offerPageReducer(initialSliceState, addNewReviewAction.fulfilled(newReviewMock, '', {

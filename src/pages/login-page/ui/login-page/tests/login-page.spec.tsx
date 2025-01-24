@@ -8,6 +8,7 @@ import { OfferCityName } from '@entities/offer';
 describe('Component LoginPage', () => {
   const headerTestId = 'page-layout-header';
   const contentTestId = 'page-layout-content';
+  const loginFormTestId = 'login-form-element';
   const activeLocation: OfferCityName = 'Amsterdam';
 
   it('should correct render', () => {
@@ -17,11 +18,13 @@ describe('Component LoginPage', () => {
         authorization: {
           error: null,
           status: AuthorizationStatusEnum.Unknown,
-          user: null
+          user: null,
+          loading: false,
         },
         favoritesOffers: {
           error: null,
-          offers: []
+          offers: [],
+          loading: false,
         },
         loading: {
           loading: false
@@ -36,9 +39,9 @@ describe('Component LoginPage', () => {
     expect(screen.getByTestId(headerTestId)).toBeInTheDocument();
     expect(screen.getByTestId(contentTestId)).toBeInTheDocument();
     expect(screen.getByText(/^sign in/i, {
-      selector: 'h1.login__title'
+      selector: 'h1'
     })).toBeInTheDocument();
-    expect(screen.container.querySelector('form.login__form')).not.toBeNull();
+    expect(screen.getByTestId(loginFormTestId)).toBeInTheDocument();
     expect(screen.getByText(activeLocation)).toBeInTheDocument();
   });
 });

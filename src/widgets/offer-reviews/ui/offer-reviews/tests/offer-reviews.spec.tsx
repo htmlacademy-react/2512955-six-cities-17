@@ -13,6 +13,9 @@ const createPropsMock = (reviewsCount: number): ComponentProps<typeof OfferRevie
 });
 
 describe('Component OfferReviews', () => {
+  const reviewFormTestId = 'new-review-form-element';
+  const reviewListItemTestId = 'reviews-list-item';
+
   it('should correct render by authorized user', () => {
     const reviewsCount = 3;
     const propsMock = createPropsMock(reviewsCount);
@@ -23,7 +26,8 @@ describe('Component OfferReviews', () => {
         authorization: {
           error: null,
           status: AuthorizationStatusEnum.Authorized,
-          user: createUserMock()
+          user: createUserMock(),
+          loading: false
         }
       }
     );
@@ -31,8 +35,8 @@ describe('Component OfferReviews', () => {
     const screen = render(wrappedComponent);
 
     expect(screen.getByText(reviewsCount)).toBeInTheDocument();
-    expect(screen.container.querySelector('.reviews__form.form')).not.toBeNull();
-    expect(screen.container.querySelectorAll('.reviews__item').length).toBe(reviewsCount);
+    expect(screen.getByTestId(reviewFormTestId)).toBeInTheDocument();
+    expect(screen.getAllByTestId(reviewListItemTestId).length).toBe(reviewsCount);
   });
 
   it('should correct render by no authorized user', () => {
@@ -45,7 +49,8 @@ describe('Component OfferReviews', () => {
         authorization: {
           error: null,
           status: AuthorizationStatusEnum.NoAuthorized,
-          user: null
+          user: null,
+          loading: false
         }
       }
     );
@@ -53,7 +58,7 @@ describe('Component OfferReviews', () => {
     const screen = render(wrappedComponent);
 
     expect(screen.getByText(reviewsCount)).toBeInTheDocument();
-    expect(screen.container.querySelector('.reviews__form.form')).toBeNull();
-    expect(screen.container.querySelectorAll('.reviews__item').length).toBe(reviewsCount);
+    expect(screen.queryByTestId(reviewFormTestId)).toBeNull();
+    expect(screen.getAllByTestId(reviewListItemTestId).length).toBe(reviewsCount);
   });
 });

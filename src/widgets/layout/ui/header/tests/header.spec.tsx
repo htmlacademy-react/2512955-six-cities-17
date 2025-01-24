@@ -7,6 +7,7 @@ import { AuthorizationStatusEnum } from '@shared/types';
 describe('Component Header', () => {
   let history: MemoryHistory;
   const testParagraphText = 'Test children paragraph';
+  const headerNavigationTestId = 'header-user-navigation';
 
   beforeEach(() => {
     history = createMemoryHistory();
@@ -20,10 +21,12 @@ describe('Component Header', () => {
           status: AuthorizationStatusEnum.NoAuthorized,
           user: null,
           error: null,
+          loading: false,
         },
         favoritesOffers: {
           offers: [],
           error: null,
+          loading: false,
         }
       },
       [],
@@ -32,7 +35,7 @@ describe('Component Header', () => {
 
     const screen = render(wrappedComponent);
 
-    expect(screen.container.querySelector('.header__nav')).not.toBeNull();
+    expect(screen.getByTestId(headerNavigationTestId)).toBeInTheDocument();
     expect(screen.getByText(testParagraphText)).toBeInTheDocument();
   });
 
@@ -44,10 +47,12 @@ describe('Component Header', () => {
           status: AuthorizationStatusEnum.NoAuthorized,
           user: null,
           error: null,
+          loading: false,
         },
         favoritesOffers: {
           offers: [],
           error: null,
+          loading: false,
         }
       },
       [],
@@ -56,7 +61,7 @@ describe('Component Header', () => {
 
     const screen = render(wrappedComponent);
 
-    expect(screen.container.querySelector('.header__nav')).toBeNull();
+    expect(screen.queryByTestId(headerNavigationTestId)).toBeNull();
     expect(screen.getByText(testParagraphText)).toBeInTheDocument();
   });
 });

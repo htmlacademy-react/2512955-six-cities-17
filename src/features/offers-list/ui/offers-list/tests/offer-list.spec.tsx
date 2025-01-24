@@ -15,6 +15,8 @@ const createPropsMock = (offersCount: number): ComponentProps<typeof OffersList>
 
 describe('Component OfferList', () => {
   let history: MemoryHistory;
+  const listContainerTestId = 'offer-list-container';
+  const listItemTestId = 'offer-card-component';
 
   beforeEach(() => {
     history = createMemoryHistory();
@@ -29,6 +31,7 @@ describe('Component OfferList', () => {
           error: null,
           status: AuthorizationStatusEnum.NoAuthorized,
           user: null,
+          loading: false
         }
       },
       [],
@@ -37,7 +40,7 @@ describe('Component OfferList', () => {
 
     const screen = render(wrappedComponent);
 
-    expect(screen.container.querySelector('.places__list')).not.toBeNull();
-    expect(screen.container.querySelectorAll('.place-card').length).toBe(offersCount);
+    expect(screen.getByTestId(listContainerTestId)).not.toBeNull();
+    expect(screen.queryAllByTestId(listItemTestId).length).toBe(offersCount);
   });
 });

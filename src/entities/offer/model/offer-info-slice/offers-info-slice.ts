@@ -22,10 +22,12 @@ const offersInfoSlice = createSlice({
     builder.addCase(fetchOffersList.pending, (state) => {
       state.offers = [];
       state.error = null;
+      state.loading = true;
     });
     builder.addCase(fetchOffersList.fulfilled, (state, action) => {
       state.error = null;
       state.offers = action.payload;
+      state.loading = false;
     });
     builder.addCase(fetchOffersList.rejected, (state, action) => {
       state.offers = [];
@@ -33,6 +35,7 @@ const offersInfoSlice = createSlice({
         code: action.error.code ?? DEFAULT_LOADING_ERROR.code,
         message: action.error.message ?? DEFAULT_LOADING_ERROR.message
       };
+      state.loading = false;
     });
   },
 });

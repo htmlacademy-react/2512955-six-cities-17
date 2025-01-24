@@ -1,5 +1,6 @@
 import { AuthorizationStatusEnum } from '@shared/types';
 import {
+  authorizationLoadingSelector,
   AuthorizationSliceState,
   authorizationStatusSelector,
   authorizedUserSelector
@@ -15,6 +16,7 @@ describe('Authorization slice selectors', () => {
         status: AuthorizationStatusEnum.Unknown,
         error: null,
         user: null,
+        loading: false
       },
     };
   });
@@ -37,6 +39,14 @@ describe('Authorization slice selectors', () => {
       const result = authorizedUserSelector(initialSliceState);
 
       expect(result).toBe(userMock);
+    });
+  });
+
+  describe('Selector "authorizationLoadingSelector"', () => {
+    it('should return correct status from state', () => {
+      const result = authorizationLoadingSelector(initialSliceState);
+
+      expect(result).toBe(initialSliceState.authorization.loading);
     });
   });
 });

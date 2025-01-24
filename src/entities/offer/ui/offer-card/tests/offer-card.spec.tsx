@@ -15,6 +15,8 @@ const createPropsMock = (offer: MainOfferInfo, isPremium: boolean): ComponentPro
 });
 
 describe('Component OfferCard', () => {
+  const ratingContainerTestId = 'rating-container';
+
   it('should correct render with is premium offer', () => {
     const offerMock = createMainOfferInfoMock();
     const component = withRouter(<OfferCard {...createPropsMock(offerMock, true)} />);
@@ -22,7 +24,7 @@ describe('Component OfferCard', () => {
 
     expect(screen.getByText(offerMock.type)).toBeInTheDocument();
     expect(screen.getByText(offerMock.title)).toBeInTheDocument();
-    expect(screen.container.querySelector('.place-card__rating.rating')).not.toBeNull();
+    expect(screen.getByTestId(ratingContainerTestId)).toBeInTheDocument();
     expect(screen.getByText(/^to bookmarks/i)).toBeInTheDocument();
     expect(screen.getByText(`€${offerMock.price}`)).toBeInTheDocument();
     expect(screen.getByAltText(offerMock.title)).toBeInTheDocument();
@@ -36,8 +38,7 @@ describe('Component OfferCard', () => {
 
     expect(screen.getByText(offerMock.type)).toBeInTheDocument();
     expect(screen.getByText(offerMock.title)).toBeInTheDocument();
-    expect(screen.container.querySelector('.place-card__rating.rating')).not.toBeNull();
-    expect(screen.getByText(/^to bookmarks/i)).toBeInTheDocument();
+    expect(screen.getByTestId(ratingContainerTestId)).toBeInTheDocument();expect(screen.getByText(/^to bookmarks/i)).toBeInTheDocument();
     expect(screen.getByText(`€${offerMock.price}`)).toBeInTheDocument();
     expect(screen.getByAltText(offerMock.title)).toBeInTheDocument();
     expect(screen.queryByText(/^premium/i)).not.toBeInTheDocument();

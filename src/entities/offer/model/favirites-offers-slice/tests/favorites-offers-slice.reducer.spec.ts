@@ -47,7 +47,8 @@ describe('Favorites offers list reducer', () => {
       const adaptedOffer = adapters.unionToMainOfferInfoAdapter(unionOffer);
       const expectedState: OfferListState = {
         error: null,
-        offers: [adaptedOffer]
+        offers: [adaptedOffer],
+        loading: false
       };
 
       const result = favoritesOffersReducer(sliceInitialState, updateOffer(unionOffer));
@@ -62,6 +63,7 @@ describe('Favorites offers list reducer', () => {
       const expectedState: OfferListState = {
         error: null,
         offers: [],
+        loading: false
       };
 
       const result = favoritesOffersReducer(sliceInitialState, updateOffer(unionOffer));
@@ -73,9 +75,13 @@ describe('Favorites offers list reducer', () => {
   it('should return correct state by "fetchOffersList.pending" action', () => {
     const initialState: OfferListState = {
       error: null,
-      offers: [mainOfferMock]
+      offers: [mainOfferMock],
+      loading: false
     };
-    const expectedState = sliceInitialState;
+    const expectedState: OfferListState = {
+      ...sliceInitialState,
+      loading: true
+    };
 
     const result = favoritesOffersReducer(initialState, fetchFavoritesOffersList.pending);
 
@@ -85,7 +91,8 @@ describe('Favorites offers list reducer', () => {
   it('should return correct state by "fetchOffersList.fullfilled" action', () => {
     const expectedState: OfferListState = {
       ...sliceInitialState,
-      offers: [mainOfferMock]
+      offers: [mainOfferMock],
+      loading: false
     };
 
     const result = favoritesOffersReducer(sliceInitialState, fetchFavoritesOffersList.fulfilled([mainOfferMock], '', undefined));
@@ -102,7 +109,8 @@ describe('Favorites offers list reducer', () => {
         code: err.code,
         message: err.message
       },
-      offers: []
+      offers: [],
+      loading: false
     };
 
     const result = favoritesOffersReducer(sliceInitialState, fetchFavoritesOffersList.rejected(err, '', undefined));

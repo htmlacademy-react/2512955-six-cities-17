@@ -23,10 +23,12 @@ describe('Component UserNavigationList', () => {
           status: AuthorizationStatusEnum.Authorized,
           user: userMock,
           error: null,
+          loading: false,
         },
         favoritesOffers: {
           offers: [createMainOfferInfoMock()],
           error: null,
+          loading: false,
         }
       },
       [],
@@ -52,10 +54,12 @@ describe('Component UserNavigationList', () => {
           status: AuthorizationStatusEnum.NoAuthorized,
           user: null,
           error: null,
+          loading: false,
         },
         favoritesOffers: {
           offers: [],
           error: null,
+          loading: false,
         }
       },
       [],
