@@ -74,6 +74,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
   );
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form className='login__form form' action='#' method='post' onSubmit={handleSubmit(formSubmitHandler)} data-testid='login-form-element'>
       <div className='login__input-wrapper form__input-wrapper'>
         <label className='visually-hidden'>E-mail</label>

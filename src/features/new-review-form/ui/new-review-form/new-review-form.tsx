@@ -92,6 +92,7 @@ export function NewReviewForm({ onSubmit }: NewReviewFormProps): JSX.Element {
   const onRatingChange = (rating: RatingValue) => reviewDataChangeHandler('rating', rating);
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form className='reviews__form form' action='#' method='post' onSubmit={handleSubmit(formSubmitHandler)} data-testid='new-review-form-element'>
       <label className='reviews__label form__label' htmlFor='review'>Your review</label>
       <div className={ratingContainerClassName}>
