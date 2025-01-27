@@ -10,7 +10,7 @@ type LocationsFilterItemProps = {
 
 export function LocationsFilterItem({ filterValue, onLinkClick, isActive }: LocationsFilterItemProps): JSX.Element {
   return (
-    <li className='locations__item'>
+    <li className='locations__item' data-testid='locations-filter-item'>
       <NavLink
         className={({ isActive: isLinkActive }) =>
           `locations__item-link tabs__item ${isLinkActive && isActive ? 'tabs__item--active' : ''}`}

@@ -44,7 +44,7 @@ export function OfferSortingSelect(): JSX.Element {
 
   return (
     <>
-      <span className='places__sorting-type' tabIndex={0} onClick={openSelectHandler}>
+      <span className='places__sorting-type' tabIndex={0} onClick={openSelectHandler} data-testid='sorting-input'>
         {sortTypeToCaptionMap.get(activeSotingType)}
         <svg className='places__sorting-arrow' width={ARROW_SIZE.width} height={ARROW_SIZE.height}>
           <use xlinkHref='#icon-arrow-select' />

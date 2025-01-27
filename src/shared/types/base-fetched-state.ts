@@ -5,12 +5,7 @@ export type StateError = {
   message: string;
 }
 
-export type LoadableState<TStateType> = {
-  loading: boolean;
-  value: TStateType;
-  error: Nullable<StateError>;
-}
-
 export interface BaseFetchedState {
+  loading: boolean;
   error: Nullable<StateError>;
 }

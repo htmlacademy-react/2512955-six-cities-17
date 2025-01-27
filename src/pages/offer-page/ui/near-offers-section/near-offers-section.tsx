@@ -9,7 +9,7 @@ type NearOffersSectionProps = {
 export function NearOffersSection({ onFavoriteButtonClick }: NearOffersSectionProps): ReactNode {
   const nearOffers = useNearOffersData();
 
-  return nearOffers?.length && (
+  return !!nearOffers?.length && (
     <div className='container'>
       <section className='near-places places'>
         <h2 className='near-places__title'>Other places in the neighbourhood</h2>

@@ -6,7 +6,9 @@ export function useForm<TObjectValue extends Record<string, unknown>>(initialVal
 
   const handleSubmit: UseFormReturn<TObjectValue, keyof TObjectValue>['handleSubmit'] = (onSubmit) =>
     async (event) => {
-      event.preventDefault();
+      if (event) {
+        event.preventDefault();
+      }
       setFormState((prev) => ({...prev, isSubmitting: true}));
       await onSubmit(formState.values);
       setFormState((prev) => ({...prev, isSubmitting: false}));

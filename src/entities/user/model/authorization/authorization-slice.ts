@@ -14,6 +14,7 @@ const initialState: AuthorizationSliceState = {
   error: null,
   status: AuthorizationStatusEnum.Unknown,
   user: null,
+  loading: false
 };
 
 const authorizationSlice = createSlice({
@@ -21,10 +22,15 @@ const authorizationSlice = createSlice({
   name: 'authorization',
   reducers: {},
   extraReducers(builder) {
+    builder.addCase(checkAuthorizationAction.pending, (state) => {
+      state.error = null;
+      state.loading = true;
+    });
     builder.addCase(checkAuthorizationAction.fulfilled, (state, action) => {
       state.status = action.payload ? AuthorizationStatusEnum.Authorized : AuthorizationStatusEnum.NoAuthorized;
       state.user = action.payload;
       state.error = null;
+      state.loading = false;
     });
     builder.addCase(checkAuthorizationAction.rejected, (state, action) => {
       state.status = AuthorizationStatusEnum.NoAuthorized;
@@ -33,17 +39,20 @@ const authorizationSlice = createSlice({
         code: action.error?.code ?? DEFAULT_AUTHORIZATION_CHECK_ERROR.code,
         message: action.error?.message ?? DEFAULT_AUTHORIZATION_CHECK_ERROR.message,
       };
+      state.loading = false;
     });
 
     builder.addCase(loginAction.pending, (state) => {
       state.error = null;
       state.status = AuthorizationStatusEnum.Unknown;
       state.user = null;
+      state.loading = true;
     });
     builder.addCase(loginAction.fulfilled, (state, action) => {
       state.error = null;
       state.status = AuthorizationStatusEnum.Authorized;
       state.user = action.payload;
+      state.loading = false;
     });
     builder.addCase(loginAction.rejected, (state, action) => {
       state.status = AuthorizationStatusEnum.NoAuthorized;
@@ -52,21 +61,25 @@ const authorizationSlice = createSlice({
         code: action.error?.code ?? DEFAULT_AUTHORIZATION_LOGIN_ERROR.code,
         message: action.error?.message ?? DEFAULT_AUTHORIZATION_LOGIN_ERROR.message
       };
+      state.loading = false;
     });
 
     builder.addCase(logoutAction.pending, (state) => {
       state.error = null;
+      state.loading = true;
     });
     builder.addCase(logoutAction.fulfilled, (state) => {
       state.error = null;
       state.status = AuthorizationStatusEnum.NoAuthorized;
       state.user = null;
+      state.loading = false;
     });
     builder.addCase(logoutAction.rejected, (state, action) => {
       state.error = {
         code: action.error?.code ?? DEFAULT_AUTHORIZATION_LOGOUT_ERROR.code,
         message: action.error?.message ?? DEFAULT_AUTHORIZATION_LOGOUT_ERROR.message
       };
+      state.loading = false;
     });
   },
 });

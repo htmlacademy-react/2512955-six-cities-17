@@ -10,7 +10,6 @@ import { User } from '@entities/user';
 import { AuthorizationStatusEnum, Nullable } from '@shared/types';
 import { AuthorizationData } from '../model/types';
 import { useCallback } from 'react';
-import { useGlobalLoader } from '@shared/hooks/use-global-loader';
 
 type UseAuthorizationReturnType = {
   readonly user: Nullable<User>;
@@ -24,33 +23,26 @@ export function useAuthorization(): UseAuthorizationReturnType {
   const user = useAppSelector(authorizedUserSelector);
   const authorizationStatus = useAppSelector(authorizationStatusSelector);
   const dispatch = useAppDispatch();
-  const setLoading = useGlobalLoader();
 
   const checkAuthorization = useCallback(
     async () => {
-      setLoading(true);
       await dispatch(checkAuthorizationAction());
-      setLoading(false);
     },
-    [dispatch, setLoading]
+    [dispatch]
   );
 
   const login = useCallback(
     async (data: AuthorizationData) => {
-      setLoading(true);
       await dispatch(loginAction(data));
-      setLoading(false);
     },
-    [dispatch, setLoading]
+    [dispatch]
   );
 
   const logout = useCallback(
     async () => {
-      setLoading(true);
       await dispatch(logoutAction());
-      setLoading(false);
     },
-    [dispatch, setLoading]
+    [dispatch]
   );
 
   return {

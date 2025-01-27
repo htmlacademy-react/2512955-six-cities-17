@@ -7,12 +7,19 @@ import { OfferHostInfo } from '../offer-host-info';
 import { FullOfferInfo } from '@entities/offer';
 import { PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
+import FavoritesButton from '@shared/ui/favorites-button';
+import { ElementSize } from '@shared/types';
 
 type OfferInfoProps = PropsWithChildren<{
   leafletMap: ReactNode;
   offer: FullOfferInfo;
   onFavoritesButtonClick: (offerId: string, isFavorite: boolean) => void;
 }>
+
+const FAVORITES_BUTTON_SIZE: ElementSize = {
+  width: 31,
+  height: 33,
+};
 
 export function OfferInfo({ offer, children, onFavoritesButtonClick, leafletMap }: OfferInfoProps): JSX.Element {
   const favoritesButtonClickHandler = () => {
@@ -28,7 +35,7 @@ export function OfferInfo({ offer, children, onFavoritesButtonClick, leafletMap 
   );
 
   return (
-    <section className='offer'>
+    <section className='offer' data-testid='offer-info-section'>
       <div className='offer__gallery-container container'>
         <ImageGallery
           className='offer__gallery'
@@ -47,12 +54,13 @@ export function OfferInfo({ offer, children, onFavoritesButtonClick, leafletMap 
             <h1 className='offer__name'>
               {offer.title}
             </h1>
-            <button className={favoritesButtonClassName} type='button' onClick={favoritesButtonClickHandler}>
-              <svg className='offer__bookmark-icon' width='31' height='33'>
-                <use xlinkHref='#icon-bookmark'></use>
-              </svg>
-              <span className='visually-hidden'>To bookmarks</span>
-            </button>
+            <FavoritesButton
+              buttonClassName={favoritesButtonClassName}
+              iconClassName='offer__bookmark-icon'
+              iconSize={FAVORITES_BUTTON_SIZE}
+              isFavorite={offer.isFavorite}
+              onFavoritesClick={favoritesButtonClickHandler}
+            />
           </div>
           <div className='offer__rating rating'>
             <RatingInStars rating={offer.rating} className='offer__stars rating__stars' />

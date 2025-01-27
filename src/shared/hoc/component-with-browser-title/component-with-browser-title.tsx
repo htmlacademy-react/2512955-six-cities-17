@@ -1,11 +1,10 @@
 import { Helmet } from 'react-helmet-async';
-import { ComponentType } from 'react';
+import { ComponentType, FC } from 'react';
 
 type BasePropsType = Partial<Record<string, unknown>>;
 
 export function componentWithBrowserTitle<TPropsType extends BasePropsType>(Component: ComponentType<TPropsType>, title: string) {
-  // eslint-disable-next-line react/display-name
-  return (props: TPropsType): JSX.Element => (
+  const ReturnedComponent: FC<TPropsType> = (props: TPropsType) => (
     <>
       <Helmet>
         <title>{title}</title>
@@ -13,4 +12,7 @@ export function componentWithBrowserTitle<TPropsType extends BasePropsType>(Comp
       <Component {...props} />
     </>
   );
+  ReturnedComponent.displayName = `${Component?.displayName ?? 'component'}WithHelmet`;
+
+  return ReturnedComponent;
 }

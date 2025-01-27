@@ -8,7 +8,7 @@ import type { ViewType } from './types';
 import ImagedLink from '@shared/ui/imaged-link';
 import { RoutesEnum } from '@shared/types';
 import { Link } from 'react-router-dom';
-import { MouseEventHandler } from 'react';
+import FavoritesButton from '@shared/ui/favorites-button';
 
 type OfferCardProps = Classed<{
   offer: MainOfferInfo;
@@ -39,7 +39,7 @@ export function OfferCard({ offer, className, onActivateOffer, viewType = 'main'
     }
   };
 
-  const favoritesButtonClickHandler: MouseEventHandler<HTMLButtonElement> = () => {
+  const favoritesButtonClickHandler = () => {
     if (onFavoritesButtonClick) {
       onFavoritesButtonClick(offer.id, !offer.isFavorite);
     }
@@ -65,19 +65,15 @@ export function OfferCard({ offer, className, onActivateOffer, viewType = 'main'
             <b className='place-card__price-value'>&euro;{offer.price}</b>
             <span className='place-card__price-text'>&#47;&nbsp;night</span>
           </div>
-          <button
-            className={bookmarkButtonClassName}
-            type='button'
-            onClick={onFavoritesButtonClick && favoritesButtonClickHandler}
-          >
-            <svg className='place-card__bookmark-icon' width={FAVORITES_BUTTON_SIZE.width} height={FAVORITES_BUTTON_SIZE.height}>
-              <use xlinkHref='#icon-bookmark'></use>
-            </svg>
-            <span className='visually-hidden'>To bookmarks</span>
-          </button>
-
+          <FavoritesButton
+            buttonClassName={bookmarkButtonClassName}
+            onFavoritesClick={favoritesButtonClickHandler}
+            iconClassName='place-card__bookmark-icon'
+            iconSize={FAVORITES_BUTTON_SIZE}
+            isFavorite={offer.isFavorite}
+          />
         </div>
-        <div className='place-card__rating rating'>
+        <div className='place-card__rating rating' data-testid='rating-container'>
           <RatingInStars rating={offer.rating} className='place-card__stars rating__stars' />
         </div>
         <h2 className='place-card__name'>

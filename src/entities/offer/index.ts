@@ -14,6 +14,8 @@ import { favoritesOffersReducer, updateOffer as updateFavoriteOffer } from './mo
 import { useFavoritesOffersListData, useMainOffersListData } from './lib/use-offers-list-data';
 import { useMainOffersListFetch, useFavoritesOffersListFetch } from './lib/use-offers-list-fetch';
 import { unionToFullOfferInfoAdapter, unionToMainOfferInfoAdapter } from './lib/adapters/union-offer-info-adapters';
+import { offersLoadingSelector } from './model/offer-info-slice';
+import { favoritesLoadingSelector } from './model/favirites-offers-slice';
 
 export type {
   MainOfferInfo,
@@ -37,7 +39,9 @@ export {
   updateMainOffer,
   updateFavoriteOffer,
   unionToFullOfferInfoAdapter,
-  unionToMainOfferInfoAdapter
+  unionToMainOfferInfoAdapter,
+  favoritesLoadingSelector,
+  offersLoadingSelector
 };
 
 export default OfferCard;
