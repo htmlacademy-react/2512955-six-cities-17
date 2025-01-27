@@ -1,23 +1,43 @@
-import { RoutesEnum } from '@shared/types';
+import { ElementSize, RoutesEnum } from '@shared/types';
 import ImagedLink from '@shared/ui/imaged-link';
+import classNames from 'classnames';
 import { ComponentProps } from 'react';
 
-const DEFAULT_LINK_PROPS: ComponentProps<typeof ImagedLink> = {
-  linkConfig: {
-    to: RoutesEnum.Main,
-    className: 'header__logo',
-  },
-  className: 'header__logo',
-  src: 'img/logo.svg',
-  width: 81,
-  height: 41,
-  alt: '6 cities logo'
+type LogoType = 'header' | 'footer';
+
+type LogoProps = {
+  type: LogoType;
+  size: ElementSize;
+}
+
+const getLinkProps = (logoType: LogoType, size: ElementSize): ComponentProps<typeof ImagedLink> => {
+  const linkClassName = classNames({
+    'header__logo' : logoType === 'header',
+    'footer__logo-link' : logoType === 'footer'
+  });
+
+  const imageClassName = classNames({
+    'header__logo' : logoType === 'header',
+    'footer__logo' : logoType === 'footer'
+  });
+
+  return {
+    linkConfig: {
+      to: RoutesEnum.Main,
+      className: linkClassName,
+    },
+    className: imageClassName,
+    src: 'img/logo.svg',
+    width: size.width,
+    height: size.height,
+    alt: '6 cities logo'
+  };
 };
 
-export function Logo(): JSX.Element {
+export function Logo({ size, type = 'header' }: LogoProps): JSX.Element {
+  const linkProps = getLinkProps(type, size);
+
   return (
-    <div className='header__left'>
-      <ImagedLink {...DEFAULT_LINK_PROPS} />
-    </div>
+    <ImagedLink {...linkProps} />
   );
 }

@@ -48,19 +48,4 @@ export function useStartup() {
     },
     [authorizationStatus, fetchFavoritesOffers, fetchMainOffers]
   );
-
-  useEffect(
-    () => {
-      let componentIsRendered = false;
-
-      if (!componentIsRendered && authorizationStatus === AuthorizationStatusEnum.Authorized) {
-        fetchFavoritesOffers();
-      }
-
-      return () => {
-        componentIsRendered = true;
-      };
-    },
-    [authorizationStatus, fetchFavoritesOffers]
-  );
 }

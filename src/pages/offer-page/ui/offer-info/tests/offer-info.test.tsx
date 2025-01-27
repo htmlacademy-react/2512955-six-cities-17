@@ -12,7 +12,7 @@ const createPropsMock = (): ComponentProps<typeof OfferInfo> => ({
 });
 
 describe('Component OfferInfo', () => {
-  const favoriteButtonText = 'To bookmarks';
+  const favoriteButtonTextPattern = /^(to|in) bookmarks/i;
   const galleryTestId = 'image-gallery-container';
   const premiumMarkText = 'Premium';
   const insideTestId = 'offer-insides-list-item';
@@ -34,7 +34,7 @@ describe('Component OfferInfo', () => {
 
     expect(screen.getByTestId(galleryTestId)).toBeInTheDocument();
     expect(screen.getByText(offer.title)).toBeInTheDocument();
-    expect(screen.getByText(favoriteButtonText)).toBeInTheDocument();
+    expect(screen.getByText(favoriteButtonTextPattern)).toBeInTheDocument();
     expect(screen.getByText(offer.rating)).toBeInTheDocument();
     expect(screen.getByTestId(starsTestId)).toBeInTheDocument();
     expect(screen.getByTestId(featuresTestId)).toBeInTheDocument();
@@ -60,7 +60,7 @@ describe('Component OfferInfo', () => {
 
     expect(screen.getByTestId(galleryTestId)).toBeInTheDocument();
     expect(screen.getByText(offer.title)).toBeInTheDocument();
-    expect(screen.getByText(favoriteButtonText)).toBeInTheDocument();
+    expect(screen.getByText(favoriteButtonTextPattern)).toBeInTheDocument();
     expect(screen.getByText(offer.rating)).toBeInTheDocument();
     expect(screen.getByTestId(starsTestId)).toBeInTheDocument();
     expect(screen.getByTestId(featuresTestId)).toBeInTheDocument();
@@ -89,7 +89,7 @@ describe('Component OfferInfo', () => {
 
     expect(screen.getByTestId(galleryTestId)).toBeInTheDocument();
     expect(screen.getByText(offer.title)).toBeInTheDocument();
-    expect(screen.getByText(favoriteButtonText)).toBeInTheDocument();
+    expect(screen.getByText(favoriteButtonTextPattern)).toBeInTheDocument();
     expect(screen.getByText(offer.rating)).toBeInTheDocument();
     expect(screen.getByTestId(starsTestId)).toBeInTheDocument();
     expect(screen.getByTestId(featuresTestId)).toBeInTheDocument();

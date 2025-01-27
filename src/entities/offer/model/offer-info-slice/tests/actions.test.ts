@@ -4,7 +4,7 @@ import { ServerRoutesEnum } from '@shared/types';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { RootState } from '@shared/lib/store';
 import { Action } from '@reduxjs/toolkit';
-import { isAllActionsContains } from '@test-utills/helpers/actions';
+import { isActionsEquals } from '@test-utills/helpers/actions';
 
 describe('Async "fetchOffersList" action', () => {
   const { axiosMockAdapter, middleware } = createAppThunkMiddlewareMock();
@@ -20,7 +20,7 @@ describe('Async "fetchOffersList" action', () => {
     axiosMockAdapter.onGet(ServerRoutesEnum.Offers).reply(200);
     await store.dispatch(fetchOffersList());
 
-    const result = isAllActionsContains(
+    const result = isActionsEquals(
       store.getActions(),
       [
         fetchOffersList.pending,
@@ -35,7 +35,7 @@ describe('Async "fetchOffersList" action', () => {
     axiosMockAdapter.onGet(ServerRoutesEnum.Offers).reply(404);
     await store.dispatch(fetchOffersList());
 
-    const result = isAllActionsContains(
+    const result = isActionsEquals(
       store.getActions(),
       [
         fetchOffersList.pending,

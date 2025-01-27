@@ -1,7 +1,7 @@
 import { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
-import { TOAST_CONTAINER_ID, TOAST_OPTIONS } from '@app/config';
+import { TOAST_CONTAINER_ID, TOAST_OPTIONS } from '@app/config/toast';
 import { tokenServiceInstance } from '@shared/lib/token-service';
 
 const StatusCodeMapping: Record<number, boolean> = {

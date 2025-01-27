@@ -7,8 +7,6 @@ import { render } from '@testing-library/react';
 describe('Component LocationsFilterItem', () => {
   const onLinkClickMock = vi.fn();
   const initialFilterValue: OfferCityName = 'Amsterdam';
-  const listContainerTestId = '';
-  const listItemTestId = ''
 
   it('should correct render with active location', () => {
     const component = withRouter(<LocationsFilterItem filterValue={initialFilterValue} isActive onLinkClick={onLinkClickMock} />);

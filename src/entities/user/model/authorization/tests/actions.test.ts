@@ -10,7 +10,7 @@ import { AuthorizationStatusEnum, ServerRoutesEnum } from '@shared/types';
 import { Action } from '@reduxjs/toolkit';
 import { createAuthorizationDataMock } from '@test-utills/mock/user';
 import { createAuthorizedUserMock } from '@test-utills/mock/user/create-user-mock';
-import { isAllActionsContains } from '@test-utills/helpers/actions';
+import { isActionsEquals } from '@test-utills/helpers/actions';
 import { tokenServiceInstance } from '@shared/lib/token-service';
 import faker from 'faker';
 
@@ -83,7 +83,7 @@ describe('Authorization async actions', () => {
       axiosMockAdapter.onGet(ServerRoutesEnum.Login).reply(200, createAuthorizedUserMock());
 
       await store.dispatch(checkAuthorizationAction());
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [checkAuthorizationAction.pending, checkAuthorizationAction.fulfilled]
       );
@@ -97,7 +97,7 @@ describe('Authorization async actions', () => {
       axiosMockAdapter.onGet(ServerRoutesEnum.Login).reply(401);
 
       await store.dispatch(checkAuthorizationAction());
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [checkAuthorizationAction.pending, checkAuthorizationAction.rejected]
       );
@@ -113,7 +113,7 @@ describe('Authorization async actions', () => {
 
       await store.dispatch(loginAction(createAuthorizationDataMock()));
 
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [redirectToRouteAction, loginAction.pending, loginAction.fulfilled]
       );
@@ -136,7 +136,7 @@ describe('Authorization async actions', () => {
 
       await store.dispatch(loginAction(createAuthorizationDataMock()));
 
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [loginAction.pending, loginAction.rejected]
       );
@@ -177,7 +177,7 @@ describe('Authorization async actions', () => {
       axiosMockAdapter.onDelete(ServerRoutesEnum.Logout).reply(200);
 
       await store.dispatch(logoutAction());
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [redirectToRouteAction, logoutAction.pending, logoutAction.fulfilled]
       );
@@ -189,7 +189,7 @@ describe('Authorization async actions', () => {
       axiosMockAdapter.onDelete(ServerRoutesEnum.Logout).reply(500);
 
       await store.dispatch(logoutAction());
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [logoutAction.pending, logoutAction.rejected]
       );

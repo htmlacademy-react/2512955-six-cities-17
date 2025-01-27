@@ -1,10 +1,14 @@
 import type { PropsWithChildren } from 'react';
-import type { Classed } from '@shared/types';
+import type { Classed, ElementSize } from '@shared/types';
 import classNames from 'classnames';
-import ImagedLink from '@shared/ui/imaged-link';
-import { DEFAULT_LINK_PROPS } from './const';
+import { Logo } from '../logo';
 
 type FooterProps = Classed<PropsWithChildren>;
+
+const LOGO_SIZE: ElementSize = {
+  width: 64,
+  height: 33,
+};
 
 export function Footer({ className, children }: FooterProps): JSX.Element {
   const headerClassName = classNames('footer', {
@@ -12,7 +16,7 @@ export function Footer({ className, children }: FooterProps): JSX.Element {
   });
   return (
     <footer className={headerClassName} data-testid='page-layout-footer'>
-      <ImagedLink {...DEFAULT_LINK_PROPS} />
+      <Logo size={LOGO_SIZE} type='footer' />
       {children}
     </footer>
   );

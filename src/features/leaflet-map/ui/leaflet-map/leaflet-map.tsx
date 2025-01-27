@@ -34,13 +34,14 @@ export function LeafletMap({ center, className, points, selectedPoint = null }: 
         }))
         : [];
 
+      const markersGroup = leaflet.layerGroup(leafletMarkers);
       if (map) {
-        leafletMarkers.forEach((current) => current.addTo(map));
+        markersGroup.addTo(map);
       }
 
       return () => {
         if (map) {
-          leafletMarkers.forEach((current) => map.removeLayer(current));
+          map.removeLayer(markersGroup);
         }
       };
     },

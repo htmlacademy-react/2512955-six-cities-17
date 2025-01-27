@@ -6,7 +6,7 @@ import { addNewReviewAction, fetchOfferPageAction } from '../actions';
 import { ServerRoutesEnum } from '@shared/types';
 import { generatePath } from 'react-router-dom';
 import faker from 'faker';
-import { isAllActionsContains } from '@test-utills/helpers/actions';
+import { isActionsEquals } from '@test-utills/helpers/actions';
 import { createFullOfferInfoMock } from '@test-utills/mock/offer';
 import { createNewReviewDataMock, creatNewReviewMock } from '@test-utills/mock/review';
 
@@ -31,7 +31,7 @@ describe('Async offer page actions', () => {
       axiosMockAdapter.onGet(reviewsUrl).reply(200, []);
 
       await store.dispatch(fetchOfferPageAction(offerId));
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [fetchOfferPageAction.pending, fetchOfferPageAction.fulfilled]
       );
@@ -52,7 +52,7 @@ describe('Async offer page actions', () => {
       axiosMockAdapter.onGet(offerInfoUrl).reply(500);
 
       await store.dispatch(fetchOfferPageAction(offerId));
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [fetchOfferPageAction.pending, fetchOfferPageAction.rejected]
       );
@@ -64,7 +64,7 @@ describe('Async offer page actions', () => {
       axiosMockAdapter.onGet(offerInfoUrl).reply(404);
 
       await store.dispatch(fetchOfferPageAction(offerId));
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [fetchOfferPageAction.pending, fetchOfferPageAction.rejected, redirectToRouteAction]
       );
@@ -84,7 +84,7 @@ describe('Async offer page actions', () => {
       await store.dispatch(addNewReviewAction({offerId, reviewData: newReviewDataMock}));
 
 
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [addNewReviewAction.pending, addNewReviewAction.fulfilled]
       );
@@ -96,7 +96,7 @@ describe('Async offer page actions', () => {
       axiosMockAdapter.onPost(addReviewUrl).reply(500);
 
       await store.dispatch(addNewReviewAction({offerId, reviewData: newReviewDataMock}));
-      const result = isAllActionsContains(
+      const result = isActionsEquals(
         store.getActions(),
         [addNewReviewAction.pending, addNewReviewAction.rejected]
       );

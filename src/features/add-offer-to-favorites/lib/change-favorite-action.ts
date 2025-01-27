@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 
-type ChangeFavoriteActionPayload = {
+export type ChangeFavoriteActionPayload = {
   offerId: string;
   isFavorite: boolean;
 }

@@ -11,7 +11,10 @@ describe('Component LoginPage', () => {
   const loginFormTestId = 'login-form-element';
   const activeLocation: OfferCityName = 'Amsterdam';
 
-  it('should correct render', () => {
+  it('should correct render', async () => {
+    vi.spyOn(await import('../../location-link/get-city-name'), 'getCityName')
+      .mockImplementation(vi.fn(() => activeLocation));
+
     const { wrappedComponent } = withStore(
       <LoginPage />,
       {

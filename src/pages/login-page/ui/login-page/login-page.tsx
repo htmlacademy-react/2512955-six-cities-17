@@ -1,13 +1,10 @@
 import Layout from '@widgets/layout';
 import { LoginForm } from '@features/login-form';
 import { componentWithBrowserTitle } from '@shared/hoc/component-with-browser-title';
-import { RoutesEnum } from '@shared/types';
-import { OfferCityName } from '@entities/offer';
 import { useAuthorization } from '@entities/user';
 import { LocationLink } from '../location-link';
 
 const PAGE_TITLE = '6 cities: authorization';
-const DEFAULT_CITY: OfferCityName = 'Amsterdam';
 
 export function LoginPage(): JSX.Element {
   const { login } = useAuthorization();
@@ -20,7 +17,7 @@ export function LoginPage(): JSX.Element {
             <h1 className="login__title">Sign in</h1>
             <LoginForm onSubmit={login} />
           </section>
-          <LocationLink to={`${RoutesEnum.Main}?activeCity=${DEFAULT_CITY}`} caption={DEFAULT_CITY}/>
+          <LocationLink />
         </div>
       </Layout.Content>
     </Layout>

@@ -4,7 +4,7 @@ import { ServerRoutesEnum } from '@shared/types';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { RootState } from '@shared/lib/store';
 import { Action } from '@reduxjs/toolkit';
-import { isAllActionsContains } from '@test-utills/helpers/actions';
+import { isActionsEquals } from '@test-utills/helpers/actions';
 
 describe('Async "fetchFavoritesOffersList" action', () => {
   const { axiosMockAdapter, middleware } = createAppThunkMiddlewareMock();
@@ -20,7 +20,7 @@ describe('Async "fetchFavoritesOffersList" action', () => {
     axiosMockAdapter.onGet(ServerRoutesEnum.Favorite).reply(200);
     await store.dispatch(fetchFavoritesOffersList());
 
-    const result = isAllActionsContains(
+    const result = isActionsEquals(
       store.getActions(),
       [fetchFavoritesOffersList.pending, fetchFavoritesOffersList.fulfilled]
     );
@@ -32,7 +32,7 @@ describe('Async "fetchFavoritesOffersList" action', () => {
     axiosMockAdapter.onGet(ServerRoutesEnum.Favorite).reply(404);
     await store.dispatch(fetchFavoritesOffersList());
 
-    const result = isAllActionsContains(
+    const result = isActionsEquals(
       store.getActions(),
       [fetchFavoritesOffersList.pending, fetchFavoritesOffersList.rejected]
     );
