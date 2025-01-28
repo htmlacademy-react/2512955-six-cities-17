@@ -7,7 +7,7 @@ import { emptyAction } from '@test-utills/mock/redux';
 import { createGlobalLoaderSliceState } from './utills';
 
 describe('Global loader slice reducer', () => {
-  it('should return initial state with empty action', () => {
+  it('should return \'initialState\' with empty action', () => {
     const expectedState = { ...initialState };
 
     const result = globalLoaderReducer(expectedState, emptyAction);
@@ -15,7 +15,7 @@ describe('Global loader slice reducer', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should return initial state with empty action and undefined state', () => {
+  it('should return \'initialState\' with empty action and undefined state', () => {
     const expectedState = { ...initialState };
 
     const result = globalLoaderReducer(undefined, emptyAction);

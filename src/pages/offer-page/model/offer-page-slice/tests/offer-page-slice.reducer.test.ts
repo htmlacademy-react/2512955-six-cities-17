@@ -29,13 +29,13 @@ describe('Offer page reducer', () => {
     };
   });
 
-  it('should return initial state with empty action', () => {
+  it('should return \'initialState\' with empty action', () => {
     const result = offerPageReducer(initialSliceState, emptyAction);
 
     expect(result).toEqual(initialSliceState);
   });
 
-  it('should return initial state with empty action and undefined state', () => {
+  it('should return \'initialState\' with empty action and undefined state', () => {
     const result = offerPageReducer(undefined, emptyAction);
 
     expect(result).toEqual(initialSliceState);
