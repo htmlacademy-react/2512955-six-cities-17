@@ -12,13 +12,13 @@ describe('Locatiion filter reducer', () => {
     };
   });
 
-  it('should return initial state with empty action', () => {
+  it('should return \'initialState\' with empty action', () => {
     const result = locationFilterReducer(initialSliceState, emptyAction);
 
     expect(result).toEqual(initialSliceState);
   });
 
-  it('should return initial state with empty action and undefined state', () => {
+  it('should return \'initialState\' with empty action and undefined state', () => {
     const result = locationFilterReducer(undefined, emptyAction);
 
     expect(result).toEqual(initialSliceState);

@@ -20,7 +20,7 @@ describe('Offers list reducer', () => {
     sliceInitialState = { ...STATE_TEMPLATE };
   });
 
-  it('should return initial state by empty action', () => {
+  it('should return \'initialState\' by empty action', () => {
     const expectedState = sliceInitialState;
 
     const result = offersListReducer(expectedState, emptyAction);
@@ -28,7 +28,7 @@ describe('Offers list reducer', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should return initial state by state argument is undefined', () => {
+  it('should return \'initialState\' by state argument is undefined', () => {
     const expectedState = sliceInitialState;
 
     const result = offersListReducer(undefined, emptyAction);
